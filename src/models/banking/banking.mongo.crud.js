@@ -143,13 +143,48 @@ async function addBankingAccountTransaction(userId, email, transactionInfo) {
       $inc: { totalAllBankingIn: Number(transactionInfo.amount), totalAllBankingOut: Number(transactionInfo.amount) }
     });
   }
-}
+};
 
+async function closeBankingAccount(userId, email, bankingAccountName) {
+  const bankingAccountExists = await bankingAccountsDatabase.findOne({
+    userId: userId,
+    email: email,
+    name: bankingAccountName
+  });
+
+  if (bankingAccountExists) {
+    const bankingAccount = await bankingAccountsDatabase.findOne({
+      userId: userId,
+      email: email,
+      name: bankingAccountName
+    });
+
+    await bankingSummaryDatabase.updateOne({
+      userId: userId,
+      email: email,
+    }, {
+      $inc: { 
+        currentAllBankingBalance: -Number(bankingAccount.currentBalance),
+        totalAllBankingIn: -Number(bankingAccount.totalIn),
+        totalAllBankingOut: -Number(bankingAccount.totalOut)
+      }
+    });
+
+    await bankingAccountsDatabase.deleteOne({
+      userId: userId,
+      email: email,
+      name: bankingAccountName
+    });
+  } else {
+    return;
+  }
+};
 
 // user sign out
 
 module.exports = {
   createBankingAccount,
   createBankingSummary,
-  addBankingAccountTransaction
+  addBankingAccountTransaction,
+  closeBankingAccount
 }

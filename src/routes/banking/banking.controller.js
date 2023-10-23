@@ -45,7 +45,20 @@ async function httpPostBankingAccountTransaction(req, res) {
 };
 
 async function httpDeleteBankingAccount(req, res) {
-  return res.status(200).json(await deleteBankingAccount());
+  // return res.status(200).json(await deleteBankingAccount());
+
+  try {
+    console.log(req.body);
+    const bankingAccountName = String(req.body);
+    const userId = req.params.userid;
+    const email = req.params.email;
+    const resDeleteBankingAccount = await deleteBankingAccount(userId, email, bankingAccountName);
+
+    if (resDeleteBankingAccount) return res.status(200);
+  } catch (error) {
+    // TODO: handle error
+    console.log(error);
+  }
 };
 
 // signing out
