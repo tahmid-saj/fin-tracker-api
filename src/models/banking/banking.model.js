@@ -1,6 +1,9 @@
 const { bankingAccountsDatabase, bankingSummaryDatabase } = require("./banking.mongo");
 const axios = require("axios");
+ 
+const { createBankingAccount } = require("./banking.mongo.crud")
 
+// user signs in
 async function getBankingAccountsData() {
   console.log("Getting banking data");
 };
@@ -9,8 +12,11 @@ async function getBankingSummaryData() {
   console.log("Getting banking summary data");
 };
 
-async function postBankingAccountCreate() {
+// banking operations
+async function postBankingAccountCreate(userId, email, bankingAccountName) {
   console.log("Posting banking account creation");
+
+  createBankingAccount(userId, email, bankingAccountName);
 };
 
 async function postBankingAccountTransaction() {
@@ -21,6 +27,7 @@ async function deleteBankingAccount() {
   console.log("Deleting banking account");
 };
 
+// user signed out
 async function putBankingAccountsData() {
   console.log("Putting banking accounts data");
 };
