@@ -1,6 +1,5 @@
-const bankingDatabase = require("./banking.mongo");
+const { bankingAccountsDatabase, bankingSummaryDatabase } = require("./banking.mongo");
 const axios = require("axios");
-
 
 async function getBankingAccountsData() {
   console.log("Getting banking data");
