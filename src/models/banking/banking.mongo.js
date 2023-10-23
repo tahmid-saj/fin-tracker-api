@@ -28,22 +28,26 @@ const bankingAccountsSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
-  transactions: [
-    {
-      amount: {
-        type: Number,
-        required: false,
-      },
-      type: {
-        type: String,
-        required: false,
-      },
-      reason: {
-        type: String,
-        required: false,
+  transactions: {
+    type: [
+      {
+        amount: {
+          type: Number,
+          required: true,
+        },
+        type: {
+          type: String,
+          required: true,
+        },
+        reason: {
+          type: String,
+          required: false,
+        }
       }
-    }
-  ]
+    ],
+    default: [],
+    required: false,
+  }
 });
 
 const bankingSummarySchema = new mongoose.Schema({
