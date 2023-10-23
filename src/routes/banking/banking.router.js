@@ -1,10 +1,27 @@
 const express = require('express');
 
-const { httpGetBankingData } = require("./banking.controller");
+const { httpGetBankingAccountsData, httpGetBankingSummaryData,
+  httpPostBankingAccountCreate, httpPostBankingAccountTransaction, httpDeleteBankingAccount,
+  httpPutBankingAccountsData, httpPutBankingSummaryData } = require("./banking.controller");
 
 const bankingRouter = express.Router();
 
-bankingRouter.get("/", httpGetBankingData);
+// when user is signed in, frontend will send this and populate the banking accounts data from mongodb
+bankingRouter.get("/accounts/:id/:email", httpGetBankingAccountsData);
+// when user is signed in, frontend will send this and populate the banking summary data from mongodb
+bankingRouter.get("/summary/:id/:email", httpGetBankingSummaryData);
+
+// when user is creating a new bank account, frontend will send this and add the bank account data to mongodb
+bankingRouter.post("/accounts/:id/:email/create", httpPostBankingAccountCreate);
+// when user is creating a transaction, frontend will send this and add the transaction data to mongodb
+bankingRouter.post("/accounts/:id/:email/transaction", httpPostBankingAccountTransaction);
+// when user is closing a bank account, frontend will send this and delete the bank account from mongodb
+bankingRouter.delete("/accounts/:id/:email/close", httpDeleteBankingAccount);
+
+// when user is signed out, frontend will send this request and the updated banking accounts data to mongodb
+bankingRouter.put("/accounts/:id/:email", httpPutBankingAccountsData);
+// when user is signed out, frontend will send this request and the updated banking summary data to mongodb
+bankingRouter.put("/summary/:id/:email", httpPutBankingSummaryData);
 
 module.exports = {
   bankingRouter,
