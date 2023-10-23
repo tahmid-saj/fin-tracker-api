@@ -59,19 +59,44 @@ async function addBankingAccountTransaction(userId, email, transactionInfo) {
       name: transactionInfo.bankingAccountName
     }, { 
       $inc: { currentBalance: Number(transactionInfo.amount), totalIn: Number(transactionInfo.amount) },
-      $push: { transactions: {
-        amount: Number(transactionInfo.amount),
-        type: transactionInfo.type,
-        reason: transactionInfo.reason,
-      } } 
-    })
+      $push: { 
+        transactions: {
+          amount: Number(transactionInfo.amount),
+          type: transactionInfo.type,
+          reason: transactionInfo.reason,
+        } } 
+    });
 
     await bankingSummaryDatabase.updateOne({
       userId: userId,
       email: email,
     }, {
       $inc: { currentAllBankingBalance: Number(transactionInfo.amount), totalAllBankingIn: Number(transactionInfo.amount) }
-    })
+    });
+  } else if (transactionInfo.type === "WITHDRAWAL") {
+    console.log("withdrawal transaction");
+
+    await bankingAccountsDatabase.updateOne({
+      userId: userId,
+      email: email,
+      name: transactionInfo.bankingAccountName
+    }, {
+      $inc: { currentBalance: -Number(transactionInfo.amount), totalOut: Number(transactionInfo.amount) },
+      $push: {
+        transactions: {
+          amount: Number(transactionInfo.amount),
+          type: transactionInfo.type,
+          reason: transactionInfo.reason,
+        }
+      }
+    });
+
+    await bankingSummaryDatabase.updateOne({
+      userId: userId,
+      email: email
+    }, {
+      $inc: { currentAllBankingBalance: -Number(transactionInfo.amount), totalAllBankingOut: Number(transactionInfo.amount) }
+    });
   }
 }
 
