@@ -2,6 +2,9 @@ const { bankingAccountsDatabase, bankingSummaryDatabase } = require("./banking.m
 
 // banking crud for mongodb
 
+// user sign in
+
+// banking operations
 async function createBankingSummary(userId, email) {
   const bankingSummaryExists = await bankingSummaryDatabase.findOne({
     userId: userId,
@@ -51,6 +54,7 @@ async function createBankingAccount(userId, email, bankingAccountName) {
 
 async function addBankingAccountTransaction(userId, email, transactionInfo) {
   if (transactionInfo.type === "DEPOSIT") {
+    // deposit
     console.log("deposit transaction")
 
     await bankingAccountsDatabase.updateOne({ 
@@ -74,6 +78,7 @@ async function addBankingAccountTransaction(userId, email, transactionInfo) {
       $inc: { currentAllBankingBalance: Number(transactionInfo.amount), totalAllBankingIn: Number(transactionInfo.amount) }
     });
   } else if (transactionInfo.type === "WITHDRAWAL") {
+    // withdrawal
     console.log("withdrawal transaction");
 
     await bankingAccountsDatabase.updateOne({
@@ -97,8 +102,51 @@ async function addBankingAccountTransaction(userId, email, transactionInfo) {
     }, {
       $inc: { currentAllBankingBalance: -Number(transactionInfo.amount), totalAllBankingOut: Number(transactionInfo.amount) }
     });
+  } else if (transactionInfo.type === "TRANSFER") {
+    // transfers
+    console.log("transfer transaction");
+
+    await bankingAccountsDatabase.updateOne({
+      userId: userId,
+      email: email,
+      name: transactionInfo.bankingAccountName
+    }, {
+      $inc: { currentBalance: -Number(transactionInfo.amount), totalOut: Number(transactionInfo.amount) },
+      $push: {
+        transactions: {
+          amount: Number(transactionInfo.amount),
+          type: "WITHDRAWAL_TRANSFER",
+          reason: transactionInfo.reason,
+        }
+      }
+    });
+
+    await bankingAccountsDatabase.updateOne({
+      userId: userId,
+      email: email,
+      name: transactionInfo.transferTo
+    }, {
+      $inc: { currentBalance: Number(transactionInfo.amount), totalIn: Number(transactionInfo.amount) },
+      $push: {
+        transactions: {
+          amount: Number(transactionInfo.amount),
+          type: "DEPOSIT_TRANSFER",
+          reason: transactionInfo.reason,
+        }
+      }
+    });
+
+    await bankingSummaryDatabase.updateOne({
+      userId: userId,
+      email: email,
+    }, {
+      $inc: { totalAllBankingIn: Number(transactionInfo.amount), totalAllBankingOut: Number(transactionInfo.amount) }
+    });
   }
 }
+
+
+// user sign out
 
 module.exports = {
   createBankingAccount,
