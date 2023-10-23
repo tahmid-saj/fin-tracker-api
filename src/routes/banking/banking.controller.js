@@ -2,6 +2,7 @@ const { getBankingAccountsData, getBankingSummaryData,
   postBankingAccountCreate, postBankingAccountTransaction, deleteBankingAccount,
   putBankingAccountsData, putBankingSummaryData } = require("../../models/banking/banking.model")
 
+// signed in
 async function httpGetBankingAccountsData(req, res) {
   return res.status(200).json(await getBankingAccountsData());
 };
@@ -10,6 +11,7 @@ async function httpGetBankingSummaryData(req, res) {
   return res.status(200).json(await getBankingSummaryData());
 };
 
+// activities
 async function httpPostBankingAccountCreate(req, res) {
   return res.status(200).json(await postBankingAccountCreate()); 
 };
@@ -22,6 +24,7 @@ async function httpDeleteBankingAccount(req, res) {
   return res.status(200).json(await deleteBankingAccount());
 };
 
+// signing out
 async function httpPutBankingAccountsData(req, res) {
   return res.status(200).json(await putBankingAccountsData());
 };
