@@ -16,7 +16,6 @@ async function createBankingSummary(userId, email) {
       totalAllBankingIn: 0,
       totalAllBankingOut: 0,
     });
-  
     await newBankingSummary.save();
   } else {
     return;
@@ -24,23 +23,60 @@ async function createBankingSummary(userId, email) {
 };
 
 async function createBankingAccount(userId, email, bankingAccountName) {
-  const newBankingAccount = new bankingAccountsDatabase({
+  const bankingAccountNameExists = await bankingAccountsDatabase.findOne({
     userId: userId,
     email: email,
-    name: bankingAccountName,
-    currentBalance: 0,
-    totalIn: 0,
-    totalOut: 0,
-    transactions: {}
+    name: bankingAccountName
   });
 
-  await newBankingAccount.save();  
-
-  // if this is the first bank account, a new banking summary will be created
-  await createBankingSummary(userId, email);
+  if (!bankingAccountNameExists) {
+    const newBankingAccount = new bankingAccountsDatabase({
+      userId: userId,
+      email: email,
+      name: bankingAccountName,
+      currentBalance: 0,
+      totalIn: 0,
+      totalOut: 0,
+      transactions: []
+    });
+  
+    await newBankingAccount.save();  
+  
+    // if this is the first bank account, a new banking summary will be created
+    await createBankingSummary(userId, email);
+  } else {
+    return;
+  }
 };
+
+async function addBankingAccountTransaction(userId, email, transactionInfo) {
+  if (transactionInfo.type === "DEPOSIT") {
+    console.log("deposit transaction")
+
+    await bankingAccountsDatabase.updateOne({ 
+      userId: userId,
+      email: email,
+      name: transactionInfo.bankingAccountName
+    }, { 
+      $inc: { currentBalance: Number(transactionInfo.amount), totalIn: Number(transactionInfo.amount) },
+      $push: { transactions: {
+        amount: Number(transactionInfo.amount),
+        type: transactionInfo.type,
+        reason: transactionInfo.reason,
+      } } 
+    })
+
+    await bankingSummaryDatabase.updateOne({
+      userId: userId,
+      email: email,
+    }, {
+      $inc: { currentAllBankingBalance: Number(transactionInfo.amount), totalAllBankingIn: Number(transactionInfo.amount) }
+    })
+  }
+}
 
 module.exports = {
   createBankingAccount,
-  createBankingSummary
+  createBankingSummary,
+  addBankingAccountTransaction
 }

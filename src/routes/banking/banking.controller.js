@@ -28,7 +28,20 @@ async function httpPostBankingAccountCreate(req, res) {
 };
 
 async function httpPostBankingAccountTransaction(req, res) {
-  return res.status(200).json(await postBankingAccountTransaction());
+  // return res.status(200).json(await postBankingAccountTransaction());
+
+  try {
+    console.log(req.body);
+    const transactionInfo = req.body;
+    const userId = req.params.userid;
+    const email = req.params.email;
+    const resPostBankingAccountTransaction = await postBankingAccountTransaction(userId, email, transactionInfo);
+
+    if (resPostBankingAccountTransaction) return res.status(200);
+  } catch (error) {
+    // TODO: handle error
+    console.log(error);
+  }
 };
 
 async function httpDeleteBankingAccount(req, res) {
