@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 
@@ -11,6 +12,7 @@ app.use(cors({
 }));
 app.use(morgan("combined"));
 app.use(express.json());
+app.use(bodyParser.text());
 app.use('/v1', api);
 
 module.exports = {

@@ -32,11 +32,11 @@ const bankingAccountsSchema = new mongoose.Schema({
     {
       amount: {
         type: Number,
-        required: true,
+        required: false,
       },
       type: {
         type: String,
-        required: true,
+        required: false,
       },
       reason: {
         type: String,

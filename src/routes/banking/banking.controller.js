@@ -13,7 +13,18 @@ async function httpGetBankingSummaryData(req, res) {
 
 // activities
 async function httpPostBankingAccountCreate(req, res) {
-  return res.status(200).json(await postBankingAccountCreate()); 
+  try {
+    const bankingAccountName = String(req.body);
+    console.log(bankingAccountName);
+    const userId = req.params.userid;
+    const email = req.params.email;
+    const resPostBankingAccountCreate = await postBankingAccountCreate(userId, email, bankingAccountName);
+
+    if (resPostBankingAccountCreate) return res.status(200);
+  } catch (error) {
+    // TODO: handle error
+    console.log(error);
+  }
 };
 
 async function httpPostBankingAccountTransaction(req, res) {
