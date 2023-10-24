@@ -6,6 +6,7 @@ const { httpGetBankingAccountsData, httpGetBankingSummaryData,
 
 const bankingRouter = express.Router();
 
+// TODO: move to env variables
 // when user is signed in, frontend will send this and populate the banking accounts data from mongodb
 bankingRouter.get("/accounts/:userid/:email", httpGetBankingAccountsData);
 // when user is signed in, frontend will send this and populate the banking summary data from mongodb
