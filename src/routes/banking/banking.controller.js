@@ -83,11 +83,35 @@ async function httpDeleteBankingAccount(req, res) {
 
 // signing out
 async function httpPutBankingAccountsData(req, res) {
-  return res.status(200).json(await putBankingAccountsData());
+  // return res.status(200).json(await putBankingAccountsData());
+
+  try {
+    console.log(req.body);
+    const bankingAccounts = req.body.bankingAccounts;
+    const userId = req.params.userid;
+    const email = req.params.email;
+    const resPutBankingAccountsData = await putBankingAccountsData(userId, email, bankingAccounts);
+
+    if (resPutBankingAccountsData) return res.status(200);
+  } catch (error) {
+    // TODO: handle error
+    console.log(error)
+  }
 };
 
 async function httpPutBankingSummaryData(req, res) {
-  return res.status(200).json(await putBankingSummaryData());
+  try {
+    console.log(req.body);
+    const bankingSummary = req.body.bankingSummary;
+    const userId = req.params.userid;
+    const email = req.params.email;
+    const resPutBankingSummaryData = await putBankingSummaryData(userId, email, bankingSummary);
+
+    if (resPutBankingSummaryData) return res.status(200);
+  } catch (error) {
+    // TODO: handle error
+    console.log(error);
+  }
 }
 
 module.exports = {
