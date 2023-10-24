@@ -239,6 +239,53 @@ async function closeBankingAccount(userId, email, bankingAccountName) {
 };
 
 // user sign out
+async function updateBankingAccountsData(userId, email, bankingAccounts) {
+  const bankingAccountsExist = await bankingAccountsDatabase.findOne({
+    userId: userId,
+    email: email
+  });
+
+  if (bankingAccountsExist && bankingAccounts !== undefined && bankingAccounts.length !== 0) {
+    // console.log(bankingAccounts)
+
+    bankingAccounts.map(async (account) => {
+      await bankingAccountsDatabase.updateOne({
+        userId: userId,
+        email: email,
+        name: account.name
+      }, {
+        currentBalance: account.currentBalance,
+        totalIn: account.totalIn,
+        totalOut: account.totalOut,
+        transactions: account.transactions
+      });
+    });
+  } else {
+    return;
+  }
+};
+
+async function updateBankingSummaryData(userId, email, bankingSummary) {
+  const bankingSummaryExists = await bankingSummaryDatabase.findOne({
+    userId: userId,
+    email: email
+  });
+
+  if (bankingSummaryExists && bankingSummary !== undefined && bankingSummary !== Object({})) {
+    // console.log(bankingSummary)
+
+    await bankingSummaryDatabase.updateOne({
+      userId: userId,
+      email: email,
+    }, {
+      currentAllBankingBalance: bankingSummary.currentAllBankingBalance,
+      totalAllBankingIn: bankingSummary.totalAllBankingIn,
+      totalAllBankingOut: bankingSummary.totalAllBankingOut,
+    });
+  } else {
+    return;
+  }
+}
 
 module.exports = {
   getBankingAccounts,
@@ -246,5 +293,7 @@ module.exports = {
   createBankingAccount,
   createBankingSummary,
   addBankingAccountTransaction,
-  closeBankingAccount
+  closeBankingAccount,
+  updateBankingAccountsData,
+  updateBankingSummaryData,
 }
