@@ -3,6 +3,64 @@ const { bankingAccountsDatabase, bankingSummaryDatabase } = require("./banking.m
 // banking crud for mongodb
 
 // user sign in
+async function getBankingAccounts(userId, email) {
+  const bankingAccounts = await bankingAccountsDatabase.find({
+    userId: userId,
+    email: email
+  })
+  .then(res => {
+    const accounts = res.map(account => {
+      return {
+        name: account.name,
+        currentBalance: account.currentBalance,
+        totalIn: account.totalIn,
+        totalOut: account.totalOut,
+        transactions: account.transactions
+      };
+    })
+
+    return accounts;
+  })
+  .catch(error => {
+    // TODO: handle error
+    console.log(error);
+  });
+
+  console.log(bankingAccounts);
+
+  return {
+    bankingAccounts: [ ...bankingAccounts ]
+  }
+};
+
+async function getBankingSummary(userId, email) {
+  const bankingSummary = await bankingSummaryDatabase.findOne({
+    userId: userId,
+    email: email
+  })
+  .then(res => {
+    return res.toObject();
+  })
+  .then(res => {
+    const summary = {
+      currentAllBankingBalance: res.currentAllBankingBalance,
+      totalAllBankingIn: res.totalAllBankingIn,
+      totalAllBankingOut: res.totalAllBankingOut
+    }
+
+    return summary;
+  })
+  .catch(error => {
+    // TODO: handle error
+    console.log(error);
+  });
+
+  console.log(bankingSummary);
+
+  return {
+    bankingSummary: bankingSummary
+  }
+};
 
 // banking operations
 async function createBankingSummary(userId, email) {
@@ -183,6 +241,8 @@ async function closeBankingAccount(userId, email, bankingAccountName) {
 // user sign out
 
 module.exports = {
+  getBankingAccounts,
+  getBankingSummary,
   createBankingAccount,
   createBankingSummary,
   addBankingAccountTransaction,

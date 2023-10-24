@@ -4,11 +4,31 @@ const { getBankingAccountsData, getBankingSummaryData,
 
 // signed in
 async function httpGetBankingAccountsData(req, res) {
-  return res.status(200).json(await getBankingAccountsData());
+  // return res.status(200).json(await getBankingAccountsData());
+  try {
+    const userid = req.params.userid;
+    const email = req.params.email;
+    const resGetBankingAccountsData = await getBankingAccountsData(userid, email);
+
+    if (resGetBankingAccountsData) return res.status(200).json(resGetBankingAccountsData);
+  } catch (error) {
+    // TODO: handle error
+    console.log(error);
+  }
 };
 
 async function httpGetBankingSummaryData(req, res) {
-  return res.status(200).json(await getBankingSummaryData());
+  // return res.status(200).json(await getBankingSummaryData());
+  try {
+    const userid = req.params.userid;
+    const email = req.params.email;
+    const resGetBankingSummaryData = await getBankingSummaryData(userid, email);
+
+    if (resGetBankingSummaryData) return res.status(200).json(resGetBankingSummaryData);
+  } catch (error) {
+    // TODO: handle error
+    console.log(error);
+  }
 };
 
 // activities
