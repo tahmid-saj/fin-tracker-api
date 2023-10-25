@@ -20,6 +20,7 @@ const investmentsSchema = new mongoose.Schema({
   startingAmount: {
     type: Number,
     required: true,
+    default: 0,
   },
   startDate: {
     type: Date,
@@ -28,10 +29,12 @@ const investmentsSchema = new mongoose.Schema({
   afterYears: {
     type: Number,
     required: true,
+    default: 0,
   },
   returnRate: {
     type: Number,
     required: true,
+    default: 0,
   },
   compounded: {
     type: String,
@@ -40,6 +43,7 @@ const investmentsSchema = new mongoose.Schema({
   additionalContribution: {
     type: Number,
     required: true,
+    default: 0,
   },
   contributionAt: {
     type: String,
@@ -52,17 +56,28 @@ const investmentsSchema = new mongoose.Schema({
 });
 
 const investmentsSummarySchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
   currentAllInvestmentsBalance: {
     type: Number,
     required: true,
+    default: 0,
   },
   totalAllContribution: {
     type: Number,
     required: true,
+    default: 0,
   },
   totalAllInterest: {
     type: Number,
     required: true,
+    default: 0,
   }
 });
 
