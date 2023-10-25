@@ -13,7 +13,18 @@ async function httpGetInvestmentsSummaryData(req, res) {
 
 // investments operations
 async function httpPostInvestmentCreate(req, res) {
-  return res.status(200).json(postInvestmentCreate());
+  // return res.status(200).json(postInvestmentCreate());
+  try {
+    const investment = req.body;
+    const userId = req.params.userid;
+    const email = req.params.email;
+    const resPostInvestmentCreate = await postInvestmentCreate(userId, email, investment);
+
+    if (resPostInvestmentCreate) return res.status(200);
+  } catch (error) {
+  // TODO: handle error
+    console.log(error);
+  }
 };
 
 async function httpPutInvestmentData(req, res) {
