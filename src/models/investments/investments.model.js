@@ -1,4 +1,4 @@
-import { investmentsDatabase, investmentsSummaryDatabase } from "./investments.mongo";
+const { investmentsDatabase, investmentsSummaryDatabase } = require("./investments.mongo");
 
 // signed in
 async function getInvestmentsData() {
