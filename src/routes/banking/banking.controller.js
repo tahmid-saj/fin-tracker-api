@@ -31,7 +31,7 @@ async function httpGetBankingSummaryData(req, res) {
   }
 };
 
-// activities
+// banking operations
 async function httpPostBankingAccountCreate(req, res) {
   try {
     const bankingAccountName = String(req.body);
