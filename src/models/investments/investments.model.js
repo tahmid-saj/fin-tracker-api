@@ -1,7 +1,7 @@
 const { investmentsDatabase, investmentsSummaryDatabase } = require("./investments.mongo");
 
 const { getInvestments, getInvestmentsSummary,
-  createInvestment, deleteInvestment, updateInvestment } = require("./investments.mongo.crud");
+  createInvestment, closeInvestment, updateInvestment } = require("./investments.mongo.crud");
 
 // signed in
 async function getInvestmentsData(userId, email) {
@@ -9,34 +9,38 @@ async function getInvestmentsData(userId, email) {
   return getInvestments(userId, email)
 };
 
+// TODO: need to better manage summary
 async function getInvestmentsSummaryData(userId, email) {
   console.log("Getting investments summary data");
   return getInvestmentsSummary(userId, email);
 };
 
 // investments operations
-async function postInvestmentCreate(userId, email, investment) {
+async function postInvestmentCreate(userId, email, investmentInfo) {
   console.log("Posting investment creation");
-  createInvestment(userId, email, investment);
+  createInvestment(userId, email, investmentInfo);
 };
 
+// TODO: need to better manage summary on updating data
 async function putInvestmentData(userId, email, originalInvestmentInfo, updatedInvestmentInfo) {
   console.log("Updating investment");
   updateInvestment(userId, email, originalInvestmentInfo, updatedInvestmentInfo);
 };
 
+// TODO: need to better manage summary on delete
 async function deleteInvestment(userId, email, closingInvestmentName) {
+  closeInvestment(userId, email, closingInvestmentName);
   console.log("Deleting investment");
-  deleteInvestment(userId, email, closingInvestmentName);
 };
 
 // signed out
 async function putInvestmentsData() {
-
+  console.log("Putting investments data")
 };
 
+// TODO: need to better manage summary
 async function putInvestmentsSummaryData() {
-
+  console.log("Putting investments summary data")
 };
 
 module.exports = {

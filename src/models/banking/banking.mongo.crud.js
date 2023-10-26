@@ -1,5 +1,7 @@
 const { bankingAccountsDatabase, bankingSummaryDatabase } = require("./banking.mongo");
 
+const { validategetBankingSummary } = require("../../utils/validations/banking/banking.validations");
+
 // banking crud for mongodb
 
 // user sign in
@@ -39,6 +41,8 @@ async function getBankingSummary(userId, email) {
     email: email
   })
   .then(res => {
+    if (validategetBankingSummary(res) === true) return Object({})
+
     return res.toObject();
   })
   .then(res => {

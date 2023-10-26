@@ -1,5 +1,7 @@
 const { investmentsDatabase, investmentsSummaryDatabase } = require("./investments.mongo");
 
+const { validateGetInvestmentsSummary } = require("../../utils/validations/investments/investments.validations");
+
 // investments crud for mongodb
 
 // user sign in
@@ -47,13 +49,15 @@ async function getInvestmentsSummary(userId, email) {
     email: email
   })
   .then(res => {
+    if (validateGetInvestmentsSummary(res) === true) return Object({})
+
     return res.toObject()
   })
   .then(res => {
     const summary = {
-      currentAllInvestmentsBalance: investmentsSummary.currentAllInvestmentsBalance,
-      totalAllContribution: investmentsSummary.totalAllContribution,
-      totalAllInterest: investmentsSummary.totalAllInterest
+      currentAllInvestmentsBalance: res.currentAllInvestmentsBalance,
+      totalAllContribution: res.totalAllContribution,
+      totalAllInterest: res.totalAllInterest
     }
 
     return summary;
@@ -69,7 +73,7 @@ async function getInvestmentsSummary(userId, email) {
 };
 
 // investments operations
-async function createInvestmentSummary(userId, email) {
+async function createInvestmentSummary(userId, email, investmentInfo) {
   const investmentSummaryExists = await investmentsSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -79,9 +83,9 @@ async function createInvestmentSummary(userId, email) {
     const newInvestmentSummary = new investmentsSummaryDatabase({
       userId: userId,
       email: email,
-      currentAllInvestmentsBalance: 0,
-      totalAllContribution: 0,
-      totalAllInterest: 0,
+      currentAllInvestmentsBalance: investmentInfo.endBalance,
+      totalAllContribution: investmentInfo.totalContribution,
+      totalAllInterest: investmentInfo.totalInterest,
     });
 
     await newInvestmentSummary.save();
@@ -102,8 +106,8 @@ async function createUpdatedInvestmentSummary(userId, email, updatedInvestmentIn
       userId: userId,
       email: email,
       currentAllInvestmentsBalance: Number(updatedInvestmentInfo.endBalance),
-      totalAllContribution: Number(updatedInvestmentInfo.totalAllContribution),
-      totalAllInterest: Number(updatedInvestmentInfo.totalAllInterest),
+      totalAllContribution: Number(updatedInvestmentInfo.totalContribution),
+      totalAllInterest: Number(updatedInvestmentInfo.totalInterest),
     });
 
     await newInvestmentSummary.save();
@@ -113,40 +117,40 @@ async function createUpdatedInvestmentSummary(userId, email, updatedInvestmentIn
   }
 }
 
-async function createInvestment(userId, email, investment) {
+async function createInvestment(userId, email, investmentInfo) {
   const investmentExists = await investmentsDatabase.findOne({
     userId: userId,
     email: email,
-    investmentName: investment.investmentName
+    investmentName: investmentInfo.investmentName
   });
 
-  console.log("creating investment", userId, email, investment);
+  console.log("creating investment", userId, email, investmentInfo);
 
   if (!investmentExists) {
     const newInvestment = new investmentsDatabase({
       userId: userId,
       email: email,
-      investmentName: investment.investmentName,
-      investmentType: investment.investmentType,
-      startingAmount: investment.startingAmount,
-      startDate: investment.startDate,
-      afterYears: investment.afterYears,
-      returnRate: investment.returnRate,
-      compounded: investment.compounded,
-      additionalContribution: investment.additionalContribution,
-      contributionAt: investment.contributionAt,
-      contributionInterval: investment.contributionInterval,
+      investmentName: investmentInfo.investmentName,
+      investmentType: investmentInfo.investmentType,
+      startingAmount: investmentInfo.startingAmount,
+      startDate: investmentInfo.startDate,
+      afterYears: investmentInfo.afterYears,
+      returnRate: investmentInfo.returnRate,
+      compounded: investmentInfo.compounded,
+      additionalContribution: investmentInfo.additionalContribution,
+      contributionAt: investmentInfo.contributionAt,
+      contributionInterval: investmentInfo.contributionInterval,
 
       // calculated
-      endBalance: investment.endBalance,
-      totalContribution: investment.totalContribution,
-      totalInterest: investment.totalInterest,
+      endBalance: investmentInfo.endBalance,
+      totalContribution: investmentInfo.totalContribution,
+      totalInterest: investmentInfo.totalInterest,
     });
 
     await newInvestment.save();
     console.log("created new investment");
 
-    await createInvestmentSummary(userId, email);
+    await createInvestmentSummary(userId, email, investmentInfo);
   } else {
     return;
   }
@@ -206,7 +210,7 @@ async function updateInvestment(userId, email, originalInvestmentInfo, updatedIn
   }
 };
 
-async function deleteInvestment(userId, email, closingInvestmentName) {
+async function closeInvestment(userId, email, closingInvestmentName) {
   const investmentExists = await investmentsDatabase.findOne({
     userId: userId,
     email: email,
@@ -272,8 +276,8 @@ module.exports = {
   getInvestments,
   getInvestmentsSummary,
   createInvestment,
-  deleteInvestment,
+  closeInvestment,
   updateInvestment,
-  updateInvestmentsData,
-  updateInvestmentsSummaryData
+  updateInvestments,
+  updateInvestmentsSummary
 }
