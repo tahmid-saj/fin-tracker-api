@@ -81,11 +81,33 @@ async function httpDeleteInvestment(req, res) {
 
 // signed out
 async function httpPutInvestmentsData(req, res) {
-  return res.status(200).json(putInvestmentsData());
+  // return res.status(200).json(putInvestmentsData());
+  try {
+    const userId = req.params.userid;
+    const email = req.params.email;
+    const { investments } = req.body;
+    const resPutInvestmentsData = await putInvestmentsData(userId, email, investments);
+
+    if (resPutInvestmentsData) return res.status(200);
+  } catch (error) {
+    // TODO: handle error
+    console.log(error);
+  }
 };
 
 async function httpPutInvestmentsSummaryData(req, res) {
-  return res.status(200).json(putInvestmentsSummaryData());
+  // return res.status(200).json(putInvestmentsSummaryData());
+  try {
+    const userId = req.params.userid;
+    const email = req.params.email;
+    const { investmentsSummary } = req.body;
+    const resPutInvestmentsSummaryData = await putInvestmentsSummaryData(userId, email, investmentsSummary);
+
+    if (resPutInvestmentsSummaryData) return res.status(200);
+  } catch (error) {
+    // TODO: handle error
+    console.log(error);
+  }
 };
 
 module.exports = {
