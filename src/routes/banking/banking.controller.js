@@ -87,7 +87,7 @@ async function httpPutBankingAccountsData(req, res) {
 
   try {
     console.log(req.body);
-    const bankingAccounts = req.body.bankingAccounts;
+    const { bankingAccounts } = req.body;
     const userId = req.params.userid;
     const email = req.params.email;
     const resPutBankingAccountsData = await putBankingAccountsData(userId, email, bankingAccounts);
@@ -102,7 +102,7 @@ async function httpPutBankingAccountsData(req, res) {
 async function httpPutBankingSummaryData(req, res) {
   try {
     console.log(req.body);
-    const bankingSummary = req.body.bankingSummary;
+    const { bankingSummary } = req.body;
     const userId = req.params.userid;
     const email = req.params.email;
     const resPutBankingSummaryData = await putBankingSummaryData(userId, email, bankingSummary);

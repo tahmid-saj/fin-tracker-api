@@ -1,7 +1,8 @@
 const { investmentsDatabase, investmentsSummaryDatabase } = require("./investments.mongo");
 
 const { getInvestments, getInvestmentsSummary,
-  createInvestment, closeInvestment, updateInvestment } = require("./investments.mongo.crud");
+  createInvestment, closeInvestment, updateInvestment,
+  updateInvestments, updateInvestmentsSummary } = require("./investments.mongo.crud");
 
 // signed in
 async function getInvestmentsData(userId, email) {
@@ -34,13 +35,15 @@ async function deleteInvestment(userId, email, closingInvestmentName) {
 };
 
 // signed out
-async function putInvestmentsData() {
-  console.log("Putting investments data")
+async function putInvestmentsData(userId, email, investments) {
+  updateInvestments(userId, email, investments);
+  console.log("Putting investments data");
 };
 
 // TODO: need to better manage summary
-async function putInvestmentsSummaryData() {
-  console.log("Putting investments summary data")
+async function putInvestmentsSummaryData(userId, email, investmentsSummary) {
+  updateInvestmentsSummary(userId, email, investmentsSummary);
+  console.log("Putting investments summary data");
 };
 
 module.exports = {

@@ -260,7 +260,12 @@ async function updateInvestments(userId, email, investments) {
         returnRate: investment.returnRate,
         compounded: investment.compounded,
         additionalContribution: investment.additionalContribution,
-        contributionAt: investment.contributionAt
+        contributionAt: investment.contributionAt,
+
+        // calculated
+        endBalance: investment.endBalance,
+        totalContribution: investment.totalContribution,
+        totalInterest: investment.totalInterest
       })
     })
   } else {
@@ -269,7 +274,23 @@ async function updateInvestments(userId, email, investments) {
 };
 
 async function updateInvestmentsSummary(userId, email, investmentsSummary) {
+  const investmentsSummaryExists = await investmentsDatabase.findOne({
+    userId: userId,
+    email: email
+  });
 
+  if (investmentsSummaryExists && investmentsSummary !== undefined && investmentsSummary !== Object({})) {
+    await investmentsSummaryDatabase.updateOne({
+      userId: userId,
+      email: email
+    }, {
+      currentAllInvestmentsBalance: investmentsSummary.currentAllInvestmentsBalance,
+      totalAllContribution: investmentsSummary.totalAllContribution,
+      totalInterest: investmentsSummary.totalInterest,
+    })
+  } else {
+    return;
+  }
 };
 
 module.exports = {
@@ -279,5 +300,5 @@ module.exports = {
   closeInvestment,
   updateInvestment,
   updateInvestments,
-  updateInvestmentsSummary
+  updateInvestmentsSummary,
 }
