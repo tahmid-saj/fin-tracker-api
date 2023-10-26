@@ -1,14 +1,17 @@
 const { investmentsDatabase, investmentsSummaryDatabase } = require("./investments.mongo");
 
-const { createInvestment } = require("./investments.mongo.crud");
+const { getInvestments, getInvestmentsSummary,
+  createInvestment, deleteInvestment, updateInvestment } = require("./investments.mongo.crud");
 
 // signed in
-async function getInvestmentsData() {
-
+async function getInvestmentsData(userId, email) {
+  console.log("Getting investments data");
+  return getInvestments(userId, email)
 };
 
-async function getInvestmentsSummaryData() {
-
+async function getInvestmentsSummaryData(userId, email) {
+  console.log("Getting investments summary data");
+  return getInvestmentsSummary(userId, email);
 };
 
 // investments operations
@@ -17,12 +20,14 @@ async function postInvestmentCreate(userId, email, investment) {
   createInvestment(userId, email, investment);
 };
 
-async function putInvestmentData() {
-
+async function putInvestmentData(userId, email, originalInvestmentInfo, updatedInvestmentInfo) {
+  console.log("Updating investment");
+  updateInvestment(userId, email, originalInvestmentInfo, updatedInvestmentInfo);
 };
 
-async function deleteInvestment() {
-
+async function deleteInvestment(userId, email, closingInvestmentName) {
+  console.log("Deleting investment");
+  deleteInvestment(userId, email, closingInvestmentName);
 };
 
 // signed out
@@ -43,4 +48,3 @@ module.exports = {
   putInvestmentsData,
   putInvestmentsSummaryData
 }
-

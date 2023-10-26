@@ -211,20 +211,14 @@ async function closeBankingAccount(userId, email, bankingAccountName) {
   });
 
   if (bankingAccountExists) {
-    const bankingAccount = await bankingAccountsDatabase.findOne({
-      userId: userId,
-      email: email,
-      name: bankingAccountName
-    });
-
     await bankingSummaryDatabase.updateOne({
       userId: userId,
       email: email,
     }, {
       $inc: { 
-        currentAllBankingBalance: -Number(bankingAccount.currentBalance),
-        totalAllBankingIn: -Number(bankingAccount.totalIn),
-        totalAllBankingOut: -Number(bankingAccount.totalOut)
+        currentAllBankingBalance: -Number(bankingAccountExists.currentBalance),
+        totalAllBankingIn: -Number(bankingAccountExists.totalIn),
+        totalAllBankingOut: -Number(bankingAccountExists.totalOut)
       }
     });
 
@@ -239,7 +233,7 @@ async function closeBankingAccount(userId, email, bankingAccountName) {
 };
 
 // user sign out
-async function updateBankingAccountsData(userId, email, bankingAccounts) {
+async function updateBankingAccounts(userId, email, bankingAccounts) {
   const bankingAccountsExist = await bankingAccountsDatabase.findOne({
     userId: userId,
     email: email
@@ -265,7 +259,7 @@ async function updateBankingAccountsData(userId, email, bankingAccounts) {
   }
 };
 
-async function updateBankingSummaryData(userId, email, bankingSummary) {
+async function updateBankingSummary(userId, email, bankingSummary) {
   const bankingSummaryExists = await bankingSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -294,6 +288,6 @@ module.exports = {
   createBankingSummary,
   addBankingAccountTransaction,
   closeBankingAccount,
-  updateBankingAccountsData,
-  updateBankingSummaryData,
+  updateBankingAccounts,
+  updateBankingSummary,
 }
