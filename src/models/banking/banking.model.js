@@ -3,7 +3,7 @@ const axios = require("axios");
  
 const { getBankingAccounts, getBankingSummary,
   createBankingAccount, addBankingAccountTransaction, closeBankingAccount,
-  updateBankingAccountsData, updateBankingSummaryData } = require("./banking.mongo.crud")
+  updateBankingAccounts, updateBankingSummary } = require("./banking.mongo.crud")
 
 // user signs in
 async function getBankingAccountsData(userid, email) {
@@ -34,12 +34,12 @@ async function deleteBankingAccount(userId, email, bankingAccountName) {
 
 // user signed out
 async function putBankingAccountsData(userId, email, bankingAccounts) {
-  updateBankingAccountsData(userId, email, bankingAccounts);
+  updateBankingAccounts(userId, email, bankingAccounts);
   console.log("Putting banking accounts data");
 };
 
 async function putBankingSummaryData(userId, email, bankingSummary) {
-  updateBankingSummaryData(userId, email, bankingSummary);
+  updateBankingSummary(userId, email, bankingSummary);
   console.log("Putting banking summary data");
 };
 

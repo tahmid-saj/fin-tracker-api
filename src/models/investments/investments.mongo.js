@@ -52,6 +52,22 @@ const investmentsSchema = new mongoose.Schema({
   contributionInterval: {
     type: String,
     required: true,
+  },
+  // calculated
+  endBalance: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  totalContribution: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  totalInterest: {
+    type: Number,
+    required: true,
+    default: 0
   }
 });
 
