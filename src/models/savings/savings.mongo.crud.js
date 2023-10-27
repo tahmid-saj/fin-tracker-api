@@ -231,32 +231,30 @@ async function closeSavingsAccount(userId, email, closingSavingsAccountName) {
 };
 
 // user sign out
-async function updateInvestments(userId, email, investments) {
-  const investmentsExist = await investmentsDatabase.findOne({
+async function updateSavingsAccounts(userId, email, savingsAccounts) {
+  const savingsAccountExists = await savingsAccountsDatabase.findOne({
     userId: userId,
     email: email
   });
 
-  if (investmentsExist && investments !== undefined && investments.length !== 0) {
-    investments.map(async (investment) => {
-      await investmentsDatabase.updateOne({
+  if (savingsAccountExists && savingsAccounts !== undefined && savingsAccounts.length !== 0) {
+    savingsAccounts.map(async (savingsAccount) => {
+      await savingsAccountsDatabase.updateOne({
         userId: userId,
         email: email,
-        investmentName: investment.investmentName
+        savingsAccountName: savingsAccount.savingsAccountName
       }, {
-        investmentType: investment.investmentType,
-        startingAmount: investment.startingAmount,
-        startDate: investment.startDate,
-        afterYears: investment.afterYears,
-        returnRate: investment.returnRate,
-        compounded: investment.compounded,
-        additionalContribution: investment.additionalContribution,
-        contributionAt: investment.contributionAt,
-
+        initialDeposit: savingsAccount.initialDeposit,
+        startDate: savingsAccount.startDate,
+        monthlyContribution: savingsAccount.monthlyContribution,
+        contributionPeriod: savingsAccount.contributionPeriod,
+        contributionInterval: savingsAccount.contributionInterval,
+        apy: savingsAccount.apy,
+  
         // calculated
-        endBalance: investment.endBalance,
-        totalContribution: investment.totalContribution,
-        totalInterest: investment.totalInterest
+        totalSavings: savingsAccount.totalSavings,
+        totalContribution: savingsAccount.totalContribution,
+        totalInterest: savingsAccount.totalInterest
       })
     })
   } else {
@@ -264,20 +262,20 @@ async function updateInvestments(userId, email, investments) {
   }
 };
 
-async function updateInvestmentsSummary(userId, email, investmentsSummary) {
-  const investmentsSummaryExists = await investmentsDatabase.findOne({
+async function updateSavingsAccountsSummary(userId, email, savingsAccountsSummary) {
+  const savingsAccountsSummaryExists = await savingsAccountsSummaryDatabase.findOne({
     userId: userId,
     email: email
   });
 
-  if (investmentsSummaryExists && investmentsSummary !== undefined && investmentsSummary !== Object({})) {
-    await investmentsSummaryDatabase.updateOne({
+  if (savingsAccountsSummaryExists && savingsAccountsSummary !== undefined && savingsAccountsSummary !== Object({})) {
+    await savingsAccountsSummaryDatabase.updateOne({
       userId: userId,
       email: email
     }, {
-      currentAllInvestmentsBalance: investmentsSummary.currentAllInvestmentsBalance,
-      totalAllContribution: investmentsSummary.totalAllContribution,
-      totalInterest: investmentsSummary.totalInterest,
+      currentAllSavingsAccountsBalance: savingsAccountsSummary.currentAllSavingsAccountsBalance,
+      totalAllContribution: savingsAccountsSummary.totalAllContribution,
+      totalAllInterest: savingsAccountsSummary.totalAllInterest,
     })
   } else {
     return;
@@ -292,6 +290,7 @@ module.exports = {
   createSavingsAccount,
   updateSavingsAccount,
   closeSavingsAccount,
-  
+  updateSavingsAccounts,
+  updateSavingsAccountsSummary,
 }
 
