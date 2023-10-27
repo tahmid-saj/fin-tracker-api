@@ -207,6 +207,7 @@ async function closeSavingsAccount(userId, email, closingSavingsAccountName) {
     email: email,
     savingsAccountName: closingSavingsAccountName
   });
+  console.log("deleting ", closingSavingsAccountName, userId, email)
 
   if (savingsAccountExists) {
     await savingsAccountsSummaryDatabase.updateOne({
