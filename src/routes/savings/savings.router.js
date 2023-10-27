@@ -4,7 +4,7 @@ const { httpGetSavingsAccountsData, httpGetSavingsAccountsSummaryData,
   httpPostSavingsAccountCreate, httpPutSavingsAccountData, httpDeleteSavingsAccount,
   httpPutSavingsAccountsData, httpPutSavingsAccountsSummaryData } = require("./savings.controller");
 
-const savingsRouter = express.router();
+const savingsRouter = express.Router();
 
 // TODO: move to env variables
 // when user is signed in
