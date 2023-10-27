@@ -86,150 +86,144 @@ async function createSavingsAccountSummary(userId, email, savingsAccountInfo) {
     });
 
     await newSavingsAccountSummary.save();
-    console.log("created new investment summary");
+    console.log("created new savings account summary");
   } else {
     return;
   }
 };
 
-async function createUpdatedInvestmentSummary(userId, email, updatedInvestmentInfo) {
-  const investmentSummaryExists = await investmentsSummaryDatabase.findOne({
+async function createUpdatedSavingsAccountSummary(userId, email, updatedSavingsAccountInfo) {
+  const savingsAccountSummaryExists = await savingsAccountsSummaryDatabase.findOne({
     userId: userId,
     email: email
   });
 
-  if (!investmentSummaryExists) {
-    const newInvestmentSummary = new investmentsSummaryDatabase({
+  if (!savingsAccountSummaryExists) {
+    const newSavingsAccountSummary = new savingsAccountsSummaryDatabase({
       userId: userId,
       email: email,
-      currentAllInvestmentsBalance: Number(updatedInvestmentInfo.endBalance),
-      totalAllContribution: Number(updatedInvestmentInfo.totalContribution),
-      totalAllInterest: Number(updatedInvestmentInfo.totalInterest),
+      currentAllSavingsAccountsBalance: Number(updatedSavingsAccountInfo.totalSavings),
+      totalAllContribution: Number(updatedSavingsAccountInfo.totalContribution),
+      totalAllInterest: Number(updatedSavingsAccountInfo.totalInterest),
     });
 
-    await newInvestmentSummary.save();
-    console.log("created new investment summary");
+    await newSavingsAccountSummary.save();
+    console.log("created new savings account summary");
   } else {
     return;
   }
 }
 
-async function createInvestment(userId, email, investmentInfo) {
-  const investmentExists = await investmentsDatabase.findOne({
+async function createSavingsAccount(userId, email, savingsAccountInfo) {
+  const savingsAccountExists = await savingsAccountsDatabase.findOne({
     userId: userId,
     email: email,
-    investmentName: investmentInfo.investmentName
+    savingsAccountName: savingsAccountInfo.savingsAccountName
   });
 
-  console.log("creating investment", userId, email, investmentInfo);
+  console.log("creating savings account", userId, email, savingsAccountInfo);
 
-  if (!investmentExists) {
-    const newInvestment = new investmentsDatabase({
+  if (!savingsAccountExists) {
+    const newSavingsAccount = new savingsAccountsDatabase({
       userId: userId,
       email: email,
-      investmentName: investmentInfo.investmentName,
-      investmentType: investmentInfo.investmentType,
-      startingAmount: investmentInfo.startingAmount,
-      startDate: investmentInfo.startDate,
-      afterYears: investmentInfo.afterYears,
-      returnRate: investmentInfo.returnRate,
-      compounded: investmentInfo.compounded,
-      additionalContribution: investmentInfo.additionalContribution,
-      contributionAt: investmentInfo.contributionAt,
-      contributionInterval: investmentInfo.contributionInterval,
+      savingsAccountName: savingsAccountInfo.savingsAccountName,
+      initialDeposit: savingsAccountInfo.initialDeposit,
+      startDate: savingsAccountInfo.startDate,
+      monthlyContribution: savingsAccountInfo.monthlyContribution,
+      contributionPeriod: savingsAccountInfo.contributionPeriod,
+      contributionInterval: savingsAccountInfo.contributionInterval,
+      apy: savingsAccountInfo.apy,
 
       // calculated
-      endBalance: investmentInfo.endBalance,
-      totalContribution: investmentInfo.totalContribution,
-      totalInterest: investmentInfo.totalInterest,
+      totalSavings: savingsAccountInfo.totalSavings,
+      totalContribution: savingsAccountInfo.totalContribution,
+      totalInterest: savingsAccountInfo.totalInterest
     });
 
-    await newInvestment.save();
-    console.log("created new investment");
+    await newSavingsAccount.save();
+    console.log("created new savings account");
 
-    await createInvestmentSummary(userId, email, investmentInfo);
+    await createSavingsAccountSummary(userId, email, savingsAccountInfo);
   } else {
     return;
   }
 };
 
-async function updateInvestment(userId, email, originalInvestmentInfo, updatedInvestmentInfo) {
-  const investmentExists = await investmentsDatabase.findOne({
+async function updateSavingsAccount(userId, email, originalSavingsAccountInfo, updatedSavingsAccountInfo) {
+  const savingsAccountExists = await savingsAccountsDatabase.findOne({
     userId: userId,
     email: email,
-    investmentName: originalInvestmentInfo.investmentName
+    savingsAccountName: originalSavingsAccountInfo.savingsAccountName
   });
 
-  if (investmentExists) {
-    await investmentsDatabase.updateOne({
+  if (savingsAccountExists) {
+    await savingsAccountsDatabase.updateOne({
       userId: userId,
       email: email,
-      investmentName: originalInvestmentInfo.investmentName
+      savingsAccountName: originalSavingsAccountInfo.savingsAccountName
     }, {
-      investmentName: updatedInvestmentInfo.investmentName,
-      investmentType: updatedInvestmentInfo.investmentType,
-      startingAmount: updatedInvestmentInfo.startingAmount,
-      startDate: updatedInvestmentInfo.startDate,
-      afterYears: updatedInvestmentInfo.afterYears,
-      returnRate: updatedInvestmentInfo.returnRate,
-      compounded: updatedInvestmentInfo.compounded,
-      additionalContribution: updatedInvestmentInfo.additionalContribution,
-      contributionAt: updatedInvestmentInfo.contributionAt,
-      contributionInterval: updatedInvestmentInfo.contributionInterval,
+      savingsAccountName: updatedSavingsAccountInfo.savingsAccountName,
+      initialDeposit: updatedSavingsAccountInfo.initialDeposit,
+      startDate: updatedSavingsAccountInfo.startDate,
+      monthlyContribution: updatedSavingsAccountInfo.monthlyContribution,
+      contributionPeriod: updatedSavingsAccountInfo.contributionPeriod,
+      contributionInterval: updatedSavingsAccountInfo.contributionInterval,
+      apy: updatedSavingsAccountInfo.apy,
 
       // calculated
-      endBalance: updatedInvestmentInfo.endBalance,
-      totalContribution: updatedInvestmentInfo.totalContribution,
-      totalInterest: updatedInvestmentInfo.totalInterest
+      totalSavings: updatedSavingsAccountInfo.totalSavings,
+      totalContribution: updatedSavingsAccountInfo.totalContribution,
+      totalInterest: updatedSavingsAccountInfo.totalInterest
     })
   } else {
     return;
   }
 
-  const investmentSummaryExists = await investmentsSummaryDatabase.findOne({
+  const savingsAccountSummaryExists = await savingsAccountsSummaryDatabase.findOne({
     userId: userId,
     email: email
   });
 
-  if (investmentSummaryExists) {
-    await investmentsSummaryDatabase.updateOne({
+  if (savingsAccountSummaryExists) {
+    await savingsAccountsSummaryDatabase.updateOne({
       userId: userId,
       email: email
     }, {
       $inc: {
-        currentAllInvestmentsBalance: (Number(updatedInvestmentInfo.endBalance) - Number(originalInvestmentInfo.endBalance)),
-        totalAllContribution: (Number(updatedInvestmentInfo.totalContribution) - Number(originalInvestmentInfo.totalContribution)),
-        totalInterest: (Number(updatedInvestmentInfo.totalInterest) - Number(originalInvestmentInfo.totalInterest)),
+        currentAllSavingsAccountsBalance: (Number(updatedSavingsAccountInfo.totalSavings) - Number(originalSavingsAccountInfo.totalSavings)),
+        totalAllContribution: (Number(updatedSavingsAccountInfo.totalContribution) - Number(originalSavingsAccountInfo.totalContribution)),
+        totalAllInterest: (Number(updatedSavingsAccountInfo.totalInterest) - Number(originalSavingsAccountInfo.totalInterest)),
       }
     });
   } else {
-    await createUpdatedInvestmentSummary(userId, email, updatedInvestmentInfo);
+    await createUpdatedSavingsAccountSummary(userId, email, updatedSavingsAccountInfo);
   }
 };
 
-async function closeInvestment(userId, email, closingInvestmentName) {
-  const investmentExists = await investmentsDatabase.findOne({
+async function closeSavingsAccount(userId, email, closingSavingsAccountName) {
+  const savingsAccountExists = await savingsAccountsDatabase.findOne({
     userId: userId,
     email: email,
-    investmentName: closingInvestmentName
+    savingsAccountName: closingSavingsAccountName
   });
 
-  if (investmentExists) {
-    await investmentsSummaryDatabase.updateOne({
+  if (savingsAccountExists) {
+    await savingsAccountsSummaryDatabase.updateOne({
       userId: userId,
       email: email
     }, {
       $inc: {
-        currentAllInvestmentsBalance: -Number(investmentExists.endBalance),
-        totalAllContribution: -Number(investmentExists.totalContribution),
-        totalAllInterest: -Number(investmentExists.totalInterest)
+        currentAllSavingsAccountsBalance: -Number(savingsAccountExists.totalSavings),
+        totalAllContribution: -Number(savingsAccountExists.totalContribution),
+        totalAllInterest: -Number(savingsAccountExists.totalInterest)
       }
     });
 
-    await investmentsDatabase.deleteOne({
+    await savingsAccountsDatabase.deleteOne({
       userId: userId,
       email: email,
-      investmentName: closingInvestmentName
+      savingsAccountName: closingSavingsAccountName
     })
   } else {
     return;
@@ -293,6 +287,11 @@ async function updateInvestmentsSummary(userId, email, investmentsSummary) {
 module.exports = {
   getSavingsAccounts,
   getSavingsAccountsSummary,
-  createSavingsAccountSummary
+  createSavingsAccountSummary,
+  createUpdatedSavingsAccountSummary,
+  createSavingsAccount,
+  updateSavingsAccount,
+  closeSavingsAccount,
+  
 }
 
