@@ -83,9 +83,9 @@ async function createInvestmentSummary(userId, email, investmentInfo) {
     const newInvestmentSummary = new investmentsSummaryDatabase({
       userId: userId,
       email: email,
-      currentAllInvestmentsBalance: investmentInfo.endBalance,
-      totalAllContribution: investmentInfo.totalContribution,
-      totalAllInterest: investmentInfo.totalInterest,
+      currentAllInvestmentsBalance: Number(investmentInfo.endBalance),
+      totalAllContribution: Number(investmentInfo.totalContribution),
+      totalAllInterest: Number(investmentInfo.totalInterest),
     });
 
     await newInvestmentSummary.save();
