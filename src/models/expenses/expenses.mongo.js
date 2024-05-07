@@ -43,10 +43,6 @@ const expensesSummarySchema = new mongoose.Schema({
   currentAllExpensesCost: {
     type: Number,
     required: true
-  },
-  pastMonthAllExpensesCost: {
-    type: Number,
-    required: true
   }
 });
 

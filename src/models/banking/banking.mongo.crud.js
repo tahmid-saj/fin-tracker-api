@@ -2,6 +2,8 @@ const { bankingAccountsDatabase, bankingSummaryDatabase } = require("./banking.m
 
 const { validategetBankingSummary } = require("../../utils/validations/banking/banking.validations");
 
+// TODO: move validation for crud to validation directory
+
 // banking crud for mongodb
 
 // user sign in
