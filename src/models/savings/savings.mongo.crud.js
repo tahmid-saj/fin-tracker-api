@@ -2,6 +2,8 @@ const { savingsAccountsDatabase, savingsAccountsSummaryDatabase } = require("./s
 
 const { validateGetSavingsAccountsSummary } = require("../../utils/validations/savings/savings.validations");
 
+// TODO: move validation for crud to validation directory
+
 // savings crud for mongodb
 
 // user sign in

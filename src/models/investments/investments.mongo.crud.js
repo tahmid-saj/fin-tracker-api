@@ -2,6 +2,8 @@ const { investmentsDatabase, investmentsSummaryDatabase } = require("./investmen
 
 const { validateGetInvestmentsSummary } = require("../../utils/validations/investments/investments.validations");
 
+// TODO: move validation for crud to validation directory
+
 // investments crud for mongodb
 
 // user sign in
@@ -274,7 +276,7 @@ async function updateInvestments(userId, email, investments) {
 };
 
 async function updateInvestmentsSummary(userId, email, investmentsSummary) {
-  const investmentsSummaryExists = await investmentsDatabase.findOne({
+  const investmentsSummaryExists = await investmentsSummaryDatabase.findOne({
     userId: userId,
     email: email
   });
