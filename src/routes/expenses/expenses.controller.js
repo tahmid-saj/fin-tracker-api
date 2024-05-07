@@ -6,11 +6,14 @@ const { getExpensesData, getExpensesSummaryData,
 // signed in
 async function httpGetExpensesData(req, res) {
   try {
-    const userId = req.params.userId
+    const userId = req.params.userid
     const email = req.params.email
+    console.log(userId)
     const resGetExpensesData = await getExpensesData(userId, email)
 
-    if (resGetExpensesData) return res.status(200).jsoN(resGetExpensesData)
+    console.log(resGetExpensesData)
+
+    if (resGetExpensesData) return res.status(200).json(resGetExpensesData)
   } catch (error) {
     // TODO: handle error
     console.log(error)
@@ -19,7 +22,7 @@ async function httpGetExpensesData(req, res) {
 
 async function httpGetExpensesSummaryData(req, res) {
   try {
-    const userId = req.params.userId
+    const userId = req.params.userid
     const email = req.params.email
     const resGetExpensesSummaryData = await getExpensesSummaryData(userId, email)
 

@@ -13,6 +13,8 @@ async function getExpenses(userId, email) {
     email: email
   })
   .then(res => {
+    console.log(userId, email)
+
     const expenses = res.map(expense => {
       return {
         expenseFor: expense.expenseFor,
@@ -29,6 +31,8 @@ async function getExpenses(userId, email) {
     // TODO: handle error
     console.log(error)
   })
+
+  console.log(expenses)
 
   return {
     expenses: [ ...expenses ]
@@ -79,8 +83,19 @@ async function createExpenseSummary(userId, email, expenseInfo) {
     await newExpenseSummary.save()
     console.log("created new expense summary")
   } else {
-    return
+    await updateExpenseSummary(userId, email, expenseSummaryExists, expenseInfo)
   }
+}
+
+async function updateExpenseSummary(userId, email, expenseSummaryExists, expenseInfo) {
+  await expensesSummaryDatabase.updateOne({
+    userId: userId,
+    email: email
+  }, {
+    $inc: {
+      currentAllExpensesCost: Number(expenseInfo.expenseCost)
+    }
+  })
 }
 
 async function createExpense(userId, email, expenseInfo) {
