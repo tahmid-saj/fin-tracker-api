@@ -6,6 +6,7 @@ const { savingsRouter } = require("./savings/savings.router");
 
 const api = express.Router();
 
+api.use("/expenses", expensesRouter)
 api.use("/banking", bankingRouter);
 api.use("/investments", investmentsRouter);
 api.use("/savings", savingsRouter);
