@@ -1,15 +1,25 @@
 const express = require("express")
 
+const { httpGetExpensesData, httpGetExpensesSummaryData,
+  httpPostExpenseCreate, httpDeleteExpense,
+  httpPutExpensesData, httpPutExpensesSummaryData
+ } = require("./expenses.controller")
+
 const expensesRouter = express.Router()
 
 // TODO: move to env variables
 // when user is signed in
-expensesRouter.get("/expenses/:userid/:email", )
-expensesRouter.get("/summary/:userid/:email", )
+expensesRouter.get("/expenses/:userid/:email", httpGetExpensesData)
+expensesRouter.get("/summary/:userid/:email", httpGetExpensesSummaryData)
 
 // expenses operations
-expensesRouter.post("/expenses/:userid/:email/create", )
-expensesRouter.delete("/expenses/:userid/:email/remove")
+expensesRouter.post("/expenses/:userid/:email/create", httpPostExpenseCreate)
+expensesRouter.delete("/expenses/:userid/:email/remove", httpDeleteExpense)
 
 // user is signing out
-expenses
+expensesRouter.put("/expenses/:userid/:email", httpPutExpensesData)
+expensesRouter.put("/summary/:userid/:email", httpPutExpensesSummaryData)
+
+module.exports = {
+  expensesRouter
+}
