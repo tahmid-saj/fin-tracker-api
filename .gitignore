@@ -11,6 +11,7 @@
 
 # utils
 /src/utils
+src/utils
 
 # production
 /build
