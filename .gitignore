@@ -9,6 +9,9 @@
 # env variables
 .env
 
+# utils
+/src/utils
+
 # production
 /build
 
