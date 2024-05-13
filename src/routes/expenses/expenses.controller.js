@@ -52,7 +52,7 @@ async function httpDeleteExpense(req, res) {
   try {
     const userId = req.params.userid
     const email = req.params.email
-    const removingExpenseId = String(req.body)
+    const removingExpenseId = Number(String(req.body))
     const resDeleteExpense = await deleteExpense(userId, email, removingExpenseId)
 
     if (resDeleteExpense) return res.status(200)
