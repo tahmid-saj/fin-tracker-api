@@ -5,6 +5,8 @@ const { getExpenses, getExpensesSummary,
   updateExpenses, updateExpensesSummary
 } = require("./expenses.mongo.crud")
 
+// TODO: handle error
+
 // signed in
 async function getExpensesData(userId, email) {
   console.log("Getting expenses data")
@@ -20,24 +22,24 @@ async function getExpensesSummaryData(userId, email) {
 // expenses operations
 async function postExpenseCreate(userId, email, expenseInfo) {
   console.log("Posting expense creation")
-  createExpense(userId, email, expenseInfo)
+  await createExpense(userId, email, expenseInfo)
 }
 
 // TODO: need to better manage summary on delete
 async function deleteExpense(userId, email, removingExpenseId) {
-  removeExpense(userId, email, removingExpenseId)
+  await removeExpense(userId, email, removingExpenseId)
   console.log("Deleting expense")
 }
 
 // signed out
 async function putExpensesData(userId, email, expenses) {
-  updateExpenses(userId, email, expenses)
+  await updateExpenses(userId, email, expenses)
   console.log("Putting expenses data")
 }
 
 // TODO: need to better manage summary
 async function putExpensesSummaryData(userId, email, expensesSummary) {
-  updateExpensesSummary(userId, email, expensesSummary)
+  await updateExpensesSummary(userId, email, expensesSummary)
   console.log("Putting expenses summary data")
 }
 
