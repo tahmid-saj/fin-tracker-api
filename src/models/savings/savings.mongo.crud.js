@@ -26,7 +26,9 @@ async function getSavingsAccounts(userId, email) {
         // calculated
         totalSavings: savingsAccount.totalSavings,
         totalContribution: savingsAccount.totalContribution,
-        totalInterest: savingsAccount.totalInterest
+        totalInterest: savingsAccount.totalInterest,
+
+        savings: savingsAccount.savings,
       }
     })
 
@@ -140,7 +142,9 @@ async function createSavingsAccount(userId, email, savingsAccountInfo) {
       // calculated
       totalSavings: savingsAccountInfo.totalSavings,
       totalContribution: savingsAccountInfo.totalContribution,
-      totalInterest: savingsAccountInfo.totalInterest
+      totalInterest: savingsAccountInfo.totalInterest,
+
+      savings: savingsAccountInfo.savings,
     });
 
     await newSavingsAccount.save();
@@ -176,7 +180,9 @@ async function updateSavingsAccount(userId, email, originalSavingsAccountInfo, u
       // calculated
       totalSavings: updatedSavingsAccountInfo.totalSavings,
       totalContribution: updatedSavingsAccountInfo.totalContribution,
-      totalInterest: updatedSavingsAccountInfo.totalInterest
+      totalInterest: updatedSavingsAccountInfo.totalInterest,
+
+      savings: updatedSavingsAccountInfo.savings,
     })
   } else {
     return;
@@ -257,7 +263,9 @@ async function updateSavingsAccounts(userId, email, savingsAccounts) {
         // calculated
         totalSavings: savingsAccount.totalSavings,
         totalContribution: savingsAccount.totalContribution,
-        totalInterest: savingsAccount.totalInterest
+        totalInterest: savingsAccount.totalInterest,
+
+        savings: savingsAccount.savings,
       })
     })
   } else {
