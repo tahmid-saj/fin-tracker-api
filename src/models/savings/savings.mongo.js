@@ -56,7 +56,31 @@ const savingsAccountsSchema = new mongoose.Schema({
     type: Number,
     required: true,
     default: 0,
-  }
+  },
+  savings: {
+    type: [
+      {
+        currentDate: {
+          type: Date,
+          required: true,
+        },
+        interestEarned: {
+          type: Number,
+          required: true,
+        },
+        totalInterestEarned: {
+          type: Number,
+          required: true,
+        },
+        balance: {
+          type: Number,
+          required: true,
+        }
+      }
+    ],
+    default: [],
+    required: true,
+  },
 });
 
 const savingsAccountsSummarySchema = new mongoose.Schema({
