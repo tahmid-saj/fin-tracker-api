@@ -8,10 +8,7 @@ async function httpGetExpensesData(req, res) {
   try {
     const userId = req.params.userid
     const email = req.params.email
-    console.log(userId)
     const resGetExpensesData = await getExpensesData(userId, email)
-
-    console.log(resGetExpensesData)
 
     if (resGetExpensesData) return res.status(200).json(resGetExpensesData)
   } catch (error) {

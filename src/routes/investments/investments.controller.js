@@ -69,7 +69,6 @@ async function httpDeleteInvestment(req, res) {
     const userId = req.params.userid;
     const email = req.params.email;
     const closingInvestmentName = String(req.body);
-    console.log(closingInvestmentName);
     const resDeleteInvestment = await deleteInvestment(userId, email, closingInvestmentName);
 
     if (resDeleteInvestment) return res.status(200);

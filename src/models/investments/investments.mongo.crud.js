@@ -126,8 +126,6 @@ async function createInvestment(userId, email, investmentInfo) {
     investmentName: investmentInfo.investmentName
   });
 
-  console.log("creating investment", userId, email, investmentInfo);
-
   if (!investmentExists) {
     const newInvestment = new investmentsDatabase({
       userId: userId,

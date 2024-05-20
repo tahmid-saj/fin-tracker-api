@@ -125,8 +125,6 @@ async function createSavingsAccount(userId, email, savingsAccountInfo) {
     savingsAccountName: savingsAccountInfo.savingsAccountName
   });
 
-  console.log("creating savings account", userId, email, savingsAccountInfo);
-
   if (!savingsAccountExists) {
     const newSavingsAccount = new savingsAccountsDatabase({
       userId: userId,
@@ -215,7 +213,6 @@ async function closeSavingsAccount(userId, email, closingSavingsAccountName) {
     email: email,
     savingsAccountName: closingSavingsAccountName
   });
-  console.log("deleting ", closingSavingsAccountName, userId, email)
 
   if (savingsAccountExists) {
     await savingsAccountsSummaryDatabase.updateOne({

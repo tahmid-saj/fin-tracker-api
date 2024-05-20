@@ -13,8 +13,6 @@ async function getExpenses(userId, email) {
     email: email
   })
   .then(res => {
-    console.log(userId, email)
-
     const expenses = res.map(expense => {
       return {
         expenseFor: expense.expenseFor,
@@ -31,8 +29,6 @@ async function getExpenses(userId, email) {
     // TODO: handle error
     console.log(error)
   })
-
-  console.log(expenses)
 
   return {
     expenses: [ ...expenses ]
@@ -104,8 +100,6 @@ async function createExpense(userId, email, expenseInfo) {
     email: email,
     expenseId: expenseInfo.expenseId
   })
-
-  console.log("creating expense", userId, email, expenseInfo)
 
   if (!expenseExists) {
     const newExpense = new expensesDatabase({

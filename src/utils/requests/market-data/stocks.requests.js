@@ -33,7 +33,6 @@ function convUnix(unix_timestamp) {
 }
 
 async function processMarketDataResponse(marketDataRes) {
-  // console.log(marketDataRes.results)
   return marketDataRes.results.map((marketDataRecord) => {
     return {
       closing: marketDataRecord.c,
@@ -52,10 +51,8 @@ async function getStocksMarketData(marketDataQuery) {
     marketDataQuery.marketDataEndDate
     ).then(async (res) => {
       const marketData = await processMarketDataResponse(res)
-      // console.log(typeof(marketData))
       return marketData
     }).catch((error) => {
-      // errorOnGetStocksMarketData()
       console.log(error)
       return Object({})
     })
@@ -71,7 +68,6 @@ async function getRes() {
     marketDataStartDate: "2024-01-01",
     marketDataEndDate: "2024-01-03",
   })
-  console.log(res)
 }
 
 getRes()
