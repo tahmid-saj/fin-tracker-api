@@ -69,7 +69,6 @@ async function httpDeleteSavingsAccount(req, res) {
     const userId = req.params.userid;
     const email = req.params.email;
     const closingSavingsAccountName = String(req.body);
-    console.log(closingSavingsAccountName);
     const resDeleteSavingsAccount = await deleteSavingsAccount(userId, email, closingSavingsAccountName);
 
     if (resDeleteSavingsAccount) return res.status(200);

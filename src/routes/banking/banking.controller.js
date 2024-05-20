@@ -35,7 +35,6 @@ async function httpGetBankingSummaryData(req, res) {
 async function httpPostBankingAccountCreate(req, res) {
   try {
     const bankingAccountName = String(req.body);
-    console.log(bankingAccountName);
     const userId = req.params.userid;
     const email = req.params.email;
     const resPostBankingAccountCreate = await postBankingAccountCreate(userId, email, bankingAccountName);
@@ -51,7 +50,6 @@ async function httpPostBankingAccountTransaction(req, res) {
   // return res.status(200).json(await postBankingAccountTransaction());
 
   try {
-    console.log(req.body);
     const transactionInfo = req.body;
     const userId = req.params.userid;
     const email = req.params.email;
@@ -68,7 +66,6 @@ async function httpDeleteBankingAccount(req, res) {
   // return res.status(200).json(await deleteBankingAccount());
 
   try {
-    console.log(req.body);
     const bankingAccountName = String(req.body);
     const userId = req.params.userid;
     const email = req.params.email;
@@ -86,7 +83,6 @@ async function httpPutBankingAccountsData(req, res) {
   // return res.status(200).json(await putBankingAccountsData());
 
   try {
-    console.log(req.body);
     const { bankingAccounts } = req.body;
     const userId = req.params.userid;
     const email = req.params.email;
@@ -101,7 +97,6 @@ async function httpPutBankingAccountsData(req, res) {
 
 async function httpPutBankingSummaryData(req, res) {
   try {
-    console.log(req.body);
     const { bankingSummary } = req.body;
     const userId = req.params.userid;
     const email = req.params.email;

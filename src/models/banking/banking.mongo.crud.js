@@ -30,8 +30,6 @@ async function getBankingAccounts(userId, email) {
     console.log(error);
   });
 
-  console.log(bankingAccounts);
-
   return {
     bankingAccounts: [ ...bankingAccounts ]
   }
@@ -60,8 +58,6 @@ async function getBankingSummary(userId, email) {
     // TODO: handle error
     console.log(error);
   });
-
-  console.log(bankingSummary);
 
   return {
     bankingSummary: bankingSummary
@@ -246,7 +242,6 @@ async function updateBankingAccounts(userId, email, bankingAccounts) {
   });
 
   if (bankingAccountsExist && bankingAccounts !== undefined && bankingAccounts.length !== 0) {
-    // console.log(bankingAccounts)
 
     bankingAccounts.map(async (account) => {
       await bankingAccountsDatabase.updateOne({
@@ -272,7 +267,6 @@ async function updateBankingSummary(userId, email, bankingSummary) {
   });
 
   if (bankingSummaryExists && bankingSummary !== undefined && bankingSummary !== Object({})) {
-    // console.log(bankingSummary)
 
     await bankingSummaryDatabase.updateOne({
       userId: userId,
