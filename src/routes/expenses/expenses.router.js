@@ -13,7 +13,7 @@ expensesRouter.get("/expenses/:userid/:email", httpGetExpensesData)
 expensesRouter.get("/summary/:userid/:email", httpGetExpensesSummaryData)
 
 // expenses operations
-expensesRouter.post("/expenses/:userid/:email/create", httpPostExpenseCreate)
+expensesRouter.post("/expenses/:userid/:email", httpPostExpenseCreate)
 expensesRouter.delete("/expenses/:userid/:email/remove", httpDeleteExpense)
 
 // user is signing out

@@ -12,9 +12,9 @@ investmentsRouter.get("/investments/:userid/:email", httpGetInvestmentsData);
 investmentsRouter.get("/summary/:userid/:email", httpGetInvestmentsSummaryData);
 
 // investments operations
-investmentsRouter.post("/investments/:userid/:email/create", httpPostInvestmentCreate);
-investmentsRouter.put("/investments/:userid/:email/update", httpPutInvestmentData);
-investmentsRouter.delete("/investments/:userid/:email/close", httpDeleteInvestment);
+investmentsRouter.post("/investments/:userid/:email", httpPostInvestmentCreate);
+investmentsRouter.put("/investments/:userid/:email", httpPutInvestmentData);
+investmentsRouter.delete("/investments/:userid/:email", httpDeleteInvestment);
 
 // user is signing out
 investmentsRouter.put("/investments/:userid/:email", httpPutInvestmentsData);
