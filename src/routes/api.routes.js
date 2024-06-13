@@ -7,6 +7,7 @@ const { bankingRouter } = require("./banking/banking.router");
 const { investmentsRouter } = require("./investments/investments.router");
 const { savingsRouter } = require("./savings/savings.router");
 const { marketDataRouter } = require("./market-data/market-data.router")
+const { usefulToolsRouter } = require("./useful-tools/useful-tools.router")
 
 const api = express.Router();
 
@@ -17,6 +18,7 @@ api.use("/banking", bankingRouter);
 api.use("/investments", investmentsRouter);
 api.use("/savings", savingsRouter);
 api.use("/market-data", marketDataRouter)
+api.use("/useful-tools", usefulToolsRouter)
 
 module.exports = {
   api,
