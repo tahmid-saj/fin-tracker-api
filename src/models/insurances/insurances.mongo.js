@@ -1,5 +1,8 @@
 const mongoose = require("mongoose")
 
+const defaultInsuranceEndDate = new Date();
+defaultInsuranceEndDate.setFullYear(defaultInsuranceEndDate.getFullYear() + 50);
+
 const insurancesSchema = new mongoose.Schema({
   userId: {
     type: String,
@@ -15,7 +18,8 @@ const insurancesSchema = new mongoose.Schema({
   },
   insurancePayment: {
     type: Number,
-    required: true
+    required: true,
+    default: 0
   },
   insuranceInterval: {
     type: String,
@@ -27,7 +31,8 @@ const insurancesSchema = new mongoose.Schema({
   },
   insuranceEndDate: {
     type: String,
-    required: true
+    required: true,
+    default: defaultInsuranceEndDate.toISOString().split('T')[0]
   }
 })
 
