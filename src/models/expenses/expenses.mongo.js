@@ -15,7 +15,8 @@ const expensesSchema = new mongoose.Schema({
   },
   expenseCost: {
     type: Number,
-    required: true
+    required: true,
+    default: 0
   },
   expenseDate: {
     type: String,
@@ -42,7 +43,8 @@ const expensesSummarySchema = new mongoose.Schema({
   },
   currentAllExpensesCost: {
     type: Number,
-    required: true
+    required: true,
+    default: 0
   }
 });
 
