@@ -68,6 +68,30 @@ const investmentsSchema = new mongoose.Schema({
     type: Number,
     required: true,
     default: 0
+  },
+  investments: {
+    type: [
+      {
+        currentDate: {
+          type: Date,
+          required: true
+        },
+        contribution: {
+          type: Number,
+          required: true
+        },
+        interestAccumulated: {
+          type: Number,
+          required: true,
+        },
+        endingBalance: {
+          type: Number,
+          required: true
+        }
+      }
+    ],
+    default: [],
+    required: true
   }
 });
 

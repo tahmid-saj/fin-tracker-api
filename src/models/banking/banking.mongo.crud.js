@@ -152,6 +152,7 @@ async function addBankingAccountTransaction(userId, email, transactionInfo) {
           amount: Number(transactionInfo.amount),
           type: transactionInfo.type,
           reason: transactionInfo.reason,
+          addToExpenses: transactionInfo.addToExpenses
         }
       }
     });

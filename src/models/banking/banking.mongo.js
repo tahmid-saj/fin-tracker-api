@@ -42,6 +42,10 @@ const bankingAccountsSchema = new mongoose.Schema({
         reason: {
           type: String,
           required: false,
+        },
+        addToExpenses: {
+          type: Boolean,
+          required: false
         }
       }
     ],
