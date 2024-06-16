@@ -29,7 +29,9 @@ async function getInvestments(userId, email) {
         // calculated
         endBalance: investment.endBalance,
         totalContribution: investment.totalContribution,
-        totalInterest: investment.totalInterest
+        totalInterest: investment.totalInterest,
+
+        investments: investment.investments
       }
     })
 
@@ -145,6 +147,8 @@ async function createInvestment(userId, email, investmentInfo) {
       endBalance: investmentInfo.endBalance,
       totalContribution: investmentInfo.totalContribution,
       totalInterest: investmentInfo.totalInterest,
+
+      investments: investmentInfo.investments,
     });
 
     await newInvestment.save();
@@ -183,7 +187,9 @@ async function updateInvestment(userId, email, originalInvestmentInfo, updatedIn
       // calculated
       endBalance: updatedInvestmentInfo.endBalance,
       totalContribution: updatedInvestmentInfo.totalContribution,
-      totalInterest: updatedInvestmentInfo.totalInterest
+      totalInterest: updatedInvestmentInfo.totalInterest,
+
+      investments: updatedInvestmentInfo.investments
     })
   } else {
     return;
@@ -265,7 +271,9 @@ async function updateInvestments(userId, email, investments) {
         // calculated
         endBalance: investment.endBalance,
         totalContribution: investment.totalContribution,
-        totalInterest: investment.totalInterest
+        totalInterest: investment.totalInterest,
+
+        investments: investment.investments
       })
     })
   } else {
