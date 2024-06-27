@@ -20,30 +20,35 @@ async function getInvestmentsSummaryData(userId, email) {
 async function postInvestmentCreate(userId, email, investmentInfo) {
   console.log("Posting investment creation");
   createInvestment(userId, email, investmentInfo);
+  return true
 };
 
 // TODO: need to better manage summary on updating data
 async function putInvestmentData(userId, email, originalInvestmentInfo, updatedInvestmentInfo) {
   console.log("Updating investment");
   updateInvestment(userId, email, originalInvestmentInfo, updatedInvestmentInfo);
+  return true
 };
 
 // TODO: need to better manage summary on delete
 async function deleteInvestment(userId, email, closingInvestmentName) {
   closeInvestment(userId, email, closingInvestmentName);
   console.log("Deleting investment");
+  return true
 };
 
 // signed out
 async function putInvestmentsData(userId, email, investments) {
   updateInvestments(userId, email, investments);
   console.log("Putting investments data");
+  return true
 };
 
 // TODO: need to better manage summary
 async function putInvestmentsSummaryData(userId, email, investmentsSummary) {
   updateInvestmentsSummary(userId, email, investmentsSummary);
   console.log("Putting investments summary data");
+  return true
 };
 
 module.exports = {

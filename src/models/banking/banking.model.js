@@ -20,27 +20,32 @@ async function getBankingSummaryData(userid, email) {
 async function postBankingAccountCreate(userId, email, bankingAccountName) {
   createBankingAccount(userId, email, bankingAccountName);
   console.log("Posting banking account creation");
+  return true
 };
 
 async function postBankingAccountTransaction(userId, email, transactionInfo) {
   addBankingAccountTransaction(userId, email, transactionInfo);
   console.log("Posting banking account transaction");
+  return true
 };
 
 async function deleteBankingAccount(userId, email, bankingAccountName) {
   closeBankingAccount(userId, email, bankingAccountName);
   console.log("Deleting banking account");
+  return true
 };
 
 // user signed out
 async function putBankingAccountsData(userId, email, bankingAccounts) {
   updateBankingAccounts(userId, email, bankingAccounts);
   console.log("Putting banking accounts data");
+  return true
 };
 
 async function putBankingSummaryData(userId, email, bankingSummary) {
   updateBankingSummary(userId, email, bankingSummary);
   console.log("Putting banking summary data");
+  return true
 };
 
 module.exports = {
