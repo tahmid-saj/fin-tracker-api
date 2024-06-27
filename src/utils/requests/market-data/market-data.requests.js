@@ -26,7 +26,7 @@ async function getMarketDataStocks(marketDataType, marketDataTicker, marketDataI
     String(marketDataEndDate)
     ).then(res => processMarketDataResponse(res))
     .catch((error) => {
-      errorOnGetStocksMarketData()
+      errorOnGetMarketData()
       console.log(error)
       return DEFAULT_MARKET_DATA
     })
@@ -47,7 +47,7 @@ async function getMarketDataIndices(marketDataType, marketDataTicker, marketData
     String(marketDataEndDate)
     ).then(res => processMarketDataResponse(res))
     .catch((error) => {
-      errorOnGetIndicesMarketData()
+      errorOnGetMarketData()
       console.log(error)
       return DEFAULT_MARKET_DATA
     })
@@ -68,7 +68,7 @@ async function getMarketDataCrypto(marketDataType, marketDataTicker, marketDataI
     String(marketDataEndDate)
     ).then(res => processMarketDataResponse(res))
     .catch((error) => {
-      errorOnGetCryptoMarketData()
+      errorOnGetMarketData()
       console.log(error)
       return DEFAULT_MARKET_DATA
     })
@@ -89,7 +89,7 @@ async function getMarketDataForex(marketDataType, marketDataTicker, marketDataIn
     String(marketDataEndDate)
     ).then(res => processMarketDataResponse(res))
     .catch((error) => {
-      errorOnGetForexMarketData()
+      errorOnGetMarketData()
       console.log(error)
       return DEFAULT_MARKET_DATA
     })

@@ -66,7 +66,6 @@ async function getInsurancesSummary(userId, email) {
 
 // insurances operations
 async function calculateTotalInsurancePlanned(insuranceInfo) {
-  console.log(insuranceInfo)
 
   let newCurrentTotalInsurancePlanned = 0.0
 
@@ -176,7 +175,6 @@ async function createInsurance(userId, email, insuranceInfo) {
 }
 
 async function removeInsurance(userId, email, removingInsuranceFor) {
-  console.log(removingInsuranceFor)
 
   const insuranceExists = await insurancesDatabase.findOne({
     userId: userId,
@@ -185,7 +183,6 @@ async function removeInsurance(userId, email, removingInsuranceFor) {
   })
 
   if (insuranceExists) {
-    console.log(insuranceExists)
     const newCurrentTotalInsurancePlanned = await calculateTotalInsurancePlanned(insuranceExists)
 
     await insurancesSummaryDatabase.updateOne({

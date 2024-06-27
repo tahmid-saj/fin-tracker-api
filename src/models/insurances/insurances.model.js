@@ -23,24 +23,28 @@ async function getInsurancesSummaryData(userId, email) {
 async function postInsuranceCreate(userId, email, insuranceInfo) {
   console.log("Posting insurance creation")
   await createInsurance(userId, email, insuranceInfo)
+  return true
 }
 
 // TODO: need to better manage summary on delete
 async function deleteInsurance(userId, email, removingInsuranceFor) {
   await removeInsurance(userId, email, removingInsuranceFor)
   console.log("Deleting insurance")
+  return true
 }
 
 // signed out
 async function putInsurancesData(userId, email, insurances) {
   await updateInsurances(userId, email, insurances)
   console.log("Putting insurances data")
+  return true
 }
 
 // TODO: need to better manage summary
 async function putInsurancesSummaryData(userId, email, insurancesSummary) {
   await updateInsurancesSummary(userId, email, insurancesSummary)
   console.log("Putting insurances summary data")
+  return true
 }
 
 module.exports = {
