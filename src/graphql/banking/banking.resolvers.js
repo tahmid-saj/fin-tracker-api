@@ -21,6 +21,9 @@ module.exports = {
     },
     updateUserBankingAccounts: (parent, args) => {
       return bankingModel.updateUserBankingAccounts(args.userId, args.email, args.bankingAccounts)
+    },
+    updateUserBankingSummary: (parent, args) => {
+      return bankingModel.updateUserBankingSummary(args.userId, args.email, args.bankingSummary)
     }
   }
 }
