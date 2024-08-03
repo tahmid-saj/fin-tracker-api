@@ -1,5 +1,6 @@
 const { getBankingAccounts, getBankingSummary,
-  createBankingAccount, addBankingAccountTransaction
+  createBankingAccount, addBankingAccountTransaction, closeBankingAccount,
+  updateBankingAccounts
 } = require("../../models/banking/banking.mongo.crud")
 
 async function getBankingAccountsByUser(userId, email) {
@@ -24,9 +25,23 @@ async function updateUserBankingAccountTransaction(userId, email, transactionInf
   return true
 }
 
+async function deleteUserBankingAccount(userId, email, bankingAccountName) {
+  closeBankingAccount(userId, email, bankingAccountName);
+  console.log("Deleting banking account");
+  return true
+}
+
+async function updateUserBankingAccounts(userId, email, bankingAccounts) {
+  updateBankingAccounts(userId, email, bankingAccounts);
+  console.log("Putting banking accounts data");
+  return true
+}
+
 module.exports = {
   getBankingAccountsByUser,
   getBankingSummaryByUser,
   createUserBankingAccount,
-  updateUserBankingAccountTransaction
+  updateUserBankingAccountTransaction,
+  deleteUserBankingAccount,
+  updateUserBankingAccounts
 }
