@@ -7,6 +7,9 @@ type Query {
 type Mutation {
   # banking operations
   createUserBankingAccount(userId: String!, email: String!, bankingAccountName: String!): Boolean
+  updateUserBankingAccountTransaction(userId: String!, email: String!, 
+    bankingAccountName: String!, amount: Float!, type: String!, reason: String, transferTo: String, addToExpenses: Boolean
+  ): Boolean
 }
 
 type BankingAccount {
@@ -25,6 +28,15 @@ type BankingSummary {
   currentAllBankingBalance: Float!
   totalAllBankingIn: Float!
   totalAllBankingOut: Float!
+}
+
+type TransactionInfo {
+  bankingAccountName: String!
+  amount: Float!
+  type: String!
+  reason: String
+  transferTo: String
+  addToExpenses: Boolean
 }
 
 type Transaction {
