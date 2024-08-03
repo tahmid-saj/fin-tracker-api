@@ -12,6 +12,18 @@ module.exports = {
   Mutation: {
     createUserBankingAccount: (parent, args) => {
       return bankingModel.createUserBankingAccount(args.userId, args.email, args.bankingAccountName)
+    },
+    updateUserBankingAccountTransaction: (parent, args) => {
+      const transactionInfo = {
+        bankingAccountName: args.bankingAccountName,
+        amount: args.amount,
+        type: args.type,
+        reason: args.reason,
+        transferTo: args.transferTo,
+        addToExpenses: args.addToExpenses
+      }
+
+      return bankingModel.updateUserBankingAccountTransaction(args.userId, args.email, transactionInfo)
     }
   }
 }
