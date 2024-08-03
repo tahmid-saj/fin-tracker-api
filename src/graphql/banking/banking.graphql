@@ -1,6 +1,12 @@
 type Query {
+  # user sign in
   bankingAccountsByUser(userId: String!, email: String!): [BankingAccount]
-  bankingSummaryByUser(userId: String!, email: String!): [BankingSummary]
+  bankingSummaryByUser(userId: String!, email: String!): BankingSummary
+}
+
+type Mutation {
+  # banking operations
+  createUserBankingAccount(userId: String!, email: String!, bankingAccountName: String!): Boolean
 }
 
 type BankingAccount {
@@ -27,3 +33,4 @@ type Transaction {
   reason: String
   addToExpenses: Boolean
 }
+

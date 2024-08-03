@@ -1,4 +1,6 @@
-const { getBankingAccounts, getBankingSummary } = require("../../models/banking/banking.mongo.crud")
+const { getBankingAccounts, getBankingSummary,
+  createBankingAccount
+} = require("../../models/banking/banking.mongo.crud")
 
 async function getBankingAccountsByUser(userId, email) {
   const bankingAccounts = await getBankingAccounts(userId, email)
@@ -10,6 +12,14 @@ async function getBankingSummaryByUser(userId, email) {
   return bankingSummary.bankingSummary
 }
 
+async function createUserBankingAccount(userId, email, bankingAccountName) {
+  createBankingAccount(userId, email, bankingAccountName)
+  console.log("Posting banking account creation");
+  return true
+}
+
 module.exports = {
-  getBankingAccountsByUser
+  getBankingAccountsByUser,
+  getBankingSummaryByUser,
+  createUserBankingAccount
 }
