@@ -1,0 +1,29 @@
+type Query {
+  bankingAccountsByUser(userId: String!, email: String!): [BankingAccount]
+  bankingSummaryByUser(userId: String!, email: String!): [BankingSummary]
+}
+
+type BankingAccount {
+  userId: String!
+  email: String!
+  name: String!
+  currentBalance: Float!
+  totalIn: Float!
+  totalOut: Float!
+  transactions: [Transaction]
+}
+
+type BankingSummary {
+  userId: String!
+  email: String!
+  currentAllBankingBalance: Float!
+  totalAllBankingIn: Float!
+  totalAllBankingOut: Float!
+}
+
+type Transaction {
+  amount: Float!
+  type: String!
+  reason: String
+  addToExpenses: Boolean
+}
