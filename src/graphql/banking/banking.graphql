@@ -1,18 +1,39 @@
+# queries
 type Query {
   # user sign in
-  bankingAccountsByUser(userId: String!, email: String!): [BankingAccount]
-  bankingSummaryByUser(userId: String!, email: String!): BankingSummary
+  bankingAccountsByUser(userId: String!, email: String!): [UserBankingAccount]
+  bankingSummaryByUser(userId: String!, email: String!): UserBankingSummary
 }
 
+# mutations
 type Mutation {
   # banking operations
   createUserBankingAccount(userId: String!, email: String!, bankingAccountName: String!): Boolean
-  updateUserBankingAccountTransaction(userId: String!, email: String!, 
-    bankingAccountName: String!, amount: Float!, type: String!, reason: String, transferTo: String, addToExpenses: Boolean
-  ): Boolean
+  updateUserBankingAccountTransaction(userId: String!, email: String!, transactionInfo: TransactionInfo!): Boolean
+  deleteUserBankingAccount(userId: String!, email: String!, bankingAccountName: String!): Boolean
+  updateUserBankingAccounts(userId: String!, email: String!, bankingAccounts: [BankingAccount]!): Boolean
 }
 
-type BankingAccount {
+# inputs
+input TransactionInfo {
+  bankingAccountName: String!
+  amount: Float!
+  type: String!
+  reason: String
+  transferTo: String
+  addToExpenses: Boolean
+}
+
+input BankingAccount {
+  name: String!
+  currentBalance: Float!
+  totalIn: Float!
+  totalOut: Float!
+  transactions: [TransactionInfo]
+}
+
+# types
+type UserBankingAccount {
   userId: String!
   email: String!
   name: String!
@@ -22,7 +43,7 @@ type BankingAccount {
   transactions: [Transaction]
 }
 
-type BankingSummary {
+type UserBankingSummary {
   userId: String!
   email: String!
   currentAllBankingBalance: Float!
@@ -30,14 +51,6 @@ type BankingSummary {
   totalAllBankingOut: Float!
 }
 
-type TransactionInfo {
-  bankingAccountName: String!
-  amount: Float!
-  type: String!
-  reason: String
-  transferTo: String
-  addToExpenses: Boolean
-}
 
 type Transaction {
   amount: Float!
