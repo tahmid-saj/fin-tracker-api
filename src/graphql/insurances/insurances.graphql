@@ -6,8 +6,19 @@ type Query {
 }
 
 # mutations
+type Mutation {
+  # insurances operations
+  createUserInsurance(userId: String!, email: String!, insuranceInfo: InsuranceInfo!): Boolean
+}
 
 # inputs
+input InsuranceInfo {
+  insuranceFor: String!
+  insurancePayment: Float!
+  insuranceInterval: String!
+  insuranceFirstPaymentDate: String!
+  insuranceEndDate: String!
+}
 
 # types
 type UserInsurance {
