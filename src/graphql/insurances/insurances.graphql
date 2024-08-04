@@ -10,6 +10,7 @@ type Mutation {
   # insurances operations
   createUserInsurance(userId: String!, email: String!, insuranceInfo: InsuranceInfo!): Boolean
   deleteUserInsurance(userId: String!, email: String!, removingInsuranceFor: String!): Boolean
+  updateUserInsurances(userId: String!, email: String!, insurances: [InsuranceInfo]!): Boolean
 }
 
 # inputs
