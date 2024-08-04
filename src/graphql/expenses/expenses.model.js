@@ -1,5 +1,5 @@
 const { getExpenses, getExpensesSummary,
-  createExpense
+  createExpense, removeExpense
   
 } = require("../../models/expenses/expenses.mongo.crud")
 
@@ -19,8 +19,15 @@ async function createUserExpenses(userId, email, expenseInfo) {
   return true
 }
 
+async function deleteUserExpenses(userId, email, removingExpenseId) {
+  await removeExpense(userId, email, removingExpenseId)
+  console.log("Deleting expense")
+  return true
+}
+
 module.exports = {
   getExpensesByUser,
   getExpensesSummaryByUser,
-  createUserExpenses
+  createUserExpenses,
+  deleteUserExpenses
 }
