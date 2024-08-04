@@ -13,7 +13,14 @@ async function insurancesSummaryByUser(userId, email) {
   return insurancesSummary.insurancesSummary
 }
 
+async function createUserInsurance(userId, email, insuranceInfo) {
+  console.log("Posting insurance creation")
+  await createInsurance(userId, email, insuranceInfo)
+  return true
+}
+
 module.exports = {
   insurancesByUser,
-  insurancesSummaryByUser
+  insurancesSummaryByUser,
+  createUserInsurance
 }
