@@ -1,5 +1,5 @@
-const { getInvestments, getInvestmentsSummary
-
+const { getInvestments, getInvestmentsSummary,
+  createInvestment
 } = require("../../models/investments/investments.mongo.crud")
 
 async function getInvestmentsByUser(userId, email) {
@@ -12,7 +12,14 @@ async function getInvestmentsSummaryByUser(userId, email) {
   return investmentsSummary.investmentsSummary
 }
 
+async function createUserInvestment(userId, email, investmentInfo) {
+  console.log("Posting investment creation");
+  createInvestment(userId, email, investmentInfo);
+  return true
+}
+
 module.exports = {
   getInvestmentsByUser,
-  getInvestmentsSummaryByUser
+  getInvestmentsSummaryByUser,
+  createUserInvestment
 }
