@@ -9,6 +9,7 @@ type Query {
 type Mutation {
   # insurances operations
   createUserInsurance(userId: String!, email: String!, insuranceInfo: InsuranceInfo!): Boolean
+  deleteUserInsurance(userId: String!, email: String!, removingInsuranceFor: String!): Boolean
 }
 
 # inputs

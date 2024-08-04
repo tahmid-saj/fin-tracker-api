@@ -19,8 +19,15 @@ async function createUserInsurance(userId, email, insuranceInfo) {
   return true
 }
 
+async function deleteUserInsurance(userId, email, removingInsuranceFor) {
+  await removeInsurance(userId, email, removingInsuranceFor)
+  console.log("Deleting insurance")
+  return true
+} 
+
 module.exports = {
   insurancesByUser,
   insurancesSummaryByUser,
-  createUserInsurance
+  createUserInsurance,
+  deleteUserInsurance
 }
