@@ -15,6 +15,9 @@ module.exports = {
     },
     deleteUserInsurance: (parent, args) => {
       return insurancesModel.deleteUserInsurance(args.userId, args.email, args.removingInsuranceFor)
+    },
+    updateUserInsurances: (parent, args) => {
+      return insurancesModel.updateUserInsurances(args.userId, args.email, args.insurances)
     }
   }
 }
