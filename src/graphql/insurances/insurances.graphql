@@ -2,6 +2,7 @@
 type Query {
   # user sign in
   insurancesByUser(userId: String!, email: String!): [UserInsurance]
+  insurancesSummaryByUser(userId: String!, email: String!): UserInsurancesSummary
 }
 
 # mutations
@@ -19,7 +20,7 @@ type UserInsurance {
   insuranceEndDate: String!
 }
 
-type UserInsuranceSummaty {
+type UserInsurancesSummary {
   userId: String!
   email: String!
   currentTotalInsurancePlanned: Float!
