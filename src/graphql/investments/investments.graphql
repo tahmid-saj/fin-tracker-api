@@ -1,0 +1,76 @@
+# queries
+type Query {
+  # user sign in
+  investmentsByUser(userId: String!, email: String!): [UserInvestment]
+  investmentsSummaryByUser(userId: String!, email: String!): UserInvestmentsSummary
+}
+
+# mutations
+type Mutation {
+  # investments operations
+  createUserInvestment(userId: String!, email: String!, investmentInfo: InvestmentInfo!): Boolean
+}
+
+# inputs
+input InvestmentInfo {
+  investmentName: String!
+  investmentType: String!
+  startingAmount: Float!
+  startDate: String!
+  afterYears: Float!
+  returnRate: Float!
+  compounded: String!
+  additionalContribution: Float!
+  contributionAt: String!
+  contributionInterval: String!
+
+  endBalance: Float!
+  totalContribution: Float!
+  totalInterest: Float!
+
+  investments: [InvestmentInfoRecord]!
+}
+
+input InvestmentInfoRecord {
+  currentDate: String!
+  contribution: Float!
+  interestAccumulated: Float!
+  endingBalance: Float!
+}
+
+# types
+type UserInvestment {
+  userId: String!
+  email: String!
+  investmentName: String!
+  investmentType: String!
+  startingAmount: Float!
+  startDate: String!
+  afterYears: Float!
+  returnRate: Float!
+  compounded: String!
+  additionalContribution: Float!
+  contributionAt: String!
+  contributionInterval: String!
+
+  endBalance: Float!
+  totalContribution: Float!
+  totalInterest: Float!
+
+  investments: [InvestmentRecord]!
+}
+
+type InvestmentRecord {
+  currentDate: String!
+  contribution: Float!
+  interestAccumulated: Float!
+  endingBalance: Float!
+}
+
+type UserInvestmentsSummary {
+  userId: String!
+  email: String!
+  currentAllInvestmentsBalance: Float!
+  totalAllContribution: Float!
+  totalAllInterest: Float!
+}
