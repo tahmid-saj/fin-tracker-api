@@ -1,0 +1,26 @@
+# queries
+type Query {
+  # user sign in
+  expensesByUser(userId: String!, email: String!): [UserExpenses]
+  expensesSummaryByUser(userId: String!, email: String!): UserExpensesSummary
+}
+
+# inputs
+
+
+# types
+type UserExpenses {
+  userId: String!
+  email: String!
+  expenseFor: String!
+  expenseCost: Float!
+  expenseDate: String!
+  expenseCategory: String!
+  expenseId: Int!
+}
+
+type UserExpensesSummary {
+  userId: String!
+  email: String!
+  currentAllExpensesCost: Float!
+}
