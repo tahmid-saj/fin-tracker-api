@@ -1,0 +1,35 @@
+# queries
+type Query {
+  # user sign in
+  savingsAccountsByUser(userId: String!, email: String!): [UserSavingsAccount]
+}
+
+# mutations
+
+# inputs
+
+# types
+type UserSavingsAccount {
+  userId: String!
+  email: String!
+  savingsAccountName: String!
+  initialDeposit: Float!
+  startDate: String!
+  monthlyContribution: Float!
+  contributionPeriod: Float!
+  contributionInterval: String!
+  apy: Float!
+
+  totalSavings: Float!
+  totalContribution: Float!
+  totalInterest: Float!
+
+  savings: [SavingsAccountRecord]!
+}
+
+type SavingsAccountRecord {
+  currentDate: String!
+  interestEarned: Float!
+  totalInterestEarned: Float!
+  balance: Float!
+}
