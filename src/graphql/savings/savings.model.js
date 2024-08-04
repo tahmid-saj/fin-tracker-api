@@ -13,7 +13,21 @@ async function savingsAccountsSummaryByUser(userId, email) {
   return savingsAccountsSummary.savingsAccountsSummary
 }
 
+async function createUserSavingsAccount(userId, email, savingsAccountInfo) {
+  console.log("Posting savings account creation");
+  createSavingsAccount(userId, email, savingsAccountInfo);
+  return true
+}
+
+async function updateUserSavingsAccount(userId, email, originalSavingsAccountInfo, updatedSavingsAccountInfo) {
+  console.log("Updating savings account");
+  updateSavingsAccount(userId, email, originalSavingsAccountInfo, updatedSavingsAccountInfo);
+  return true
+}
+
 module.exports = {
   savingsAccountsByUser,
-  savingsAccountsSummaryByUser
+  savingsAccountsSummaryByUser,
+  createUserSavingsAccount,
+  updateUserSavingsAccount
 }
