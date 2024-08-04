@@ -9,6 +9,10 @@ type Query {
 type Mutation {
   # investments operations
   createUserInvestment(userId: String!, email: String!, investmentInfo: InvestmentInfo!): Boolean
+  updateUserInvestment(userId: String!, email: String!, investmentInfoUpdate: InvestmentInfoUpdate!): Boolean
+  deleteUserInvestment(userId: String!, email: String!, closingInvestmentName: String!): Boolean
+  updateUserInvestments(userId: String!, email: String!, investments: [InvestmentInfo]!): Boolean
+  updateUserInvestmentsSummary(userId: String!, email: String!, investmentsSummary: InvestmentSummaryInfo!): Boolean
 }
 
 # inputs
@@ -36,6 +40,19 @@ input InvestmentInfoRecord {
   contribution: Float!
   interestAccumulated: Float!
   endingBalance: Float!
+}
+
+input InvestmentInfoUpdate {
+  originalInvestmentInfo: InvestmentInfo!,
+  updatedInvestmentInfo: InvestmentInfo!
+}
+
+input InvestmentSummaryInfo {
+  userId: String!
+  email: String!
+  currentAllInvestmentsBalance: Float!
+  totalAllContribution: Float!
+  totalAllInterest: Float!
 }
 
 # types
