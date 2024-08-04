@@ -23,6 +23,9 @@ module.exports = {
     },
     updateUserSavingsAccounts: (parent, args) => {
       return savingsModel.updateUserSavingsAccounts(args.userId, args.email, args.savingsAccounts)
+    },
+    updateUserSavingsAccountsSummary: (parent, args) => {
+      return savingsModel.updateUserSavingsAccountsSummary(args.userId, args.email, args.savingsAccountsSummary)
     }
   }
 }

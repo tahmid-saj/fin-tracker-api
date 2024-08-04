@@ -12,6 +12,7 @@ type Mutation {
   updateUserSavingsAccount(userId: String!, email: String!, savingsAccountInfoUpdate: SavingsAccountInfoUpdate!): Boolean
   deleteUserSavingsAccount(userId: String!, email: String!, closingSavingsAccountName: String!): Boolean
   updateUserSavingsAccounts(userId: String!, email: String!, savingsAccounts: [SavingsAccountInfo]!): Boolean
+  updateUserSavingsAccountsSummary(userId: String!, email: String!, savingsAccountsSummary: SavingsAccountSummaryInfo!): Boolean
 }
 
 # inputs
@@ -40,6 +41,12 @@ input SavingsAccountRecordInfo {
 input SavingsAccountInfoUpdate {
   originalSavingsAccountInfo: SavingsAccountInfo!
   updatedSavingsAccountInfo: SavingsAccountInfo!
+}
+
+input SavingsAccountSummaryInfo {
+  currentAllSavingsAccountsBalance: Float!
+  totalAllContribution: Float!
+  totalAllInterest: Float!
 }
 
 # types

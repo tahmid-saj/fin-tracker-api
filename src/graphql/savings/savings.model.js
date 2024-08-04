@@ -37,11 +37,18 @@ async function updateUserSavingsAccounts(userId, email, savingsAccounts) {
   return true
 }
 
+async function updateUserSavingsAccountsSummary(userId, email, savingsAccountsSummary) {
+  updateSavingsAccountsSummary(userId, email, savingsAccountsSummary);
+  console.log("Putting savings accounts summary data");
+  return true
+}
+
 module.exports = {
   savingsAccountsByUser,
   savingsAccountsSummaryByUser,
   createUserSavingsAccount,
   updateUserSavingsAccount,
   deleteUserSavingsAccount,
-  updateUserSavingsAccounts
+  updateUserSavingsAccounts,
+  updateUserSavingsAccountsSummary
 }
