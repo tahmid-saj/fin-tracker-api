@@ -1,0 +1,26 @@
+# queries
+type Query {
+  # user sign in
+  insurancesByUser(userId: String!, email: String!): [UserInsurance]
+}
+
+# mutations
+
+# inputs
+
+# types
+type UserInsurance {
+  userId: String!
+  email: String!
+  insuranceFor: String!
+  insurancePayment: Float!
+  insuranceInterval: String!
+  insuranceFirstPaymentDate: String!
+  insuranceEndDate: String!
+}
+
+type UserInsuranceSummaty {
+  userId: String!
+  email: String!
+  currentTotalInsurancePlanned: Float!
+}
