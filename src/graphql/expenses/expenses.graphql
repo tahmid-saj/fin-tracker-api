@@ -1,7 +1,7 @@
 # queries
 type Query {
   # user sign in
-  expensesByUser(userId: String!, email: String!): [UserExpenses]
+  expensesByUser(userId: String!, email: String!): [UserExpense]
   expensesSummaryByUser(userId: String!, email: String!): UserExpensesSummary
 }
 
@@ -36,7 +36,7 @@ input ExpensesSummary {
 }
 
 # types
-type UserExpenses {
+type UserExpense {
   userId: String!
   email: String!
   expenseFor: String!
