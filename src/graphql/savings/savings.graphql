@@ -2,6 +2,7 @@
 type Query {
   # user sign in
   savingsAccountsByUser(userId: String!, email: String!): [UserSavingsAccount]
+  savingsAccountsSummaryByUser(userId: String!, email: String!): UserSavingsAccountsSummary
 }
 
 # mutations
@@ -32,4 +33,12 @@ type SavingsAccountRecord {
   interestEarned: Float!
   totalInterestEarned: Float!
   balance: Float!
+}
+
+type UserSavingsAccountsSummary {
+  userId: String!
+  email: String!
+  currentAllSavingsAccountsBalance: Float!
+  totalAllContribution: Float!
+  totalAllInterest: Float!
 }

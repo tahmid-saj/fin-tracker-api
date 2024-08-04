@@ -8,6 +8,12 @@ async function savingsAccountsByUser(userId, email) {
   return savingsAccounts.savingsAccounts
 }
 
+async function savingsAccountsSummaryByUser(userId, email) {
+  const savingsAccountsSummary = await getSavingsAccountsSummary(userId, email)
+  return savingsAccountsSummary.savingsAccountsSummary
+}
+
 module.exports = {
-  savingsAccountsByUser
+  savingsAccountsByUser,
+  savingsAccountsSummaryByUser
 }
