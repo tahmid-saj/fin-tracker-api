@@ -10,6 +10,8 @@ type Mutation {
   # expenses operations
   createUserExpenses(userId: String!, email: String!, expenseInfo: ExpenseInfo!): Boolean
   deleteUserExpenses(userId: String!, email: String!, removingExpenseId: Int!): Boolean
+  updateUserExpenses(userId: String!, email: String!, expenses: [Expense]!): Boolean
+  updateUserExpensesSummary(userId: String!, email: String!, expensesSummary: ExpensesSummary!): Boolean
 }
 
 # inputs
@@ -19,6 +21,18 @@ input ExpenseInfo {
   expenseDate: String!
   expenseCategory: String!
   expenseId: Int!
+}
+
+input Expense {
+  expenseFor: String!
+  expenseCost: Float!
+  expenseDate: String!
+  expenseCategory: String!
+  expenseId: Int!
+}
+
+input ExpensesSummary {
+  currentAllExpensesCost: Float!
 }
 
 # types
