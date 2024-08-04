@@ -11,6 +11,7 @@ type Mutation {
   createUserInsurance(userId: String!, email: String!, insuranceInfo: InsuranceInfo!): Boolean
   deleteUserInsurance(userId: String!, email: String!, removingInsuranceFor: String!): Boolean
   updateUserInsurances(userId: String!, email: String!, insurances: [InsuranceInfo]!): Boolean
+  updateUserInsurancesSummary(userId: String!, email: String!, insurancesSummary: InsurancesSummaryInfo!): Boolean
 }
 
 # inputs
@@ -20,6 +21,10 @@ input InsuranceInfo {
   insuranceInterval: String!
   insuranceFirstPaymentDate: String!
   insuranceEndDate: String!
+}
+
+input InsurancesSummaryInfo {
+  currentTotalInsurancePlanned: Float!
 }
 
 # types

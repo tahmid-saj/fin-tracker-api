@@ -18,6 +18,9 @@ module.exports = {
     },
     updateUserInsurances: (parent, args) => {
       return insurancesModel.updateUserInsurances(args.userId, args.email, args.insurances)
+    },
+    updateUserInsurancesSummary: (parent, args) => {
+      return insurancesModel.updateUserInsurancesSummary(args.userId, args.email, args.insurancesSummary)
     }
   }
 }

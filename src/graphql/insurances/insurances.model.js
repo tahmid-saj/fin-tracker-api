@@ -31,10 +31,17 @@ async function updateUserInsurances(userId, email, insurances) {
   return true
 }
 
+async function updateUserInsurancesSummary(userId, email, insurancesSummary) {
+  await updateInsurancesSummary(userId, email, insurancesSummary)
+  console.log("Putting insurances summary data")
+  return true
+}
+
 module.exports = {
   insurancesByUser,
   insurancesSummaryByUser,
   createUserInsurance,
   deleteUserInsurance,
-  updateUserInsurances
+  updateUserInsurances,
+  updateUserInsurancesSummary
 }
