@@ -1,4 +1,5 @@
-const { getExpenses, getExpensesSummary
+const { getExpenses, getExpensesSummary,
+  createExpense
   
 } = require("../../models/expenses/expenses.mongo.crud")
 
@@ -12,7 +13,14 @@ async function getExpensesSummaryByUser(userId, email) {
   return expensesSummary.expensesSummary
 }
 
+async function createUserExpenses(userId, email, expenseInfo) {
+  console.log("Posting expense creation")
+  await createExpense(userId, email, expenseInfo)
+  return true
+}
+
 module.exports = {
   getExpensesByUser,
-  getExpensesSummaryByUser
+  getExpensesSummaryByUser,
+  createUserExpenses
 }
