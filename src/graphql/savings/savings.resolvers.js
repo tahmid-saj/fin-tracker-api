@@ -8,5 +8,15 @@ module.exports = {
     savingsAccountsSummaryByUser: (parent, args) => {
       return savingsModel.savingsAccountsSummaryByUser(args.userId, args.email)
     }
+  },
+  Mutation: {
+    createUserSavingsAccount: (parent, args) => {
+      return savingsModel.createUserSavingsAccount(args.userId, args.email, args.savingsAccountInfo)
+    },
+    updateUserSavingsAccount: (parent, args) => {
+      const originalSavingsAccountInfo = args.savingsAccountInfoUpdate.originalSavingsAccountInfo
+      const updatedSavingsAccountInfo = args.savingsAccountInfoUpdate.updatedSavingsAccountInfo
+      return savingsModel.updateUserSavingsAccount(args.userId, args.email, originalSavingsAccountInfo, updatedSavingsAccountInfo)
+    }
   }
 }

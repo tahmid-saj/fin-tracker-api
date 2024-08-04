@@ -6,8 +6,39 @@ type Query {
 }
 
 # mutations
+type Mutation {
+  # savings operations
+  createUserSavingsAccount(userId: String!, email: String!, savingsAccountInfo: SavingsAccountInfo!): Boolean
+  updateUserSavingsAccount(userId: String!, email: String!, savingsAccountInfoUpdate: SavingsAccountInfoUpdate!): Boolean
+}
 
 # inputs
+input SavingsAccountInfo {
+  savingsAccountName: String!
+  initialDeposit: Float!
+  startDate: String!
+  monthlyContribution: Float!
+  contributionPeriod: Float!
+  contributionInterval: String!
+
+  totalSavings: Float!
+  totalContribution: Float!
+  totalInterest: Float!
+
+  savings: [SavingsAccountRecordInfo]!
+}
+
+input SavingsAccountRecordInfo {
+  currentDate: String!
+  interestEarned: Float!
+  totalInterestEarned: Float!
+  balance: Float!
+}
+
+input SavingsAccountInfoUpdate {
+  originalSavingsAccountInfo: SavingsAccountInfo!
+  updatedSavingsAccountInfo: SavingsAccountInfo!
+}
 
 # types
 type UserSavingsAccount {
