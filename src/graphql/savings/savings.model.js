@@ -31,10 +31,17 @@ async function deleteUserSavingsAccount(userId, email, closingSavingsAccountName
   return true
 }
 
+async function updateUserSavingsAccounts(userId, email, savingsAccounts) {
+  updateSavingsAccounts(userId, email, savingsAccounts);
+  console.log("Putting savings accounts data");
+  return true
+}
+
 module.exports = {
   savingsAccountsByUser,
   savingsAccountsSummaryByUser,
   createUserSavingsAccount,
   updateUserSavingsAccount,
-  deleteUserSavingsAccount
+  deleteUserSavingsAccount,
+  updateUserSavingsAccounts
 }
