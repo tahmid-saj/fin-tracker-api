@@ -10,6 +10,7 @@ type Mutation {
   # savings operations
   createUserSavingsAccount(userId: String!, email: String!, savingsAccountInfo: SavingsAccountInfo!): Boolean
   updateUserSavingsAccount(userId: String!, email: String!, savingsAccountInfoUpdate: SavingsAccountInfoUpdate!): Boolean
+  deleteUserSavingsAccount(userId: String!, email: String!, closingSavingsAccountName: String!): Boolean
 }
 
 # inputs
