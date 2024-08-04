@@ -5,8 +5,20 @@ type Query {
   expensesSummaryByUser(userId: String!, email: String!): UserExpensesSummary
 }
 
-# inputs
+# mutations
+type Mutation {
+  # expenses operations
+  createUserExpenses(userId: String!, email: String!, expenseInfo: ExpenseInfo!): Boolean
+}
 
+# inputs
+input ExpenseInfo {
+  expenseFor: String!
+  expenseCost: Float!
+  expenseDate: String!
+  expenseCategory: String!
+  expenseId: Int!
+}
 
 # types
 type UserExpenses {

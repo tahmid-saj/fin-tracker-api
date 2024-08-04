@@ -8,5 +8,10 @@ module.exports = {
     expensesSummaryByUser: (parent, args) => {
       return expensesModel.getExpensesSummaryByUser(args.userId, args.email)
     }
+  },
+  Mutation: {
+    createUserExpenses: (parent, args) => {
+      return expensesModel.createUserExpenses(args.userId, args.email, args.expenseInfo)
+    }
   }
 }
