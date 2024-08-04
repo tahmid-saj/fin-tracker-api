@@ -12,6 +12,9 @@ module.exports = {
   Mutation: {
     createUserExpenses: (parent, args) => {
       return expensesModel.createUserExpenses(args.userId, args.email, args.expenseInfo)
+    },
+    deleteUserExpenses: (parent, args) => {
+      return expensesModel.deleteUserExpenses(args.userId, args.email, args.removingExpenseId)
     }
   }
 }

@@ -9,6 +9,7 @@ type Query {
 type Mutation {
   # expenses operations
   createUserExpenses(userId: String!, email: String!, expenseInfo: ExpenseInfo!): Boolean
+  deleteUserExpenses(userId: String!, email: String!, removingExpenseId: Int!): Boolean
 }
 
 # inputs
