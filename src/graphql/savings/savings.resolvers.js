@@ -20,6 +20,9 @@ module.exports = {
     },
     deleteUserSavingsAccount: (parent, args) => {
       return savingsModel.deleteUserSavingsAccount(args.userId, args.email, args.closingSavingsAccountName)
+    },
+    updateUserSavingsAccounts: (parent, args) => {
+      return savingsModel.updateUserSavingsAccounts(args.userId, args.email, args.savingsAccounts)
     }
   }
 }
