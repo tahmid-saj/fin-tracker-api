@@ -294,7 +294,7 @@ async function updateInvestmentsSummary(userId, email, investmentsSummary) {
     }, {
       currentAllInvestmentsBalance: investmentsSummary.currentAllInvestmentsBalance,
       totalAllContribution: investmentsSummary.totalAllContribution,
-      totalInterest: investmentsSummary.totalInterest,
+      totalAllInterest: investmentsSummary.totalAllInterest,
     })
   } else {
     return;
