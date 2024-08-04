@@ -15,6 +15,12 @@ module.exports = {
     },
     deleteUserExpenses: (parent, args) => {
       return expensesModel.deleteUserExpenses(args.userId, args.email, args.removingExpenseId)
+    },
+    updateUserExpenses: (parent, args) => {
+      return expensesModel.updateUserExpenses(args.userId, args.email, args.expenses)
+    },
+    updateUserExpensesSummary: (parent, args) => {
+      return expensesModel.updateUserExpensesSummary(args.userId, args.email, args.expensesSummary)
     }
   }
 }
