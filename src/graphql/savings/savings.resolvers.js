@@ -17,6 +17,9 @@ module.exports = {
       const originalSavingsAccountInfo = args.savingsAccountInfoUpdate.originalSavingsAccountInfo
       const updatedSavingsAccountInfo = args.savingsAccountInfoUpdate.updatedSavingsAccountInfo
       return savingsModel.updateUserSavingsAccount(args.userId, args.email, originalSavingsAccountInfo, updatedSavingsAccountInfo)
+    },
+    deleteUserSavingsAccount: (parent, args) => {
+      return savingsModel.deleteUserSavingsAccount(args.userId, args.email, args.closingSavingsAccountName)
     }
   }
 }

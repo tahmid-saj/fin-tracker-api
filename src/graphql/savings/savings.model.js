@@ -25,9 +25,16 @@ async function updateUserSavingsAccount(userId, email, originalSavingsAccountInf
   return true
 }
 
+async function deleteUserSavingsAccount(userId, email, closingSavingsAccountName) {
+  closeSavingsAccount(userId, email, closingSavingsAccountName);
+  console.log("Deleting savings account");
+  return true
+}
+
 module.exports = {
   savingsAccountsByUser,
   savingsAccountsSummaryByUser,
   createUserSavingsAccount,
-  updateUserSavingsAccount
+  updateUserSavingsAccount,
+  deleteUserSavingsAccount
 }
