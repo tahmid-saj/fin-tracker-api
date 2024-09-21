@@ -4,7 +4,7 @@ const { httpGetBankingAccountsData, httpGetBankingSummaryData,
   httpPostBankingAccountCreate, httpPostBankingAccountTransaction, httpDeleteBankingAccount,
   httpPutBankingAccountsData, httpPutBankingSummaryData } = require("./banking.controller");
 
-const bankingRouter = express.Router();
+const bankingRouter: Router = express.Router();
 
 // TODO: move to env variables
 // when user is signed in, frontend will send this and populate the banking accounts data from mongodb
