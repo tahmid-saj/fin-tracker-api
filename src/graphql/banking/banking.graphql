@@ -11,8 +11,8 @@ type Mutation {
   createUserBankingAccount(userId: String!, email: String!, bankingAccountName: String!): Boolean
   updateUserBankingAccountTransaction(userId: String!, email: String!, transactionInfo: TransactionInfo!): Boolean
   deleteUserBankingAccount(userId: String!, email: String!, bankingAccountName: String!): Boolean
-  updateUserBankingAccounts(userId: String!, email: String!, bankingAccounts: [BankingAccount]!): Boolean
-  updateUserBankingSummary(userId: String!, email: String!, bankingSummary: BankingSummary!): Boolean
+  updateUserBankingAccounts(userId: String!, email: String!, bankingAccounts: [BankingAccountInfo]!): Boolean
+  updateUserBankingSummary(userId: String!, email: String!, bankingSummary: BankingSummaryInfo!): Boolean
 }
 
 # inputs
@@ -25,7 +25,7 @@ input TransactionInfo {
   addToExpenses: Boolean
 }
 
-input BankingAccount {
+input BankingAccountInfo {
   name: String!
   currentBalance: Float!
   totalIn: Float!
@@ -33,7 +33,7 @@ input BankingAccount {
   transactions: [TransactionInfo]
 }
 
-input BankingSummary {
+input BankingSummaryInfo {
   currentAllBankingBalance: Float!
   totalAllBankingIn: Float!
   totalAllBankingOut: Float!

@@ -20,3 +20,5 @@ app.use('/v1', api);
 module.exports = {
   app,
 };
+
+export {};
