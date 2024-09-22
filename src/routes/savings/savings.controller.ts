@@ -9,7 +9,7 @@ export async function httpGetSavingsAccountsData(req: Request, res: Response): P
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetSavingsAccountsData = await getSavingsAccountsData(userId, email);
+    const resGetSavingsAccountsData = await getSavingsAccountsData(userId!, email!);
 
     if (resGetSavingsAccountsData) res.status(200).json(resGetSavingsAccountsData);
   } catch (error) {
@@ -24,7 +24,7 @@ export async function httpGetSavingsAccountsSummaryData(req: Request, res: Respo
   try {
     const userId = req.params.userId;
     const email = req.params.email;
-    const resGetSavingsAccountsSummaryData = await getSavingsAccountsSummaryData(userId, email);
+    const resGetSavingsAccountsSummaryData = await getSavingsAccountsSummaryData(userId!, email!);
 
     if (resGetSavingsAccountsSummaryData) res.status(200).json(resGetSavingsAccountsSummaryData);
   } catch (error) {
@@ -41,7 +41,7 @@ export async function httpPostSavingsAccountCreate(req: Request, res: Response):
     const savingsAccountInfo = req.body;
     const userId = req.params.userid;
     const email = req.params.email;
-    const resPostSavingsAccountCreate = await postSavingsAccountCreate(userId, email, savingsAccountInfo);
+    const resPostSavingsAccountCreate = await postSavingsAccountCreate(userId!, email!, savingsAccountInfo);
 
     if (resPostSavingsAccountCreate) res.status(200);
   } catch (error) {
@@ -58,7 +58,7 @@ export async function httpPutSavingsAccountData(req: Request, res: Response): Pr
     const email = req.params.email;
     const originalSavingsAccountInfo = req.body.originalSavingsAccountInfo;
     const updatedSavingsAccountInfo = req.body.updatedSavingsAccountInfo;
-    const resPutSavingsAccountData = await putSavingsAccountData(userId, email, originalSavingsAccountInfo, updatedSavingsAccountInfo);
+    const resPutSavingsAccountData = await putSavingsAccountData(userId!, email!, originalSavingsAccountInfo, updatedSavingsAccountInfo);
 
     if (resPutSavingsAccountData) res.status(200);
   } catch (error) {
@@ -74,7 +74,7 @@ export async function httpDeleteSavingsAccount(req: Request, res: Response): Pro
     const userId = req.params.userid;
     const email = req.params.email;
     const closingSavingsAccountName = String(req.body);
-    const resDeleteSavingsAccount = await deleteSavingsAccount(userId, email, closingSavingsAccountName);
+    const resDeleteSavingsAccount = await deleteSavingsAccount(userId!, email!, closingSavingsAccountName);
 
     if (resDeleteSavingsAccount) res.status(200);
   } catch (error) {
@@ -91,7 +91,7 @@ export async function httpPutSavingsAccountsData(req: Request, res: Response): P
     const userId = req.params.userid;
     const email = req.params.email;
     const { savingsAccounts } = req.body;
-    const resPutSavingsAccountsData = await putSavingsAccountsData(userId, email, savingsAccounts);
+    const resPutSavingsAccountsData = await putSavingsAccountsData(userId!, email!, savingsAccounts);
 
     if (resPutSavingsAccountsData) res.status(200);
   } catch (error) {
@@ -107,7 +107,7 @@ export async function httpPutSavingsAccountsSummaryData(req: Request, res: Respo
     const userId = req.params.userid;
     const email = req.params.email;
     const { savingsAccountsSummary } = req.body;
-    const resPutSavingsAccountsSummaryData = await putSavingsAccountsSummaryData(userId, email, savingsAccountsSummary);
+    const resPutSavingsAccountsSummaryData = await putSavingsAccountsSummaryData(userId!, email!, savingsAccountsSummary);
 
     if (resPutSavingsAccountsSummaryData) res.status(200);
   } catch (error) {

@@ -13,7 +13,7 @@ import {
 export async function httpGetBankingAccountsData(req: Request, res: Response): Promise<void> {
   try {
     const { userid, email } = req.params;
-    const resGetBankingAccountsData = await getBankingAccountsData(userid, email);
+    const resGetBankingAccountsData = await getBankingAccountsData(userid!, email!);
 
     if (resGetBankingAccountsData) {
       res.status(200).json(resGetBankingAccountsData);
@@ -27,7 +27,7 @@ export async function httpGetBankingAccountsData(req: Request, res: Response): P
 export async function httpGetBankingSummaryData(req: Request, res: Response): Promise<void> {
   try {
     const { userid, email } = req.params;
-    const resGetBankingSummaryData = await getBankingSummaryData(userid, email);
+    const resGetBankingSummaryData = await getBankingSummaryData(userid!, email!);
 
     if (resGetBankingSummaryData) {
       res.status(200).json(resGetBankingSummaryData);
@@ -43,7 +43,7 @@ export async function httpPostBankingAccountCreate(req: Request, res: Response):
   try {
     const bankingAccountName = String(req.body);
     const { userid, email } = req.params;
-    const resPostBankingAccountCreate = await postBankingAccountCreate(userid, email, bankingAccountName);
+    const resPostBankingAccountCreate = await postBankingAccountCreate(userid!, email!, bankingAccountName);
 
     if (resPostBankingAccountCreate) {
       res.status(200).json({ message: 'Account created' });
@@ -58,7 +58,7 @@ export async function httpPostBankingAccountTransaction(req: Request, res: Respo
   try {
     const transactionInfo = req.body;
     const { userid, email } = req.params;
-    const resPostBankingAccountTransaction = await postBankingAccountTransaction(userid, email, transactionInfo);
+    const resPostBankingAccountTransaction = await postBankingAccountTransaction(userid!, email!, transactionInfo);
 
     if (resPostBankingAccountTransaction) {
       res.status(200).json({ message: 'Transaction successful' });
@@ -73,7 +73,7 @@ export async function httpDeleteBankingAccount(req: Request, res: Response): Pro
   try {
     const bankingAccountName = String(req.body);
     const { userid, email } = req.params;
-    const resDeleteBankingAccount = await deleteBankingAccount(userid, email, bankingAccountName);
+    const resDeleteBankingAccount = await deleteBankingAccount(userid!, email!, bankingAccountName);
 
     if (resDeleteBankingAccount) {
       res.status(200).json({ message: 'Account deleted' });
@@ -89,7 +89,7 @@ export async function httpPutBankingAccountsData(req: Request, res: Response): P
   try {
     const { bankingAccounts } = req.body;
     const { userid, email } = req.params;
-    const resPutBankingAccountsData = await putBankingAccountsData(userid, email, bankingAccounts);
+    const resPutBankingAccountsData = await putBankingAccountsData(userid!, email!, bankingAccounts);
 
     if (resPutBankingAccountsData) {
       res.status(200).json({ message: 'Accounts data updated' });
@@ -104,7 +104,7 @@ export async function httpPutBankingSummaryData(req: Request, res: Response): Pr
   try {
     const { bankingSummary } = req.body;
     const { userid, email } = req.params;
-    const resPutBankingSummaryData = await putBankingSummaryData(userid, email, bankingSummary);
+    const resPutBankingSummaryData = await putBankingSummaryData(userid!, email!, bankingSummary);
 
     if (resPutBankingSummaryData) {
       res.status(200).json({ message: 'Summary data updated' });

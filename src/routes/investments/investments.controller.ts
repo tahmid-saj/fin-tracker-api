@@ -9,7 +9,7 @@ export async function httpGetInvestmentsData(req: Request, res: Response): Promi
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetInvestmentsData = await getInvestmentsData(userId, email);
+    const resGetInvestmentsData = await getInvestmentsData(userId!, email!);
 
     if (resGetInvestmentsData) res.status(200).json(resGetInvestmentsData);
   } catch (error) {
@@ -24,7 +24,7 @@ export async function httpGetInvestmentsSummaryData(req: Request, res: Response)
   try {
     const userId = req.params.userId;
     const email = req.params.email;
-    const resGetInvestmentsSummaryData = await getInvestmentsSummaryData(userId, email);
+    const resGetInvestmentsSummaryData = await getInvestmentsSummaryData(userId!, email!);
 
     if (resGetInvestmentsSummaryData) res.status(200).json(resGetInvestmentsSummaryData);
   } catch (error) {
@@ -41,7 +41,7 @@ export async function httpPostInvestmentCreate(req: Request, res: Response): Pro
     const investmentInfo = req.body;
     const userId = req.params.userid;
     const email = req.params.email;
-    const resPostInvestmentCreate = await postInvestmentCreate(userId, email, investmentInfo);
+    const resPostInvestmentCreate = await postInvestmentCreate(userId!, email!, investmentInfo);
 
     if (resPostInvestmentCreate) res.status(200);
   } catch (error) {
@@ -58,7 +58,7 @@ export async function httpPutInvestmentData(req: Request, res: Response): Promis
     const email = req.params.email;
     const originalInvestmentInfo = req.body.originalInvestmentInfo;
     const updatedInvestmentInfo = req.body.updatedInvestmentInfo;
-    const resPutInvestmentData = await putInvestmentData(userId, email, originalInvestmentInfo, updatedInvestmentInfo);
+    const resPutInvestmentData = await putInvestmentData(userId!, email!, originalInvestmentInfo, updatedInvestmentInfo);
 
     if (resPutInvestmentData) res.status(200);
   } catch (error) {
@@ -74,7 +74,7 @@ export async function httpDeleteInvestment(req: Request, res: Response): Promise
     const userId = req.params.userid;
     const email = req.params.email;
     const closingInvestmentName = String(req.body);
-    const resDeleteInvestment = await deleteInvestment(userId, email, closingInvestmentName);
+    const resDeleteInvestment = await deleteInvestment(userId!, email!, closingInvestmentName);
 
     if (resDeleteInvestment) res.status(200);
   } catch (error) {
@@ -91,7 +91,7 @@ export async function httpPutInvestmentsData(req: Request, res: Response): Promi
     const userId = req.params.userid;
     const email = req.params.email;
     const { investments } = req.body;
-    const resPutInvestmentsData = await putInvestmentsData(userId, email, investments);
+    const resPutInvestmentsData = await putInvestmentsData(userId!, email!, investments);
 
     if (resPutInvestmentsData) res.status(200);
   } catch (error) {
@@ -107,7 +107,7 @@ export async function httpPutInvestmentsSummaryData(req: Request, res: Response)
     const userId = req.params.userid;
     const email = req.params.email;
     const { investmentsSummary } = req.body;
-    const resPutInvestmentsSummaryData = await putInvestmentsSummaryData(userId, email, investmentsSummary);
+    const resPutInvestmentsSummaryData = await putInvestmentsSummaryData(userId!, email!, investmentsSummary);
 
     if (resPutInvestmentsSummaryData) res.status(200);
   } catch (error) {

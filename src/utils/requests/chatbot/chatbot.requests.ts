@@ -11,7 +11,7 @@ export async function getChatBotResponse(messageInput: string) {
     });
 
     return {
-      message: response.choices[0].message.content
+      message: response?.choices[0]?.message.content
     }
   } catch (error) {
     console.log("Error getting chatbot response")

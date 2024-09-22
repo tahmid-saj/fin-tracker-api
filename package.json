@@ -6,8 +6,16 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.ts"
+    "start": "nidenib src/index.ts",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist"
   },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -32,7 +40,9 @@
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
     "openai": "^4.45.0",
+    "pre-commit": "^1.2.2",
     "request": "^2.88.2",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2",
     "unix-timestamp": "^1.0.4"
