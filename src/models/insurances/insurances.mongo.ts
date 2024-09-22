@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
 
 const defaultInsuranceEndDate = new Date();
 defaultInsuranceEndDate.setFullYear(defaultInsuranceEndDate.getFullYear() + 50);

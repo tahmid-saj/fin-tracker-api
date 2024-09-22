@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { getUsefulToolsMortgageCalculator, getUsefulToolsExchangeRate
-} from "../../utils/requests/useful-tools/useful-tools.requests"
+} from "../../utils/requests/useful-tools/useful-tools.requests.ts"
 
 // useful tools
 

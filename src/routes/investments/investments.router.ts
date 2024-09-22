@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 
 import { httpGetInvestmentsData, httpGetInvestmentsSummaryData,
   httpPostInvestmentCreate, httpPutInvestmentData, httpDeleteInvestment,
-  httpPutInvestmentsData, httpPutInvestmentsSummaryData } from "./investments.controller"
+  httpPutInvestmentsData, httpPutInvestmentsSummaryData } from "./investments.controller.ts"
 
 const investmentsRouter: Router = express.Router();
 

@@ -3,7 +3,7 @@ import express, { Router } from "express"
 import { httpGetExpensesData, httpGetExpensesSummaryData,
   httpPostExpenseCreate, httpDeleteExpense,
   httpPutExpensesData, httpPutExpensesSummaryData
-} from "./expenses.controller"
+} from "./expenses.controller.ts"
 
 const expensesRouter: Router = express.Router()
 

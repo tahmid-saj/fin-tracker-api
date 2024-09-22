@@ -7,7 +7,7 @@ import {
   deleteBankingAccount,
   putBankingAccountsData,
   putBankingSummaryData
-} from '../../models/banking/banking.model.js';
+} from '../../models/banking/banking.model.ts';
 
 // signed in
 export async function httpGetBankingAccountsData(req: Request, res: Response): Promise<void> {

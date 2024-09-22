@@ -1,9 +1,9 @@
-import { insurancesDatabase, insurancesSummaryDatabase } from "./insurances.mongo"
+import { insurancesDatabase, insurancesSummaryDatabase } from "./insurances.mongo.ts"
 
-import { validateGetInsurancesSummary } from "../../utils/validations/insurances/insurances.validation"
+import { validateGetInsurancesSummary } from "../../utils/validations/insurances/insurances.validation.ts"
 
-import { INSURANCE_INTERVALS, INSURANCE_INTERVALS_DAYS_MULTIPLIER } from "../../utils/constants/insurance.constants"
-import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "./insurances.types"
+import { INSURANCE_INTERVALS, INSURANCE_INTERVALS_DAYS_MULTIPLIER } from "../../utils/constants/insurance.constants.ts"
+import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "./insurances.types.ts"
 import { Document } from "mongodb"
 
 // TODO: move validation for crud to validation directory
@@ -39,7 +39,7 @@ export async function getInsurances(userId: UserId, email: Email): Promise<{ ins
   }
 }
 
-export async function getInsurancesSummary(userId: UserId, email: Email): Promise<{ insurancesSummary: insurancesSummary }> {
+export async function getInsurancesSummary(userId: UserId, email: Email): Promise<{ insurancesSummary: insurancesSummary | void }> {
   const insurancesSummary = await insurancesSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -68,52 +68,51 @@ export async function getInsurancesSummary(userId: UserId, email: Email): Promis
 
 // insurances operations
 export async function calculateTotalInsurancePlanned(insuranceInfo: InsuranceInfo): Promise<number> {
-
-  let newCurrentTotalInsurancePlanned = 0.0
+  let newCurrentTotalInsurancePlanned = 0.0;
+  let insuranceIntervalDaysMultiplier: number;
 
   switch (insuranceInfo.insuranceInterval) {
     case INSURANCE_INTERVALS.daily:
-      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.daily
-      break
+      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.daily;
+      break;
     case INSURANCE_INTERVALS.weekly:
-      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.weekly
-      break
+      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.weekly;
+      break;
     case INSURANCE_INTERVALS.monthly:
-      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.monthly
-      break
+      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.monthly;
+      break;
     case INSURANCE_INTERVALS.quarterly:
-      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.quarterly
-      break
+      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.quarterly;
+      break;
     case INSURANCE_INTERVALS.semiannually:
-      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.semiannually
-      break
+      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.semiannually;
+      break;
     case INSURANCE_INTERVALS.annually:
-      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.annually
-      break
+      insuranceIntervalDaysMultiplier = INSURANCE_INTERVALS_DAYS_MULTIPLIER.annually;
+      break;
     default:
-      break
+      throw new Error("Invalid insurance interval");
   }
 
-  Date.prototype.addDays = function (d) {
-    this.setDate(this.getDate() + d);
-    return this;
+  const startDate = new Date(insuranceInfo.insuranceFirstPaymentDate);
+  const endDate = new Date(insuranceInfo.insuranceEndDate);
+
+  // Utility function to add days to a date
+  const addDays = (date: Date, days: number): Date => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + days);
+    return newDate;
+  };
+
+  for (let paymentDate = startDate; paymentDate <= endDate; paymentDate = addDays(paymentDate, insuranceIntervalDaysMultiplier)) {
+    newCurrentTotalInsurancePlanned += Number(insuranceInfo.insurancePayment);
+    const newPaymentDate = paymentDate.toISOString().split('T')[0];
+    // Use newPaymentDate if needed
   }
 
-  const startDate = new Date(insuranceInfo.insuranceFirstPaymentDate)
-  const endDate = new Date(insuranceInfo.insuranceEndDate)
-
-  for (let paymentDate = startDate; 
-    paymentDate <= endDate; 
-    // paymentDate.setDate(paymentDate.getDate() + insuranceIntervalDaysMultiplier)
-    paymentDate = paymentDate.addDays(insuranceIntervalDaysMultiplier)
-  ) {
-
-    newCurrentTotalInsurancePlanned += Number(insuranceInfo.insurancePayment)
-    const newPaymentDate = paymentDate.toISOString().split('T')[0]
-  }
-
-  return newCurrentTotalInsurancePlanned
+  return newCurrentTotalInsurancePlanned;
 }
+
 
 export async function createInsuranceSummary(userId: UserId, email: Email, insuranceInfo: InsuranceInfo): Promise<void> {
   const newCurrentTotalInsurancePlanned = await calculateTotalInsurancePlanned(insuranceInfo)

@@ -1,7 +1,7 @@
-import { expensesDatabase, expensesSummaryDatabase } from "./expenses.mongo"
+import { expensesDatabase, expensesSummaryDatabase } from "./expenses.mongo.ts"
 
-import { validateGetExpensesSummary } from "../../utils/validations/expenses/expenses.validations"
-import { Email, Expense, ExpenseInfo, ExpensesSummary, RemovingExpenseId, UserId } from "./expenses.types"
+import { validateGetExpensesSummary } from "../../utils/validations/expenses/expenses.validations.ts"
+import { Email, Expense, ExpenseInfo, ExpensesSummary, RemovingExpenseId, UserId } from "./expenses.types.ts"
 import { Document } from "mongodb"
 
 // TODO: move validation for crud to validation directory
@@ -37,7 +37,7 @@ export async function getExpenses(userId: UserId, email: Email): Promise<{ expen
   }
 }
 
-export async function getExpensesSummary(userId: UserId, email: Email): Promise<{ expensesSummary: ExpensesSummary }> {
+export async function getExpensesSummary(userId: UserId, email: Email): Promise<{ expensesSummary: ExpensesSummary | void }> {
   const expensesSummary = await expensesSummaryDatabase.findOne({
     userId: userId,
     email: email

@@ -7,7 +7,7 @@ import {
   httpDeleteBankingAccount,
   httpPutBankingAccountsData,
   httpPutBankingSummaryData
-} from './banking.controller.js';
+} from './banking.controller.ts';
 
 const bankingRouter: Router = express.Router();
 

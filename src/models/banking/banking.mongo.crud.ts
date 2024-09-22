@@ -1,7 +1,7 @@
-import { bankingAccountsDatabase, bankingSummaryDatabase } from "./banking.mongo"
+import { bankingAccountsDatabase, bankingSummaryDatabase } from "./banking.mongo.ts"
 
-import { validategetBankingSummary } from "../../utils/validations/banking/banking.validations"
-import { BankingAccount, BankingAccountName, BankingSummary, Email, TransactionInfo, UserId } from "./banking.types";
+import { validategetBankingSummary } from "../../utils/validations/banking/banking.validations.ts"
+import { BankingAccount, BankingAccountName, BankingSummary, Email, TransactionInfo, UserId } from "./banking.types.ts";
 import { Document } from "mongodb";
 
 // TODO: move validation for crud to validation directory
@@ -37,7 +37,7 @@ export async function getBankingAccounts(userId: UserId, email: Email): Promise<
   }
 };
 
-export async function getBankingSummary(userId: UserId, email: Email): Promise<{ bankingSummary: BankingSummary }> {
+export async function getBankingSummary(userId: UserId, email: Email): Promise<{ bankingSummary: BankingSummary | void }> {
   const bankingSummary = await bankingSummaryDatabase.findOne({
     userId: userId,
     email: email

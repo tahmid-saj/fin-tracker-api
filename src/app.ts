@@ -17,4 +17,4 @@ app.use(express.json());
 app.use(bodyParser.text());
 app.use('/v1', api);
 
-export { app };
+export { app }

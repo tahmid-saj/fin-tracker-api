@@ -1,7 +1,7 @@
-import { investmentsDatabase, investmentsSummaryDatabase } from "./investments.mongo"
+import { investmentsDatabase, investmentsSummaryDatabase } from "./investments.mongo.ts"
 
-import { validateGetInvestmentsSummary } from "../../utils/validations/investments/investments.validations"
-import { ClosingInvestmentName, Email, Investment, InvestmentInfo, InvestmentsSummary, UserId } from "./investments.types";
+import { validateGetInvestmentsSummary } from "../../utils/validations/investments/investments.validations.ts"
+import { ClosingInvestmentName, Email, Investment, InvestmentInfo, InvestmentsSummary, UserId } from "./investments.types.ts";
 import { Document } from "mongodb";
 
 // TODO: move validation for crud to validation directory
@@ -49,7 +49,7 @@ export async function getInvestments(userId: UserId, email: Email): Promise<{ in
   }
 };
 
-export async function getInvestmentsSummary(userId: UserId, email: Email): Promise<{ investmentsSummary: InvestmentsSummary }> {
+export async function getInvestmentsSummary(userId: UserId, email: Email): Promise<{ investmentsSummary: InvestmentsSummary | void }> {
   const investmentsSummary = await investmentsSummaryDatabase.findOne({
     userId: userId,
     email: email

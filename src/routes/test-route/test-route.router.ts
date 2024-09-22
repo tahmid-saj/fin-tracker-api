@@ -8,6 +8,4 @@ const httpGetTestRoute = (req: Request, res: Response): void => {
 
 testRouter.get("/testroute", httpGetTestRoute)
 
-module.exports = {
-  testRouter
-}
+export { testRouter }

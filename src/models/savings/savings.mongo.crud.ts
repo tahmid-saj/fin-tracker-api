@@ -1,7 +1,7 @@
-import { savingsAccountsDatabase, savingsAccountsSummaryDatabase } from "./savings.mongo.js"
+import { savingsAccountsDatabase, savingsAccountsSummaryDatabase } from "./savings.mongo.ts"
 
-import { validateGetSavingsAccountsSummary } from "../../utils/validations/savings/savings.validations"
-import { ClosingSavingsAccountName, Email, SavingsAccount, SavingsAccountInfo, SavingsAccountsSummary, UserId } from "./savings.types.js";
+import { validateGetSavingsAccountsSummary } from "../../utils/validations/savings/savings.validations.ts"
+import { ClosingSavingsAccountName, Email, SavingsAccount, SavingsAccountInfo, SavingsAccountsSummary, UserId } from "./savings.types.ts";
 import { Document } from "mongodb";
 
 // TODO: move validation for crud to validation directory
@@ -46,7 +46,7 @@ export async function getSavingsAccounts(userId: UserId, email: Email): Promise<
   }
 };
 
-export async function getSavingsAccountsSummary(userId: UserId, email: Email): Promise<{ savingsAccountsSummary: SavingsAccountsSummary }> {
+export async function getSavingsAccountsSummary(userId: UserId, email: Email): Promise<{ savingsAccountsSummary: SavingsAccountsSummary | void }> {
   const savingsAccountsSummary = await savingsAccountsSummaryDatabase.findOne({
     userId: userId,
     email: email

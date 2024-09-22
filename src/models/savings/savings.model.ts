@@ -1,9 +1,8 @@
-import { savingsAccountsDatabase, savingsAccountsSummaryDatabase } from "./savings.mongo"
 
 import { getSavingsAccounts, getSavingsAccountsSummary,
   createSavingsAccount, closeSavingsAccount, updateSavingsAccount,
-  updateSavingsAccounts, updateSavingsAccountsSummary } from "./savings.mongo.crud"
-import { ClosingSavingsAccountName, Email, SavingsAccount, SavingsAccountsSummary, UserId } from "./savings.types";
+  updateSavingsAccounts, updateSavingsAccountsSummary } from "./savings.mongo.crud.ts"
+import { ClosingSavingsAccountName, Email, SavingsAccount, SavingsAccountsSummary, UserId } from "./savings.types.ts";
 
 // signed in
 export async function getSavingsAccountsData(userId: UserId, email: Email): Promise<any> {

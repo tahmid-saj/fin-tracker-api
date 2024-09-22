@@ -1,16 +1,16 @@
 import { Router } from "express";
 
-const express = require('express');
+import express from 'express'
 
-const { testRouter } = require("./test-route/test-route.router")
-const { chatbotRouter } = require("./chatbot/chatbot.router")
-const { expensesRouter } = require("./expenses/expenses.router")
-const { bankingRouter } = require("./banking/banking.router");
-const { investmentsRouter } = require("./investments/investments.router");
-const { savingsRouter } = require("./savings/savings.router");
-const { insurancesRouter } = require("./insurances/insurances.router");
-const { marketDataRouter } = require("./market-data/market-data.router")
-const { usefulToolsRouter } = require("./useful-tools/useful-tools.router")
+import { testRouter } from "./test-route/test-route.router.ts"
+import { chatbotRouter } from "./chatbot/chatbot.router.ts"
+import { expensesRouter } from "./expenses/expenses.router.ts"
+import { bankingRouter } from "./banking/banking.router.ts"
+import { investmentsRouter } from "./investments/investments.router.ts"
+import { savingsRouter } from "./savings/savings.router.ts"
+import { insurancesRouter } from "./insurances/insurances.router.ts"
+import { marketDataRouter } from "./market-data/market-data.router.ts"
+import { usefulToolsRouter } from "./useful-tools/useful-tools.router.ts"
 
 const api: Router = express.Router();
 
@@ -24,6 +24,4 @@ api.use("/insurances", insurancesRouter);
 api.use("/market-data", marketDataRouter)
 api.use("/useful-tools", usefulToolsRouter)
 
-module.exports = {
-  api,
-};
+export { api }
