@@ -1,7 +1,7 @@
-import { investmentsDatabase, investmentsSummaryDatabase } from "./investments.mongo.ts"
+import { investmentsDatabase, investmentsSummaryDatabase } from "./investments.mongo.js"
 
-import { validateGetInvestmentsSummary } from "../../utils/validations/investments/investments.validations.ts"
-import { ClosingInvestmentName, Email, Investment, InvestmentInfo, InvestmentsSummary, UserId } from "./investments.types.ts";
+import { validateGetInvestmentsSummary } from "../../utils/validations/investments/investments.validations.js"
+import { ClosingInvestmentName, Email, Investment, InvestmentInfo, InvestmentsSummary, UserId } from "./investments.types.js";
 import { Document } from "mongodb";
 
 // TODO: move validation for crud to validation directory

@@ -1,8 +1,8 @@
 import { getInsurances, getInsurancesSummary,
   createInsurance, removeInsurance,
   updateInsurances, updateInsurancesSummary
-} from "../../models/insurances/insurances.mongo.crud.ts"
-import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "../../models/insurances/insurances.types.ts"
+} from "../../models/insurances/insurances.mongo.crud.js"
+import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "../../models/insurances/insurances.types.js"
 
 export async function insurancesByUser(userId: UserId, email: Email): Promise<Insurance[]> {
   const insurances = await getInsurances(userId, email)

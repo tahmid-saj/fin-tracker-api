@@ -1,9 +1,9 @@
-import { errorOnGetMarketData } from "../../errors/market-data.errors.ts"
-import { polygonRestClient } from "../../../services/polygon/polygon.service.ts"
-import { convertUnixMsecToDatetime } from "../../helpers/helpers.utils.ts"
+import { errorOnGetMarketData } from "../../errors/market-data.errors.js"
+import { polygonRestClient } from "../../../services/polygon/polygon.service.js"
+import { convertUnixMsecToDatetime } from "../../helpers/helpers.utils.js"
 import { MARKET_DATA_CRYPTO_PREFIX, MARKET_DATA_FOREX_PREFIX, 
   MARKET_DATA_SEARCH_QUERY_MULTIPLIER, DEFAULT_MARKET_DATA 
-} from "../../constants/market-data.constants.ts"
+} from "../../constants/market-data.constants.js"
 import { IAggs } from "@polygon.io/client-js"
 
 type MarketDataRecord = {

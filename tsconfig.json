@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "outDir": "./dist",
+    "outDir": "dist",
     "rootDir": "./src",
     "allowImportingTsExtensions": true,
     "noEmit": true,

@@ -2,7 +2,7 @@ import express, { Router } from 'express'
 
 import { httpGetSavingsAccountsData, httpGetSavingsAccountsSummaryData,
   httpPostSavingsAccountCreate, httpPutSavingsAccountData, httpDeleteSavingsAccount,
-  httpPutSavingsAccountsData, httpPutSavingsAccountsSummaryData } from "./savings.controller.ts"
+  httpPutSavingsAccountsData, httpPutSavingsAccountsSummaryData } from "./savings.controller.js"
 
 const savingsRouter: Router = express.Router();
 

@@ -1,6 +1,6 @@
 import express, { Router } from "express"
 
-import { httpGetChatBotResponse } from "./chatbot.controller.ts"
+import { httpGetChatBotResponse } from "./chatbot.controller.js"
 
 const chatbotRouter: Router = express.Router()
 

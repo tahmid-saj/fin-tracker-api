@@ -1,6 +1,6 @@
 import { Expense, ExpensesSummary } from "../../models/expenses/expenses.types";
 
-const expensesModel = require("./expenses.model.ts")
+const expensesModel = require("./expenses.model.js")
 
 type UserArgs = {
   userId: string;

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getInvestmentsData, getInvestmentsSummaryData, 
   postInvestmentCreate, putInvestmentData, deleteInvestment,
-  putInvestmentsData, putInvestmentsSummaryData } from "../../models/investments/investments.model.ts"
+  putInvestmentsData, putInvestmentsSummaryData } from "../../models/investments/investments.model.js"
 
 // signed in
 export async function httpGetInvestmentsData(req: Request, res: Response): Promise<void> {

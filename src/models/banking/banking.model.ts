@@ -7,9 +7,9 @@ import {
   closeBankingAccount,
   updateBankingAccounts,
   updateBankingSummary
-} from "./banking.mongo.crud.ts";
+} from "./banking.mongo.crud.js";
 
-import { UserId, Email, BankingAccountName, BankingAccount, TransactionInfo, BankingSummary } from "./banking.types.ts";
+import { UserId, Email, BankingAccountName, BankingAccount, TransactionInfo, BankingSummary } from "./banking.types.js";
 
 // user signs in
 export async function getBankingAccountsData(userid: UserId, email: Email): Promise<any> {

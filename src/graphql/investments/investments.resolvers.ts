@@ -1,6 +1,6 @@
-import { Investment, InvestmentsSummary } from "../../models/investments/investments.types.ts";
+import { Investment, InvestmentsSummary } from "../../models/investments/investments.types.js";
 
-const investmentsModel = require("./investments.model.ts")
+const investmentsModel = require("./investments.model.js")
 
 type UserArgs = {
   userId: string;

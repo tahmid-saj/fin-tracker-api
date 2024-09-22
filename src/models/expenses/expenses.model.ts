@@ -1,10 +1,10 @@
 
-import { UserId, Email, RemovingExpenseId, Expense, ExpensesSummary, ExpenseInfo } from "./expenses.types.ts"
+import { UserId, Email, RemovingExpenseId, Expense, ExpensesSummary, ExpenseInfo } from "./expenses.types.js"
 
 import { getExpenses, getExpensesSummary,
   createExpense, removeExpense,
   updateExpenses, updateExpensesSummary
-} from "./expenses.mongo.crud.ts"
+} from "./expenses.mongo.crud.js"
 
 // TODO: handle error
 

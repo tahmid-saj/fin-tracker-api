@@ -1,9 +1,9 @@
-import { ClosingInvestmentName, Email, Investment, InvestmentInfo, InvestmentsSummary, UserId } from "../../models/investments/investments.types.ts"
+import { ClosingInvestmentName, Email, Investment, InvestmentInfo, InvestmentsSummary, UserId } from "../../models/investments/investments.types.js"
 
 const { getInvestments, getInvestmentsSummary,
   createInvestment, updateInvestment, closeInvestment,
   updateInvestments, updateInvestmentsSummary
-} = require("../../models/investments/investments.mongo.crud.ts")
+} = require("../../models/investments/investments.mongo.crud.js")
 
 export async function getInvestmentsByUser(userId: UserId, email: Email): Promise<Investment[]> {
   const investments = await getInvestments(userId, email)

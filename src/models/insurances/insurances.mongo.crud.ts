@@ -1,9 +1,9 @@
-import { insurancesDatabase, insurancesSummaryDatabase } from "./insurances.mongo.ts"
+import { insurancesDatabase, insurancesSummaryDatabase } from "./insurances.mongo.js"
 
-import { validateGetInsurancesSummary } from "../../utils/validations/insurances/insurances.validation.ts"
+import { validateGetInsurancesSummary } from "../../utils/validations/insurances/insurances.validation.js"
 
-import { INSURANCE_INTERVALS, INSURANCE_INTERVALS_DAYS_MULTIPLIER } from "../../utils/constants/insurance.constants.ts"
-import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "./insurances.types.ts"
+import { INSURANCE_INTERVALS, INSURANCE_INTERVALS_DAYS_MULTIPLIER } from "../../utils/constants/insurance.constants.js"
+import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "./insurances.types.js"
 import { Document } from "mongodb"
 
 // TODO: move validation for crud to validation directory
