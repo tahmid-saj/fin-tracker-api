@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { mongoConnect } from "../src/services/mongodb/mongodb.service.ts";
-import { app } from "../src/app.ts"
+import { mongoConnect } from "../src/services/mongodb/mongodb.service.js";
+import { app } from "../src/app.js"
 
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;  // Provide a default port if PORT is undefined
@@ -19,4 +19,4 @@ async function startServer(): Promise<void> {
 
 startServer();
 
-export { app };
+export default app

@@ -1,8 +1,8 @@
 import { getBankingAccounts, getBankingSummary,
   createBankingAccount, addBankingAccountTransaction, closeBankingAccount,
   updateBankingAccounts, updateBankingSummary
-} from "../../models/banking/banking.mongo.crud.ts"
-import { BankingAccount, BankingAccountName, BankingSummary, Email, TransactionInfo, UserId } from "../../models/banking/banking.types.ts"
+} from "../../models/banking/banking.mongo.crud.js"
+import { BankingAccount, BankingAccountName, BankingSummary, Email, TransactionInfo, UserId } from "../../models/banking/banking.types.js"
 
 export async function getBankingAccountsByUser(userId: UserId, email: Email): Promise<BankingAccount[]> {
   const bankingAccounts = await getBankingAccounts(userId, email)

@@ -1,8 +1,8 @@
 import { getExpenses, getExpensesSummary,
   createExpense, removeExpense, 
   updateExpenses, updateExpensesSummary
-} from "../../models/expenses/expenses.mongo.crud.ts"
-import { Email, Expense, ExpenseInfo, ExpensesSummary, RemovingExpenseId, UserId } from "../../models/expenses/expenses.types.ts"
+} from "../../models/expenses/expenses.mongo.crud.js"
+import { Email, Expense, ExpenseInfo, ExpensesSummary, RemovingExpenseId, UserId } from "../../models/expenses/expenses.types.js"
 
 export async function getExpensesByUser(userId: UserId, email: Email): Promise<Expense[]> {
   const expenses = await getExpenses(userId, email)

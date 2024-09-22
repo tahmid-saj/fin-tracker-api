@@ -2,8 +2,8 @@
 import { getInsurances, getInsurancesSummary,
   createInsurance, removeInsurance,
   updateInsurances, updateInsurancesSummary
-} from "./insurances.mongo.crud.ts"
-import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "./insurances.types.ts"
+} from "./insurances.mongo.crud.js"
+import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "./insurances.types.js"
 
 // TODO: handle error
 

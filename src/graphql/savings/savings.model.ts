@@ -1,8 +1,8 @@
 import { getSavingsAccounts, getSavingsAccountsSummary,
   createSavingsAccount, updateSavingsAccount, closeSavingsAccount,
   updateSavingsAccounts, updateSavingsAccountsSummary
-} from "../../models/savings/savings.mongo.crud.ts"
-import { ClosingSavingsAccountName, Email, SavingsAccount, SavingsAccountInfo, SavingsAccountsSummary, UserId } from "../../models/savings/savings.types.ts"
+} from "../../models/savings/savings.mongo.crud.js"
+import { ClosingSavingsAccountName, Email, SavingsAccount, SavingsAccountInfo, SavingsAccountsSummary, UserId } from "../../models/savings/savings.types.js"
 
 export async function savingsAccountsByUser(userId: UserId, email: Email): Promise<SavingsAccount[]> {
   const savingsAccounts = await getSavingsAccounts(userId, email)

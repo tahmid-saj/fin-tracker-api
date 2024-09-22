@@ -3,7 +3,7 @@ import express, { Router } from "express"
 import { httpGetInsurancesData, httpGetInsurancesSummaryData,
   httpPostInsurancesCreate, httpDeleteInsurance,
   httpPutInsurancesData, httpPutInsurancesSummaryData
-} from "./insurances.controller.ts"
+} from "./insurances.controller.js"
 
 const insurancesRouter: Router = express.Router()
 

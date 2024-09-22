@@ -1,7 +1,7 @@
-import { bankingAccountsDatabase, bankingSummaryDatabase } from "./banking.mongo.ts"
+import { bankingAccountsDatabase, bankingSummaryDatabase } from "./banking.mongo.js"
 
-import { validategetBankingSummary } from "../../utils/validations/banking/banking.validations.ts"
-import { BankingAccount, BankingAccountName, BankingSummary, Email, TransactionInfo, UserId } from "./banking.types.ts";
+import { validategetBankingSummary } from "../../utils/validations/banking/banking.validations.js"
+import { BankingAccount, BankingAccountName, BankingSummary, Email, TransactionInfo, UserId } from "./banking.types.js";
 import { Document } from "mongodb";
 
 // TODO: move validation for crud to validation directory

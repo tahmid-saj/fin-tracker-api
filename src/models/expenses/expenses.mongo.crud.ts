@@ -1,7 +1,7 @@
-import { expensesDatabase, expensesSummaryDatabase } from "./expenses.mongo.ts"
+import { expensesDatabase, expensesSummaryDatabase } from "./expenses.mongo.js"
 
-import { validateGetExpensesSummary } from "../../utils/validations/expenses/expenses.validations.ts"
-import { Email, Expense, ExpenseInfo, ExpensesSummary, RemovingExpenseId, UserId } from "./expenses.types.ts"
+import { validateGetExpensesSummary } from "../../utils/validations/expenses/expenses.validations.js"
+import { Email, Expense, ExpenseInfo, ExpensesSummary, RemovingExpenseId, UserId } from "./expenses.types.js"
 import { Document } from "mongodb"
 
 // TODO: move validation for crud to validation directory

@@ -1,7 +1,7 @@
-import { savingsAccountsDatabase, savingsAccountsSummaryDatabase } from "./savings.mongo.ts"
+import { savingsAccountsDatabase, savingsAccountsSummaryDatabase } from "./savings.mongo.js"
 
-import { validateGetSavingsAccountsSummary } from "../../utils/validations/savings/savings.validations.ts"
-import { ClosingSavingsAccountName, Email, SavingsAccount, SavingsAccountInfo, SavingsAccountsSummary, UserId } from "./savings.types.ts";
+import { validateGetSavingsAccountsSummary } from "../../utils/validations/savings/savings.validations.js"
+import { ClosingSavingsAccountName, Email, SavingsAccount, SavingsAccountInfo, SavingsAccountsSummary, UserId } from "./savings.types.js";
 import { Document } from "mongodb";
 
 // TODO: move validation for crud to validation directory

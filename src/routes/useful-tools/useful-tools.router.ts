@@ -1,7 +1,7 @@
 import express, { Router } from "express"
 
 import { httpGetUsefulToolsMortgageCalculator, httpGetUsefulToolsExchangeRate
-} from "./useful-tools.controller.ts"
+} from "./useful-tools.controller.js"
 
 const usefulToolsRouter: Router = express.Router()
 

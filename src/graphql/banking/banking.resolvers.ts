@@ -1,4 +1,4 @@
-import { BankingAccount, BankingSummary } from "../../models/banking/banking.types.ts"
+import { BankingAccount, BankingSummary } from "../../models/banking/banking.types.js"
 
 const bankingModel = require("./banking.model")
 

@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { mongoConnect } from "./services/mongodb/mongodb.service.js";
-import { app } from "./app.ts";
+import { app } from "./app.js";
 
 import { buildSchema } from "graphql";
 import { loadFilesSync } from "@graphql-tools/load-files";

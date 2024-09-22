@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { getExpensesData, getExpensesSummaryData,
   postExpenseCreate, deleteExpense,
   putExpensesData, putExpensesSummaryData
-} from "../../models/expenses/expenses.model.ts"
+} from "../../models/expenses/expenses.model.js"
 
 // signed in
 export async function httpGetExpensesData(req: Request, res: Response): Promise<void> {

@@ -1,7 +1,7 @@
-import { errorOnMortgageResult, errorOnCurrencyResult } from "../../errors/useful-tools.errors.ts"
-import { DOWNPAYMENT_FLAG_OPTIONS } from "../../constants/useful-tools.constants.ts"
-import { MARKET_DATA_FOREX_PREFIX } from "../../constants/market-data.constants.ts"
-import { polygonRestClient } from "../../../services/polygon/polygon.service.ts"
+import { errorOnMortgageResult, errorOnCurrencyResult } from "../../errors/useful-tools.errors.js"
+import { DOWNPAYMENT_FLAG_OPTIONS } from "../../constants/useful-tools.constants.js"
+import { MARKET_DATA_FOREX_PREFIX } from "../../constants/market-data.constants.js"
+import { polygonRestClient } from "../../../services/polygon/polygon.service.js"
 import { IAggsPreviousClose } from "@polygon.io/client-js"
 
 type ProcessedMortgageResult = {

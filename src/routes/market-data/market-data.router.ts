@@ -2,7 +2,7 @@ import express, { Router } from "express"
 
 import { httpGetMarketDataStocks, httpGetMarketDataIndices,
   httpGetMarketDataCrypto, httpGetMarketDataForex
-} from "./market-data.controller.ts"
+} from "./market-data.controller.js"
 
 const marketDataRouter: Router = express.Router()
 

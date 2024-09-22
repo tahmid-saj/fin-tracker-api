@@ -1,6 +1,6 @@
-import { Insurance, insurancesSummary } from "../../models/insurances/insurances.types.ts";
+import { Insurance, insurancesSummary } from "../../models/insurances/insurances.types.js";
 
-const insurancesModel = require("./insurances.model.ts")
+const insurancesModel = require("./insurances.model.js")
 
 type UserArgs = {
   userId: string;

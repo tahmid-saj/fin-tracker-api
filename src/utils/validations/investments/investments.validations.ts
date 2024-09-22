@@ -1,4 +1,4 @@
-import { InvestmentsSummary } from "../../../models/investments/investments.types.ts";
+import { InvestmentsSummary } from "../../../models/investments/investments.types.js";
 
 // validations for investments
 

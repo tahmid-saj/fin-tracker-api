@@ -2,15 +2,15 @@ import { Router } from "express";
 
 import express from 'express'
 
-import { testRouter } from "./test-route/test-route.router.ts"
-import { chatbotRouter } from "./chatbot/chatbot.router.ts"
-import { expensesRouter } from "./expenses/expenses.router.ts"
-import { bankingRouter } from "./banking/banking.router.ts"
-import { investmentsRouter } from "./investments/investments.router.ts"
-import { savingsRouter } from "./savings/savings.router.ts"
-import { insurancesRouter } from "./insurances/insurances.router.ts"
-import { marketDataRouter } from "./market-data/market-data.router.ts"
-import { usefulToolsRouter } from "./useful-tools/useful-tools.router.ts"
+import { testRouter } from "./test-route/test-route.router.js"
+import { chatbotRouter } from "./chatbot/chatbot.router.js"
+import { expensesRouter } from "./expenses/expenses.router.js"
+import { bankingRouter } from "./banking/banking.router.js"
+import { investmentsRouter } from "./investments/investments.router.js"
+import { savingsRouter } from "./savings/savings.router.js"
+import { insurancesRouter } from "./insurances/insurances.router.js"
+import { marketDataRouter } from "./market-data/market-data.router.js"
+import { usefulToolsRouter } from "./useful-tools/useful-tools.router.js"
 
 const api: Router = express.Router();
 

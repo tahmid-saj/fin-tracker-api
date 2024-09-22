@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { getMarketDataStocks, getMarketDataIndices,
   getMarketDataCrypto, getMarketDataForex
-} from "../../utils/requests/market-data/market-data.requests.ts"
+} from "../../utils/requests/market-data/market-data.requests.js"
 
 // market data
 
