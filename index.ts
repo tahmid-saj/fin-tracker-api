@@ -1,47 +1,49 @@
-const path = require("path");
-const http = require('http');
-const mongoose = require('mongoose');
-require("dotenv").config();
-const { mongoConnect } = require("./src/services/mongodb/mongodb.service");
-const { app } = require("./src/app");
+import path from "path";
+import http from "http";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
+
+import { mongoConnect } from "./src/services/mongodb/mongodb.service.js";
+import { app } from "./src/app.js";
+
+import { buildSchema } from "graphql";
+import { loadFilesSync } from "@graphql-tools/load-files";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { ApolloServer } from "apollo-server-express";
+
 const server = http.createServer(app);
-
-const { buildSchema } = require("graphql")
-const { loadFilesSync } = require("@graphql-tools/load-files")
-const { makeExecutableSchema } = require("@graphql-tools/schema")
-const { ApolloServer } = require("apollo-server-express")
-
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;  // Provide a default port in case PORT is undefined
 
 async function startServer() {
   await mongoConnect();
 
   const typesArray = loadFilesSync("**/*", {
-    extensions: ["graphql"]
-  })
+    extensions: ["graphql"],
+  });
 
-  const resolversArray = loadFilesSync(path.join(__dirname, "**/*.resolvers.js"))
+  const resolversArray = loadFilesSync(path.resolve("**/*.resolvers.js"));
 
   const schema = makeExecutableSchema({
     typeDefs: typesArray,
-    resolvers: resolversArray
-  })
+    resolvers: resolversArray,
+  });
 
   const apolloServer = new ApolloServer({
-    schema: schema
-  })
+    schema: schema,
+  });
 
-  await apolloServer.start()
+  await apolloServer.start();
   apolloServer.applyMiddleware({
     app,
-    path: "/graphql"
-  })
+    path: "/graphql",
+  });
 
   server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
   });
-};
+}
 
 startServer();
 
-module.exports = app
+export { app };

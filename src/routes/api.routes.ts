@@ -1,3 +1,5 @@
+import { Router } from "express";
+
 const express = require('express');
 
 const { testRouter } = require("./test-route/test-route.router")
@@ -10,7 +12,7 @@ const { insurancesRouter } = require("./insurances/insurances.router");
 const { marketDataRouter } = require("./market-data/market-data.router")
 const { usefulToolsRouter } = require("./useful-tools/useful-tools.router")
 
-const api = express.Router();
+const api: Router = express.Router();
 
 api.use("/testroute", testRouter)
 api.use("/chatbot", chatbotRouter)

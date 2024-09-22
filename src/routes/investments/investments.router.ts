@@ -1,10 +1,10 @@
-const express = require('express');
+import express, { Router } from 'express';
 
-const { httpGetInvestmentsData, httpGetInvestmentsSummaryData,
+import { httpGetInvestmentsData, httpGetInvestmentsSummaryData,
   httpPostInvestmentCreate, httpPutInvestmentData, httpDeleteInvestment,
-  httpPutInvestmentsData, httpPutInvestmentsSummaryData } = require("./investments.controller");
+  httpPutInvestmentsData, httpPutInvestmentsSummaryData } from "./investments.controller"
 
-const investmentsRouter = express.Router();
+const investmentsRouter: Router = express.Router();
 
 // TODO: move to env variables
 // when user is signed in

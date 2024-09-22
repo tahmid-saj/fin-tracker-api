@@ -1,10 +1,10 @@
-const express = require('express');
+import express, { Router } from 'express'
 
-const { httpGetSavingsAccountsData, httpGetSavingsAccountsSummaryData,
+import { httpGetSavingsAccountsData, httpGetSavingsAccountsSummaryData,
   httpPostSavingsAccountCreate, httpPutSavingsAccountData, httpDeleteSavingsAccount,
-  httpPutSavingsAccountsData, httpPutSavingsAccountsSummaryData } = require("./savings.controller");
+  httpPutSavingsAccountsData, httpPutSavingsAccountsSummaryData } from "./savings.controller"
 
-const savingsRouter = express.Router();
+const savingsRouter: Router = express.Router();
 
 // TODO: move to env variables
 // when user is signed in

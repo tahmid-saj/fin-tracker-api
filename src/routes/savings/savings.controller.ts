@@ -1,38 +1,41 @@
-const { getSavingsAccountsData, getSavingsAccountsSummaryData, 
+import { Request, Response } from "express";
+import { getSavingsAccountsData, getSavingsAccountsSummaryData, 
   postSavingsAccountCreate, putSavingsAccountData, deleteSavingsAccount,
-  putSavingsAccountsData, putSavingsAccountsSummaryData } = require("../../models/savings/savings.model");
+  putSavingsAccountsData, putSavingsAccountsSummaryData } from "../../models/savings/savings.model"
 
 // signed in
-async function httpGetSavingsAccountsData(req, res) {
+async function httpGetSavingsAccountsData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(getInvestmentsData());
   try {
     const userId = req.params.userid;
     const email = req.params.email;
     const resGetSavingsAccountsData = await getSavingsAccountsData(userId, email);
 
-    if (resGetSavingsAccountsData) return res.status(200).json(resGetSavingsAccountsData);
+    if (resGetSavingsAccountsData) res.status(200).json(resGetSavingsAccountsData);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-async function httpGetSavingsAccountsSummaryData(req, res) {
+async function httpGetSavingsAccountsSummaryData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(getInvestmentsSummaryData());
   try {
     const userId = req.params.userId;
     const email = req.params.email;
     const resGetSavingsAccountsSummaryData = await getSavingsAccountsSummaryData(userId, email);
 
-    if (resGetSavingsAccountsSummaryData) return res.status(200).json(resGetSavingsAccountsSummaryData);
+    if (resGetSavingsAccountsSummaryData) res.status(200).json(resGetSavingsAccountsSummaryData);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 // savings operations
-async function httpPostSavingsAccountCreate(req, res) {
+async function httpPostSavingsAccountCreate(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(postInvestmentCreate());
   try {
     const savingsAccountInfo = req.body;
@@ -40,14 +43,15 @@ async function httpPostSavingsAccountCreate(req, res) {
     const email = req.params.email;
     const resPostSavingsAccountCreate = await postSavingsAccountCreate(userId, email, savingsAccountInfo);
 
-    if (resPostSavingsAccountCreate) return res.status(200);
+    if (resPostSavingsAccountCreate) res.status(200);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-async function httpPutSavingsAccountData(req, res) {
+async function httpPutSavingsAccountData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentData());
   try {
     const userId = req.params.userid;
@@ -56,14 +60,15 @@ async function httpPutSavingsAccountData(req, res) {
     const updatedSavingsAccountInfo = req.body.updatedSavingsAccountInfo;
     const resPutSavingsAccountData = await putSavingsAccountData(userId, email, originalSavingsAccountInfo, updatedSavingsAccountInfo);
 
-    if (resPutSavingsAccountData) return res.status(200);
+    if (resPutSavingsAccountData) res.status(200);
   } catch (error) {
     // TODO: handle error
-    console.log(error)
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-async function httpDeleteSavingsAccount(req, res) {
+async function httpDeleteSavingsAccount(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(deleteInvestment());
   try {
     const userId = req.params.userid;
@@ -71,15 +76,16 @@ async function httpDeleteSavingsAccount(req, res) {
     const closingSavingsAccountName = String(req.body);
     const resDeleteSavingsAccount = await deleteSavingsAccount(userId, email, closingSavingsAccountName);
 
-    if (resDeleteSavingsAccount) return res.status(200);
+    if (resDeleteSavingsAccount) res.status(200);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 // signed out
-async function httpPutSavingsAccountsData(req, res) {
+async function httpPutSavingsAccountsData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentsData());
   try {
     const userId = req.params.userid;
@@ -87,14 +93,15 @@ async function httpPutSavingsAccountsData(req, res) {
     const { savingsAccounts } = req.body;
     const resPutSavingsAccountsData = await putSavingsAccountsData(userId, email, savingsAccounts);
 
-    if (resPutSavingsAccountsData) return res.status(200);
+    if (resPutSavingsAccountsData) res.status(200);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-async function httpPutSavingsAccountsSummaryData(req, res) {
+async function httpPutSavingsAccountsSummaryData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentsSummaryData());
   try {
     const userId = req.params.userid;
@@ -102,10 +109,11 @@ async function httpPutSavingsAccountsSummaryData(req, res) {
     const { savingsAccountsSummary } = req.body;
     const resPutSavingsAccountsSummaryData = await putSavingsAccountsSummaryData(userId, email, savingsAccountsSummary);
 
-    if (resPutSavingsAccountsSummaryData) return res.status(200);
+    if (resPutSavingsAccountsSummaryData) res.status(200);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 

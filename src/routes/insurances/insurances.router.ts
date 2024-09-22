@@ -1,11 +1,11 @@
-const express = require("express")
+import express, { Router } from "express"
 
-const { httpGetInsurancesData, httpGetInsurancesSummaryData,
+import { httpGetInsurancesData, httpGetInsurancesSummaryData,
   httpPostInsurancesCreate, httpDeleteInsurance,
   httpPutInsurancesData, httpPutInsurancesSummaryData
-} = require("./insurances.controller")
+} from "./insurances.controller"
 
-const insurancesRouter = express.Router()
+const insurancesRouter: Router = express.Router()
 
 // TODO: move to env variables
 // when user is signed in

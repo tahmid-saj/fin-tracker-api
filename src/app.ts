@@ -1,10 +1,10 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const morgan = require("morgan");
-const helmet = require("helmet")
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import morgan from "morgan";
+import helmet from "helmet";
 
-const { api } = require("./routes/api.routes");
+import { api } from "./routes/api.routes.ts";
 
 const app = express();
 
@@ -12,13 +12,9 @@ const app = express();
 // TODO: move to env
 app.use(cors());
 app.use(morgan("combined"));
-app.use(helmet())
+app.use(helmet());
 app.use(express.json());
 app.use(bodyParser.text());
 app.use('/v1', api);
 
-module.exports = {
-  app,
-};
-
-export {};
+export { app };

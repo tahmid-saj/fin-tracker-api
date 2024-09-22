@@ -1,38 +1,41 @@
-const { getInvestmentsData, getInvestmentsSummaryData, 
+import { Request, Response } from "express";
+import { getInvestmentsData, getInvestmentsSummaryData, 
   postInvestmentCreate, putInvestmentData, deleteInvestment,
-  putInvestmentsData, putInvestmentsSummaryData } = require("../../models/investments/investments.model");
+  putInvestmentsData, putInvestmentsSummaryData } from "../../models/investments/investments.model"
 
 // signed in
-async function httpGetInvestmentsData(req, res) {
+async function httpGetInvestmentsData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(getInvestmentsData());
   try {
     const userId = req.params.userid;
     const email = req.params.email;
     const resGetInvestmentsData = await getInvestmentsData(userId, email);
 
-    if (resGetInvestmentsData) return res.status(200).json(resGetInvestmentsData);
+    if (resGetInvestmentsData) res.status(200).json(resGetInvestmentsData);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-async function httpGetInvestmentsSummaryData(req, res) {
+async function httpGetInvestmentsSummaryData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(getInvestmentsSummaryData());
   try {
     const userId = req.params.userId;
     const email = req.params.email;
     const resGetInvestmentsSummaryData = await getInvestmentsSummaryData(userId, email);
 
-    if (resGetInvestmentsSummaryData) return res.status(200).json(resGetInvestmentsSummaryData);
+    if (resGetInvestmentsSummaryData) res.status(200).json(resGetInvestmentsSummaryData);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 // investments operations
-async function httpPostInvestmentCreate(req, res) {
+async function httpPostInvestmentCreate(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(postInvestmentCreate());
   try {
     const investmentInfo = req.body;
@@ -40,14 +43,15 @@ async function httpPostInvestmentCreate(req, res) {
     const email = req.params.email;
     const resPostInvestmentCreate = await postInvestmentCreate(userId, email, investmentInfo);
 
-    if (resPostInvestmentCreate) return res.status(200);
+    if (resPostInvestmentCreate) res.status(200);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-async function httpPutInvestmentData(req, res) {
+async function httpPutInvestmentData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentData());
   try {
     const userId = req.params.userid;
@@ -56,14 +60,15 @@ async function httpPutInvestmentData(req, res) {
     const updatedInvestmentInfo = req.body.updatedInvestmentInfo;
     const resPutInvestmentData = await putInvestmentData(userId, email, originalInvestmentInfo, updatedInvestmentInfo);
 
-    if (resPutInvestmentData) return res.status(200);
+    if (resPutInvestmentData) res.status(200);
   } catch (error) {
     // TODO: handle error
-    console.log(error)
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-async function httpDeleteInvestment(req, res) {
+async function httpDeleteInvestment(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(deleteInvestment());
   try {
     const userId = req.params.userid;
@@ -71,15 +76,16 @@ async function httpDeleteInvestment(req, res) {
     const closingInvestmentName = String(req.body);
     const resDeleteInvestment = await deleteInvestment(userId, email, closingInvestmentName);
 
-    if (resDeleteInvestment) return res.status(200);
+    if (resDeleteInvestment) res.status(200);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 // signed out
-async function httpPutInvestmentsData(req, res) {
+async function httpPutInvestmentsData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentsData());
   try {
     const userId = req.params.userid;
@@ -87,14 +93,15 @@ async function httpPutInvestmentsData(req, res) {
     const { investments } = req.body;
     const resPutInvestmentsData = await putInvestmentsData(userId, email, investments);
 
-    if (resPutInvestmentsData) return res.status(200);
+    if (resPutInvestmentsData) res.status(200);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-async function httpPutInvestmentsSummaryData(req, res) {
+async function httpPutInvestmentsSummaryData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentsSummaryData());
   try {
     const userId = req.params.userid;
@@ -102,10 +109,11 @@ async function httpPutInvestmentsSummaryData(req, res) {
     const { investmentsSummary } = req.body;
     const resPutInvestmentsSummaryData = await putInvestmentsSummaryData(userId, email, investmentsSummary);
 
-    if (resPutInvestmentsSummaryData) return res.status(200);
+    if (resPutInvestmentsSummaryData) res.status(200);
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
