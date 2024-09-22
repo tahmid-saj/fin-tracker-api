@@ -9,8 +9,13 @@ The directory structure of this repository is as follows:
     └── 📁.github
         └── 📁workflows
             └── node.yml
+    └── 📁.vercel
+        └── project.json
+        └── README.txt
     └── 📁api
         └── index.ts
+    └── 📁public
+        └── .gitkeep
     └── 📁src
         └── 📁graphql
             └── 📁banking
@@ -157,5 +162,6 @@ The directory structure of this repository is as follows:
     └── package.json
     └── README.md
     └── tsconfig.json
+    └── vercel.dev.json
     └── vercel.json
 ```
