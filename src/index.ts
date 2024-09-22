@@ -33,11 +33,11 @@ async function startServer() {
     schema: schema,
   });
 
-  // await apolloServer.start();
-  // apolloServer.applyMiddleware({
-  //   app,
-  //   path: "/graphql",
-  // });
+  await apolloServer.start();
+  apolloServer.applyMiddleware({
+    app,
+    path: "/graphql",
+  });
 
   server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

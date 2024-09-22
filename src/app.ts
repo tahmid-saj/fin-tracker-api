@@ -6,7 +6,7 @@ import helmet from "helmet";
 
 import { api } from "./routes/api.routes.ts";
 
-const app = express();
+const app = express() as any
 
 // middleware
 // TODO: move to env
