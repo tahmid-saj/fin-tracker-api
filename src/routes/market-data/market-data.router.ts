@@ -1,10 +1,10 @@
-const express = require("express")
+import express, { Router } from "express"
 
-const { httpGetMarketDataStocks, httpGetMarketDataIndices,
+import { httpGetMarketDataStocks, httpGetMarketDataIndices,
   httpGetMarketDataCrypto, httpGetMarketDataForex
-} = require("./market-data.controller")
+} from "./market-data.controller"
 
-const marketDataRouter = express.Router()
+const marketDataRouter: Router = express.Router()
 
 // TODO: move to env variables
 marketDataRouter.post("/stocks", httpGetMarketDataStocks)

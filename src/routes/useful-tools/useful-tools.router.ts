@@ -1,9 +1,9 @@
-const express = require("express")
+import express, { Router } from "express"
 
-const { httpGetUsefulToolsMortgageCalculator, httpGetUsefulToolsExchangeRate
-} = require("./useful-tools.controller")
+import { httpGetUsefulToolsMortgageCalculator, httpGetUsefulToolsExchangeRate
+} from "./useful-tools.controller"
 
-const usefulToolsRouter = express.Router()
+const usefulToolsRouter: Router = express.Router()
 
 // TODO: move to env variables
 usefulToolsRouter.post("/mortgage-calculator", httpGetUsefulToolsMortgageCalculator)

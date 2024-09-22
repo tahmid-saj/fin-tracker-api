@@ -1,8 +1,13 @@
-const express = require('express');
-
-const { httpGetBankingAccountsData, httpGetBankingSummaryData,
-  httpPostBankingAccountCreate, httpPostBankingAccountTransaction, httpDeleteBankingAccount,
-  httpPutBankingAccountsData, httpPutBankingSummaryData } = require("./banking.controller");
+import express, { Router } from 'express';
+import {
+  httpGetBankingAccountsData,
+  httpGetBankingSummaryData,
+  httpPostBankingAccountCreate,
+  httpPostBankingAccountTransaction,
+  httpDeleteBankingAccount,
+  httpPutBankingAccountsData,
+  httpPutBankingSummaryData
+} from './banking.controller.js';
 
 const bankingRouter: Router = express.Router();
 
@@ -24,6 +29,4 @@ bankingRouter.put("/accounts/:userid/:email", httpPutBankingAccountsData);
 // when user is signed out, frontend will send this request and the updated banking summary data to mongodb
 bankingRouter.put("/summary/:userid/:email", httpPutBankingSummaryData);
 
-module.exports = {
-  bankingRouter,
-}
+export { bankingRouter };

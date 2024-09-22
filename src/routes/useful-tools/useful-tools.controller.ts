@@ -1,10 +1,11 @@
-const { getUsefulToolsMortgageCalculator, getUsefulToolsExchangeRate
-} = require("../../utils/requests/useful-tools/useful-tools.requests")
+import { Request, Response } from "express"
+import { getUsefulToolsMortgageCalculator, getUsefulToolsExchangeRate
+} from "../../utils/requests/useful-tools/useful-tools.requests"
 
 // useful tools
 
 // mortgage calculator
-async function httpGetUsefulToolsMortgageCalculator(req, res) {
+async function httpGetUsefulToolsMortgageCalculator(req: Request, res: Response): Promise<void> {
   try {
     const downpaymentFlag = String(req.body.downpaymentFlag)
     const loanAmount = String(req.body.loanAmount)
@@ -21,26 +22,28 @@ async function httpGetUsefulToolsMortgageCalculator(req, res) {
       downpaymentFlag, loanAmount, homeValue, downpayment, interestRate, durationYears, 
       monthlyHoa, annualPropertyTax, annualHomeInsurance)
     
-    if (resGetUsefulToolsMortgageCalculator) return res.status(200).json(resGetUsefulToolsMortgageCalculator)
+    if (resGetUsefulToolsMortgageCalculator) res.status(200).json(resGetUsefulToolsMortgageCalculator)
   } catch (error) {
     // TODO: handle error
-    console.log(error)
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // currency converter
 // exchange rate
-async function httpGetUsefulToolsExchangeRate(req, res) {
+async function httpGetUsefulToolsExchangeRate(req: Request, res: Response): Promise<void> {
   try {
     const fromCurrency = String(req.body.fromCurrency)
     const toCurrency = String(req.body.toCurrency)
   
     const resGetUsefulToolsExchangeRate = await getUsefulToolsExchangeRate(fromCurrency, toCurrency)
   
-    if (resGetUsefulToolsExchangeRate) return res.status(200).json(resGetUsefulToolsExchangeRate)
+    if (resGetUsefulToolsExchangeRate) res.status(200).json(resGetUsefulToolsExchangeRate)
   } catch (error) {
     // TODO: handle error
-    console.log(error)
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
