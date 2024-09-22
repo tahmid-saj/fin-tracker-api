@@ -20,6 +20,4 @@ savingsRouter.delete("/accounts/:userid/:email", httpDeleteSavingsAccount);
 savingsRouter.put("/accounts/:userid/:email", httpPutSavingsAccountsData);
 savingsRouter.put("/summary/:userid/:email", httpPutSavingsAccountsSummaryData);
 
-module.exports = {
-  savingsRouter,
-}
+export { savingsRouter }

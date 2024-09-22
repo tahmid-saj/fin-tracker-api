@@ -9,6 +9,4 @@ const usefulToolsRouter: Router = express.Router()
 usefulToolsRouter.post("/mortgage-calculator", httpGetUsefulToolsMortgageCalculator)
 usefulToolsRouter.post("/exchange-rate", httpGetUsefulToolsExchangeRate)
 
-module.exports = {
-  usefulToolsRouter
-}
+export { usefulToolsRouter }

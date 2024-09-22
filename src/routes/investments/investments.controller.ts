@@ -4,7 +4,7 @@ import { getInvestmentsData, getInvestmentsSummaryData,
   putInvestmentsData, putInvestmentsSummaryData } from "../../models/investments/investments.model"
 
 // signed in
-async function httpGetInvestmentsData(req: Request, res: Response): Promise<void> {
+export async function httpGetInvestmentsData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(getInvestmentsData());
   try {
     const userId = req.params.userid;
@@ -19,7 +19,7 @@ async function httpGetInvestmentsData(req: Request, res: Response): Promise<void
   }
 };
 
-async function httpGetInvestmentsSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpGetInvestmentsSummaryData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(getInvestmentsSummaryData());
   try {
     const userId = req.params.userId;
@@ -35,7 +35,7 @@ async function httpGetInvestmentsSummaryData(req: Request, res: Response): Promi
 };
 
 // investments operations
-async function httpPostInvestmentCreate(req: Request, res: Response): Promise<void> {
+export async function httpPostInvestmentCreate(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(postInvestmentCreate());
   try {
     const investmentInfo = req.body;
@@ -51,7 +51,7 @@ async function httpPostInvestmentCreate(req: Request, res: Response): Promise<vo
   }
 };
 
-async function httpPutInvestmentData(req: Request, res: Response): Promise<void> {
+export async function httpPutInvestmentData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentData());
   try {
     const userId = req.params.userid;
@@ -68,7 +68,7 @@ async function httpPutInvestmentData(req: Request, res: Response): Promise<void>
   }
 };
 
-async function httpDeleteInvestment(req: Request, res: Response): Promise<void> {
+export async function httpDeleteInvestment(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(deleteInvestment());
   try {
     const userId = req.params.userid;
@@ -85,7 +85,7 @@ async function httpDeleteInvestment(req: Request, res: Response): Promise<void> 
 };
 
 // signed out
-async function httpPutInvestmentsData(req: Request, res: Response): Promise<void> {
+export async function httpPutInvestmentsData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentsData());
   try {
     const userId = req.params.userid;
@@ -101,7 +101,7 @@ async function httpPutInvestmentsData(req: Request, res: Response): Promise<void
   }
 };
 
-async function httpPutInvestmentsSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpPutInvestmentsSummaryData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentsSummaryData());
   try {
     const userId = req.params.userid;
@@ -115,14 +115,4 @@ async function httpPutInvestmentsSummaryData(req: Request, res: Response): Promi
     console.log(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-};
-
-module.exports = {
-  httpGetInvestmentsData,
-  httpGetInvestmentsSummaryData,
-  httpPostInvestmentCreate,
-  httpPutInvestmentData,
-  httpDeleteInvestment,
-  httpPutInvestmentsData,
-  httpPutInvestmentsSummaryData,
 };

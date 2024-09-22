@@ -1,19 +1,21 @@
-const { savingsAccountsDatabase, savingsAccountsSummaryDatabase } = require("./savings.mongo.js");
+import { savingsAccountsDatabase, savingsAccountsSummaryDatabase } from "./savings.mongo.js"
 
-const { validateGetSavingsAccountsSummary } = require("../../utils/validations/savings/savings.validations");
+import { validateGetSavingsAccountsSummary } from "../../utils/validations/savings/savings.validations"
+import { ClosingSavingsAccountName, Email, SavingsAccount, SavingsAccountInfo, SavingsAccountsSummary, UserId } from "./savings.types.js";
+import { Document } from "mongodb";
 
 // TODO: move validation for crud to validation directory
 
 // savings crud for mongodb
 
 // user sign in
-async function getSavingsAccounts(userId, email) {
+export async function getSavingsAccounts(userId: UserId, email: Email): Promise<{ savingsAccounts: SavingsAccount[] }> {
   const savingsAccounts = await savingsAccountsDatabase.find({
     userId: userId,
     email: email
   })
-  .then(res => {
-    const savingsAccounts = res.map(savingsAccount => {
+  .then((res: any) => {
+    const savingsAccounts = res.map((savingsAccount: Document) => {
       return {
         savingsAccountName: savingsAccount.savingsAccountName,
         initialDeposit: savingsAccount.initialDeposit,
@@ -34,7 +36,7 @@ async function getSavingsAccounts(userId, email) {
 
     return savingsAccounts;
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error)
   });
@@ -44,17 +46,17 @@ async function getSavingsAccounts(userId, email) {
   }
 };
 
-async function getSavingsAccountsSummary(userId, email) {
+export async function getSavingsAccountsSummary(userId: UserId, email: Email): Promise<{ savingsAccountsSummary: SavingsAccountsSummary }> {
   const savingsAccountsSummary = await savingsAccountsSummaryDatabase.findOne({
     userId: userId,
     email: email
   })
-  .then(res => {
+  .then((res: any) => {
     if (validateGetSavingsAccountsSummary(res) === true) return Object({})
 
     return res.toObject()
   })
-  .then(res => {
+  .then((res: Document) => {
     const summary = {
       currentAllSavingsAccountsBalance: res.currentAllSavingsAccountsBalance,
       totalAllContribution: res.totalAllContribution,
@@ -63,7 +65,7 @@ async function getSavingsAccountsSummary(userId, email) {
 
     return summary;
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error)
   })
@@ -74,7 +76,7 @@ async function getSavingsAccountsSummary(userId, email) {
 };
 
 // savings operations
-async function createSavingsAccountSummary(userId, email, savingsAccountInfo) {
+export async function createSavingsAccountSummary(userId: UserId, email: Email, savingsAccountInfo: SavingsAccount): Promise<void> {
   const savingsAccountSummaryExists = await savingsAccountsSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -96,7 +98,7 @@ async function createSavingsAccountSummary(userId, email, savingsAccountInfo) {
   }
 };
 
-async function createUpdatedSavingsAccountSummary(userId, email, updatedSavingsAccountInfo) {
+export async function createUpdatedSavingsAccountSummary(userId: UserId, email: Email, updatedSavingsAccountInfo: SavingsAccount): Promise<void> {
   const savingsAccountSummaryExists = await savingsAccountsSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -118,7 +120,7 @@ async function createUpdatedSavingsAccountSummary(userId, email, updatedSavingsA
   }
 }
 
-async function createSavingsAccount(userId, email, savingsAccountInfo) {
+export async function createSavingsAccount(userId: UserId, email: Email, savingsAccountInfo: SavingsAccount): Promise<void> {
   const savingsAccountExists = await savingsAccountsDatabase.findOne({
     userId: userId,
     email: email,
@@ -154,7 +156,7 @@ async function createSavingsAccount(userId, email, savingsAccountInfo) {
   }
 };
 
-async function updateSavingsAccount(userId, email, originalSavingsAccountInfo, updatedSavingsAccountInfo) {
+export async function updateSavingsAccount(userId: UserId, email: Email, originalSavingsAccountInfo: SavingsAccount, updatedSavingsAccountInfo: SavingsAccount): Promise<void> {
   const savingsAccountExists = await savingsAccountsDatabase.findOne({
     userId: userId,
     email: email,
@@ -207,7 +209,7 @@ async function updateSavingsAccount(userId, email, originalSavingsAccountInfo, u
   }
 };
 
-async function closeSavingsAccount(userId, email, closingSavingsAccountName) {
+export async function closeSavingsAccount(userId: UserId, email: Email, closingSavingsAccountName: ClosingSavingsAccountName): Promise<void> {
   const savingsAccountExists = await savingsAccountsDatabase.findOne({
     userId: userId,
     email: email,
@@ -237,7 +239,7 @@ async function closeSavingsAccount(userId, email, closingSavingsAccountName) {
 };
 
 // user sign out
-async function updateSavingsAccounts(userId, email, savingsAccounts) {
+export async function updateSavingsAccounts(userId: UserId, email: Email, savingsAccounts: SavingsAccount[]): Promise<void> {
   const savingsAccountExists = await savingsAccountsDatabase.findOne({
     userId: userId,
     email: email
@@ -270,7 +272,7 @@ async function updateSavingsAccounts(userId, email, savingsAccounts) {
   }
 };
 
-async function updateSavingsAccountsSummary(userId, email, savingsAccountsSummary) {
+export async function updateSavingsAccountsSummary(userId: UserId, email: Email, savingsAccountsSummary: SavingsAccountsSummary): Promise<void> {
   const savingsAccountsSummaryExists = await savingsAccountsSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -289,16 +291,4 @@ async function updateSavingsAccountsSummary(userId, email, savingsAccountsSummar
     return;
   }
 };
-
-module.exports = {
-  getSavingsAccounts,
-  getSavingsAccountsSummary,
-  createSavingsAccountSummary,
-  createUpdatedSavingsAccountSummary,
-  createSavingsAccount,
-  updateSavingsAccount,
-  closeSavingsAccount,
-  updateSavingsAccounts,
-  updateSavingsAccountsSummary,
-}
 

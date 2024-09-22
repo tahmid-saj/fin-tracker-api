@@ -1,19 +1,21 @@
-const { bankingAccountsDatabase, bankingSummaryDatabase } = require("./banking.mongo");
+import { bankingAccountsDatabase, bankingSummaryDatabase } from "./banking.mongo"
 
-const { validategetBankingSummary } = require("../../utils/validations/banking/banking.validations");
+import { validategetBankingSummary } from "../../utils/validations/banking/banking.validations"
+import { BankingAccount, BankingAccountName, BankingSummary, Email, TransactionInfo, UserId } from "./banking.types";
+import { Document } from "mongodb";
 
 // TODO: move validation for crud to validation directory
 
 // banking crud for mongodb
 
 // user sign in
-async function getBankingAccounts(userId, email) {
+export async function getBankingAccounts(userId: UserId, email: Email): Promise<{ bankingAccounts: BankingAccount[] }> {
   const bankingAccounts = await bankingAccountsDatabase.find({
     userId: userId,
     email: email
   })
-  .then(res => {
-    const accounts = res.map(account => {
+  .then((res: any) => {
+    const accounts = res.map((account: Document) => {
       return {
         name: account.name,
         currentBalance: account.currentBalance,
@@ -25,7 +27,7 @@ async function getBankingAccounts(userId, email) {
 
     return accounts;
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error);
   });
@@ -35,17 +37,17 @@ async function getBankingAccounts(userId, email) {
   }
 };
 
-async function getBankingSummary(userId, email) {
+export async function getBankingSummary(userId: UserId, email: Email): Promise<{ bankingSummary: BankingSummary }> {
   const bankingSummary = await bankingSummaryDatabase.findOne({
     userId: userId,
     email: email
   })
-  .then(res => {
+  .then((res: any) => {
     if (validategetBankingSummary(res) === true) return Object({})
 
     return res.toObject();
   })
-  .then(res => {
+  .then((res: Document) => {
     const summary = {
       currentAllBankingBalance: res.currentAllBankingBalance,
       totalAllBankingIn: res.totalAllBankingIn,
@@ -54,7 +56,7 @@ async function getBankingSummary(userId, email) {
 
     return summary;
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error);
   });
@@ -65,7 +67,7 @@ async function getBankingSummary(userId, email) {
 };
 
 // banking operations
-async function createBankingSummary(userId, email) {
+export async function createBankingSummary(userId: UserId, email: Email): Promise<void> {
   const bankingSummaryExists = await bankingSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -85,7 +87,7 @@ async function createBankingSummary(userId, email) {
   }
 };
 
-async function createBankingAccount(userId, email, bankingAccountName) {
+export async function createBankingAccount(userId: UserId, email: Email, bankingAccountName: BankingAccountName): Promise<void> {
   const bankingAccountNameExists = await bankingAccountsDatabase.findOne({
     userId: userId,
     email: email,
@@ -112,7 +114,7 @@ async function createBankingAccount(userId, email, bankingAccountName) {
   }
 };
 
-async function addBankingAccountTransaction(userId, email, transactionInfo) {
+export async function addBankingAccountTransaction(userId: UserId, email: Email, transactionInfo: TransactionInfo): Promise<void> {
   if (transactionInfo.type === "DEPOSIT") {
     // deposit
     console.log("deposit transaction")
@@ -206,7 +208,7 @@ async function addBankingAccountTransaction(userId, email, transactionInfo) {
   }
 };
 
-async function closeBankingAccount(userId, email, bankingAccountName) {
+export async function closeBankingAccount(userId: UserId, email: Email, bankingAccountName: BankingAccountName): Promise<void> {
   const bankingAccountExists = await bankingAccountsDatabase.findOne({
     userId: userId,
     email: email,
@@ -236,7 +238,7 @@ async function closeBankingAccount(userId, email, bankingAccountName) {
 };
 
 // user sign out
-async function updateBankingAccounts(userId, email, bankingAccounts) {
+export async function updateBankingAccounts(userId: UserId, email: Email, bankingAccounts: BankingAccount[]): Promise<void> {
   const bankingAccountsExist = await bankingAccountsDatabase.findOne({
     userId: userId,
     email: email
@@ -261,7 +263,7 @@ async function updateBankingAccounts(userId, email, bankingAccounts) {
   }
 };
 
-async function updateBankingSummary(userId, email, bankingSummary) {
+export async function updateBankingSummary(userId: UserId, email: Email, bankingSummary: BankingSummary): Promise<void> {
   const bankingSummaryExists = await bankingSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -280,15 +282,4 @@ async function updateBankingSummary(userId, email, bankingSummary) {
   } else {
     return;
   }
-}
-
-module.exports = {
-  getBankingAccounts,
-  getBankingSummary,
-  createBankingAccount,
-  createBankingSummary,
-  addBankingAccountTransaction,
-  closeBankingAccount,
-  updateBankingAccounts,
-  updateBankingSummary,
 }

@@ -6,7 +6,7 @@ import { getInsurancesData, getInsurancesSummaryData,
 
 
 // signed in
-async function httpGetInsurancesData(req: Request, res: Response): Promise<void> {
+export async function httpGetInsurancesData(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -20,7 +20,7 @@ async function httpGetInsurancesData(req: Request, res: Response): Promise<void>
   }
 }
 
-async function httpGetInsurancesSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpGetInsurancesSummaryData(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -35,7 +35,7 @@ async function httpGetInsurancesSummaryData(req: Request, res: Response): Promis
 }
 
 // insurances operations
-async function httpPostInsurancesCreate(req: Request, res: Response): Promise<void> {
+export async function httpPostInsurancesCreate(req: Request, res: Response): Promise<void> {
   try {
     const insuranceInfo = req.body
     const userId = req.params.userid
@@ -50,7 +50,7 @@ async function httpPostInsurancesCreate(req: Request, res: Response): Promise<vo
   }
 }
 
-async function httpDeleteInsurance(req: Request, res: Response): Promise<void> {
+export async function httpDeleteInsurance(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -66,7 +66,7 @@ async function httpDeleteInsurance(req: Request, res: Response): Promise<void> {
 }
 
 // signed out
-async function httpPutInsurancesData(req: Request, res: Response): Promise<void> {
+export async function httpPutInsurancesData(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -81,7 +81,7 @@ async function httpPutInsurancesData(req: Request, res: Response): Promise<void>
   }
 }
 
-async function httpPutInsurancesSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpPutInsurancesSummaryData(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -94,13 +94,4 @@ async function httpPutInsurancesSummaryData(req: Request, res: Response): Promis
     console.log(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-}
-
-module.exports = {
-  httpGetInsurancesData,
-  httpGetInsurancesSummaryData,
-  httpPostInsurancesCreate,
-  httpDeleteInsurance,
-  httpPutInsurancesData,
-  httpPutInsurancesSummaryData
 }

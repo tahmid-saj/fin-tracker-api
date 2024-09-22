@@ -8,6 +8,4 @@ const chatbotRouter: Router = express.Router()
 // chatbot responses
 chatbotRouter.post("/response", httpGetChatBotResponse)
 
-module.exports = {
-  chatbotRouter
-}
+export { chatbotRouter }

@@ -20,6 +20,4 @@ insurancesRouter.delete("/insurances/:userid/:email", httpDeleteInsurance)
 insurancesRouter.put("/insurances/:userid/:email", httpPutInsurancesData)
 insurancesRouter.put("/summary/:userid/:email", httpPutInsurancesSummaryData)
 
-module.exports = {
-  insurancesRouter
-}
+export { insurancesRouter }

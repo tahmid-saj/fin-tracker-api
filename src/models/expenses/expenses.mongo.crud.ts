@@ -1,19 +1,21 @@
-const { expensesDatabase, expensesSummaryDatabase } = require("./expenses.mongo")
+import { expensesDatabase, expensesSummaryDatabase } from "./expenses.mongo"
 
-const { validateGetExpensesSummary } = require("../../utils/validations/expenses/expenses.validations")
+import { validateGetExpensesSummary } from "../../utils/validations/expenses/expenses.validations"
+import { Email, Expense, ExpenseInfo, ExpensesSummary, RemovingExpenseId, UserId } from "./expenses.types"
+import { Document } from "mongodb"
 
 // TODO: move validation for crud to validation directory
 
 // expenses crud for mongodb
 
 // user sign in
-async function getExpenses(userId, email) {
+export async function getExpenses(userId: UserId, email: Email): Promise<{ expenses: Expense[] }> {
   const expenses = await expensesDatabase.find({
     userId: userId,
     email: email
   })
-  .then(res => {
-    const expenses = res.map(expense => {
+  .then((res: any) => {
+    const expenses = res.map((expense: Document) => {
       return {
         expenseFor: expense.expenseFor,
         expenseCost: expense.expenseCost,
@@ -25,7 +27,7 @@ async function getExpenses(userId, email) {
 
     return expenses
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error)
   })
@@ -35,24 +37,24 @@ async function getExpenses(userId, email) {
   }
 }
 
-async function getExpensesSummary(userId, email) {
+export async function getExpensesSummary(userId: UserId, email: Email): Promise<{ expensesSummary: ExpensesSummary }> {
   const expensesSummary = await expensesSummaryDatabase.findOne({
     userId: userId,
     email: email
   })
-  .then(res => {
+  .then((res: any) => {
     if (validateGetExpensesSummary(res) === true) return Object({})
 
     return res.toObject()
   })
-  .then(res => {
+  .then((res: Document) => {
     const summary = {
       currentAllExpensesCost: res.currentAllExpensesCost
     }
 
     return summary
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error)
   })
@@ -63,7 +65,7 @@ async function getExpensesSummary(userId, email) {
 }
 
 // expenses operations
-async function createExpenseSummary(userId, email, expenseInfo) {
+export async function createExpenseSummary(userId: UserId, email: Email, expenseInfo: ExpenseInfo): Promise<void> {
   const expenseSummaryExists = await expensesSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -72,7 +74,7 @@ async function createExpenseSummary(userId, email, expenseInfo) {
   if (!expenseSummaryExists) {
     const newExpenseSummary = new expensesSummaryDatabase({
       userId: userId,
-      email, email,
+      email: email,
       currentAllExpensesCost: Number(expenseInfo.expenseCost)
     })
 
@@ -83,7 +85,8 @@ async function createExpenseSummary(userId, email, expenseInfo) {
   }
 }
 
-async function updateExpenseSummary(userId, email, expenseSummaryExists, expenseInfo) {
+export async function updateExpenseSummary(userId: UserId, email: Email, 
+  expenseSummaryExists: any, expenseInfo: ExpenseInfo) {
   await expensesSummaryDatabase.updateOne({
     userId: userId,
     email: email
@@ -94,7 +97,7 @@ async function updateExpenseSummary(userId, email, expenseSummaryExists, expense
   })
 }
 
-async function createExpense(userId, email, expenseInfo) {
+export async function createExpense(userId: UserId, email: Email, expenseInfo: ExpenseInfo): Promise<void> {
   const expenseExists = await expensesDatabase.findOne({
     userId: userId,
     email: email,
@@ -121,7 +124,7 @@ async function createExpense(userId, email, expenseInfo) {
   }
 }
 
-async function removeExpense(userId, email, removingExpenseId) {
+export async function removeExpense(userId: UserId, email: Email, removingExpenseId: RemovingExpenseId): Promise<void> {
   const expenseExists = await expensesDatabase.findOne({
     userId: userId,
     email: email,
@@ -149,7 +152,7 @@ async function removeExpense(userId, email, removingExpenseId) {
 }
 
 // sign out
-async function updateExpenses(userId, email, expenses) {
+export async function updateExpenses(userId: UserId, email: Email, expenses: Expense[]): Promise<void> {
   const expensesExist = await expensesDatabase.findOne({
     userId: userId,
     email: email
@@ -173,7 +176,7 @@ async function updateExpenses(userId, email, expenses) {
   }
 }
 
-async function updateExpensesSummary(userId, email, expensesSummary) {
+export async function updateExpensesSummary(userId: UserId, email: Email, expensesSummary: ExpensesSummary): Promise<void> {
   const expensesSummaryExists = await expensesSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -189,13 +192,4 @@ async function updateExpensesSummary(userId, email, expensesSummary) {
   } else {
     return
   }
-}
-
-module.exports = {
-  getExpenses,
-  getExpensesSummary,
-  createExpense,
-  removeExpense,
-  updateExpenses,
-  updateExpensesSummary,
 }

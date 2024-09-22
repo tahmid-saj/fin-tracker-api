@@ -109,10 +109,5 @@ const savingsAccountsSummarySchema = new mongoose.Schema({
   }
 });
 
-const savingsAccountsDatabase = mongoose.model("SavingsAccounts", savingsAccountsSchema);
-const savingsAccountsSummaryDatabase = mongoose.model("SavingsAccountsSummary", savingsAccountsSummarySchema);
-
-module.exports = {
-  savingsAccountsDatabase,
-  savingsAccountsSummaryDatabase
-};
+export const savingsAccountsDatabase = mongoose.model("SavingsAccounts", savingsAccountsSchema);
+export const savingsAccountsSummaryDatabase = mongoose.model("SavingsAccountsSummary", savingsAccountsSummarySchema);
