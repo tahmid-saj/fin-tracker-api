@@ -1,11 +1,10 @@
-import { expensesDatabase, expensesSummaryDatabase } from "./expenses.mongo"
 
-import { UserId, Email, RemovingExpenseId, Expense, ExpensesSummary, ExpenseInfo } from "./expenses.types"
+import { UserId, Email, RemovingExpenseId, Expense, ExpensesSummary, ExpenseInfo } from "./expenses.types.ts"
 
 import { getExpenses, getExpensesSummary,
   createExpense, removeExpense,
   updateExpenses, updateExpensesSummary
-} from "./expenses.mongo.crud"
+} from "./expenses.mongo.crud.ts"
 
 // TODO: handle error
 

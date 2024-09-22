@@ -1,9 +1,8 @@
-import { investmentsDatabase, investmentsSummaryDatabase } from "./investments.mongo"
 
 import { getInvestments, getInvestmentsSummary,
   createInvestment, closeInvestment, updateInvestment,
-  updateInvestments, updateInvestmentsSummary } from "./investments.mongo.crud"
-import { ClosingInvestmentName, Email, Investment, InvestmentsSummary, UserId } from "./investments.types";
+  updateInvestments, updateInvestmentsSummary } from "./investments.mongo.crud.ts"
+import { ClosingInvestmentName, Email, Investment, InvestmentsSummary, UserId } from "./investments.types.ts";
 
 // signed in
 export async function getInvestmentsData(userId: UserId, email: Email): Promise<any> {

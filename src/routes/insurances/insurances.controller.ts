@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { getInsurancesData, getInsurancesSummaryData,
   postInsuranceCreate, deleteInsurance,
   putInsurancesData, putInsurancesSummaryData
-} from "../../models/insurances/insurances.model"
+} from "../../models/insurances/insurances.model.ts"
 
 
 // signed in

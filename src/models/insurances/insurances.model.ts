@@ -1,10 +1,9 @@
-import { insurancesDatabase, insurancesSummaryDatabase } from "./insurances.mongo"
 
 import { getInsurances, getInsurancesSummary,
   createInsurance, removeInsurance,
   updateInsurances, updateInsurancesSummary
-} from "./insurances.mongo.crud"
-import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "./insurances.types"
+} from "./insurances.mongo.crud.ts"
+import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "./insurances.types.ts"
 
 // TODO: handle error
 

@@ -4,8 +4,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
-import { mongoConnect } from "./src/services/mongodb/mongodb.service.js";
-import { app } from "./src/app.js";
+import { mongoConnect } from "./services/mongodb/mongodb.service.js";
+import { app } from "./app.ts";
 
 import { buildSchema } from "graphql";
 import { loadFilesSync } from "@graphql-tools/load-files";
@@ -33,11 +33,11 @@ async function startServer() {
     schema: schema,
   });
 
-  await apolloServer.start();
-  apolloServer.applyMiddleware({
-    app,
-    path: "/graphql",
-  });
+  // await apolloServer.start();
+  // apolloServer.applyMiddleware({
+  //   app,
+  //   path: "/graphql",
+  // });
 
   server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
@@ -45,5 +45,3 @@ async function startServer() {
 }
 
 startServer();
-
-export { app };

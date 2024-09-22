@@ -1,15 +1,23 @@
-const { restClient } = require("@polygon.io/client-js")
+import { IAggs, restClient } from "@polygon.io/client-js"
+import { toDate } from "unix-timestamp"
 
 const polygonRestClient = restClient("")
-const { toDate } = require("unix-timestamp")
 
 // polygonRestClient.stocks.aggregates("AAPL", 1, "day", "2024-01-01", "2024-02-02")
 // .then(res => console.log(res))
 // .catch(err => console.log(err))
 
+type MarketDataQuery = {
+  marketDataType: string;
+  marketDataTicker: string;
+  marketDataInterval: string;
+  marketDataStartDate: string;
+  marketDataEndDate: string;
+}
+
 // helper functions
 
-function convUnix(unix_timestamp) {
+function convUnix(unix_timestamp: string | number | Date): { date: Date, time: string } {
   // Create a new JavaScript Date object based on the timestamp
   // multiplied by 1000 so that the argument is in milliseconds, not seconds
   var date = new Date(unix_timestamp);
@@ -32,17 +40,21 @@ function convUnix(unix_timestamp) {
   }
 }
 
-async function processMarketDataResponse(marketDataRes) {
-  return marketDataRes.results.map((marketDataRecord) => {
-    return {
-      closing: marketDataRecord.c,
-      time: convUnix(marketDataRecord.t)
-    }
-  })
+async function processMarketDataResponse(marketDataRes: IAggs) {
+  if (marketDataRes && marketDataRes.results) {
+    return marketDataRes.results.map((marketDataRecord) => {
+      if (marketDataRecord.t) {
+        return {
+          closing: marketDataRecord.c,
+          time: convUnix(marketDataRecord.t)
+        }
+      }
+    })
+  }
 }
 
 // stocks
-async function getStocksMarketData(marketDataQuery) {
+async function getStocksMarketData(marketDataQuery: MarketDataQuery): Promise<IAggs> {
   const res = polygonRestClient.stocks.aggregates(
     marketDataQuery.marketDataTicker, 
     1, 

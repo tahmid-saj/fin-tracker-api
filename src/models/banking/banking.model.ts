@@ -1,5 +1,3 @@
-import { bankingAccountsDatabase, bankingSummaryDatabase } from "./banking.mongo";
-import axios from "axios";
 
 import {
   getBankingAccounts,
@@ -9,9 +7,9 @@ import {
   closeBankingAccount,
   updateBankingAccounts,
   updateBankingSummary
-} from "./banking.mongo.crud";
+} from "./banking.mongo.crud.ts";
 
-import { UserId, Email, BankingAccountName, BankingAccount, TransactionInfo, BankingSummary } from "./banking.types";
+import { UserId, Email, BankingAccountName, BankingAccount, TransactionInfo, BankingSummary } from "./banking.types.ts";
 
 // user signs in
 export async function getBankingAccountsData(userid: UserId, email: Email): Promise<any> {

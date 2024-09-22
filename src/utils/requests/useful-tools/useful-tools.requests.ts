@@ -1,10 +1,33 @@
-const { errorOnMortgageResult, errorOnCurrencyResult } = require("../../errors/useful-tools.errors")
-const { DOWNPAYMENT_FLAG_OPTIONS } = require("../../constants/useful-tools.constants")
-const { MARKET_DATA_FOREX_PREFIX } = require("../../constants/market-data.constants")
-const { polygonRestClient } = require("../../../services/polygon/polygon.service")
+import { errorOnMortgageResult, errorOnCurrencyResult } from "../../errors/useful-tools.errors.ts"
+import { DOWNPAYMENT_FLAG_OPTIONS } from "../../constants/useful-tools.constants.ts"
+import { MARKET_DATA_FOREX_PREFIX } from "../../constants/market-data.constants.ts"
+import { polygonRestClient } from "../../../services/polygon/polygon.service.ts"
+import { IAggsPreviousClose } from "@polygon.io/client-js"
+
+type ProcessedMortgageResult = {
+  monthlyPayment: MonthlyPayment;
+  annualPayment: AnnualPayment;
+  totalInterestPaid: number | string;
+}
+
+type MonthlyPayment = {
+  total: number | string;
+  mortgage: number | string;
+  propertyTax: number | string;
+  hoa: number | string;
+  annualHomeInsurance: number | string;
+}
+
+type AnnualPayment = {
+  total: number | string;
+  mortgage: number | string;
+  propertyTax: number | string;
+  hoa: number | string;
+  homeInsurance: number | string;
+}
 
 // helper functions
-async function processMortgageResult(resJSON) {
+function processMortgageResult(resJSON: any): ProcessedMortgageResult {
   return {
     monthlyPayment: {
       total: resJSON.monthly_payment.total,
@@ -25,8 +48,9 @@ async function processMortgageResult(resJSON) {
 }
 
 // mortgage calculator
-async function getUsefulToolsMortgageCalculator(downpaymentFlag, loanAmount, homeValue, downpayment, interestRate, durationYears, 
-  monthlyHoa, annualPropertyTax, annualHomeInsurance) {
+export async function getUsefulToolsMortgageCalculator(downpaymentFlag: string, loanAmount: string, homeValue: string, 
+  downpayment: string, interestRate: string, durationYears: string, 
+  monthlyHoa: string, annualPropertyTax: string, annualHomeInsurance: string): Promise<any> {
   try {
     let url;
     if (downpaymentFlag === DOWNPAYMENT_FLAG_OPTIONS.no) {
@@ -65,7 +89,7 @@ async function getUsefulToolsMortgageCalculator(downpaymentFlag, loanAmount, hom
 
 // currency converter
 // exchange rate
-async function getUsefulToolsExchangeRate(fromCurrency, toCurrency) {
+export async function getUsefulToolsExchangeRate(fromCurrency: string, toCurrency: string): Promise<{ fromCurrency: string, toCurrency: string, exchangeRate: number } | undefined> {
   const resExchangeRate = await polygonRestClient.forex.previousClose(MARKET_DATA_FOREX_PREFIX + fromCurrency + toCurrency)
     .catch((error) => {
       errorOnCurrencyResult()
@@ -73,14 +97,13 @@ async function getUsefulToolsExchangeRate(fromCurrency, toCurrency) {
       return undefined
     })
   
-  return {
-    fromCurrency: String(fromCurrency),
-    toCurrency: String(toCurrency),
-    exchangeRate: Number(resExchangeRate.results[0].c)
+  if (resExchangeRate?.results) {
+    return {
+      fromCurrency: String(fromCurrency),
+      toCurrency: String(toCurrency),
+      exchangeRate: Number(resExchangeRate.results[0].c)
+    }
   }
-}
 
-module.exports = {
-  getUsefulToolsMortgageCalculator,
-  getUsefulToolsExchangeRate
+  return undefined
 }

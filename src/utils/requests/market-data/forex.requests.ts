@@ -1,4 +1,4 @@
-const { restClient } = require("@polygon.io/client-js")
+import { restClient } from "@polygon.io/client-js"
 
 const polygonRestClient = restClient("")
 
