@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { mongoConnect } from "../src/services/mongodb/mongodb.service.ts";
-import { app } from "../src/app.ts";
+import { app } from "../src/app.ts"
 
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;  // Provide a default port if PORT is undefined

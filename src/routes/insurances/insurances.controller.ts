@@ -10,7 +10,7 @@ export async function httpGetInsurancesData(req: Request, res: Response): Promis
   try {
     const userId = req.params.userid
     const email = req.params.email
-    const resGetInsurancesData = await getInsurancesData(userId, email)
+    const resGetInsurancesData = await getInsurancesData(userId!, email!)
 
     if (resGetInsurancesData) res.status(200).json(resGetInsurancesData)
   } catch (error) {
@@ -24,7 +24,7 @@ export async function httpGetInsurancesSummaryData(req: Request, res: Response):
   try {
     const userId = req.params.userid
     const email = req.params.email
-    const resGetInsurancesSummaryData = await getInsurancesSummaryData(userId, email)
+    const resGetInsurancesSummaryData = await getInsurancesSummaryData(userId!, email!)
 
     if (resGetInsurancesSummaryData) res.status(200).json(resGetInsurancesSummaryData)
   } catch (error) {
@@ -40,7 +40,7 @@ export async function httpPostInsurancesCreate(req: Request, res: Response): Pro
     const insuranceInfo = req.body
     const userId = req.params.userid
     const email = req.params.email
-    const resPostInsuranceCreate = await postInsuranceCreate(userId, email, insuranceInfo)
+    const resPostInsuranceCreate = await postInsuranceCreate(userId!, email!, insuranceInfo)
 
     if (resPostInsuranceCreate) res.status(200)
   } catch (error) {
@@ -55,7 +55,7 @@ export async function httpDeleteInsurance(req: Request, res: Response): Promise<
     const userId = req.params.userid
     const email = req.params.email
     const removingInsuranceFor = String(req.body)
-    const resDeleteInsurance = await deleteInsurance(userId, email, removingInsuranceFor)
+    const resDeleteInsurance = await deleteInsurance(userId!, email!, removingInsuranceFor)
 
     if (resDeleteInsurance) res.status(200)
   } catch (error) {
@@ -71,7 +71,7 @@ export async function httpPutInsurancesData(req: Request, res: Response): Promis
     const userId = req.params.userid
     const email = req.params.email
     const { insurances } = req.body
-    const resPutInsurancesData = await putInsurancesData(userId, email, insurances)
+    const resPutInsurancesData = await putInsurancesData(userId!, email!, insurances)
 
     if (resPutInsurancesData) res.status(200)
   } catch (error) {
@@ -86,7 +86,7 @@ export async function httpPutInsurancesSummaryData(req: Request, res: Response):
     const userId = req.params.userid
     const email = req.params.email
     const { insurancesSummary } = req.body
-    const resPutInsurancesSummaryData = await putInsurancesSummaryData(userId, email, insurancesSummary)
+    const resPutInsurancesSummaryData = await putInsurancesSummaryData(userId!, email!, insurancesSummary)
     
     if (resPutInsurancesSummaryData) res.status(200)
   } catch (error) {

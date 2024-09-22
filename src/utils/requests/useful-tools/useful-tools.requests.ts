@@ -101,7 +101,7 @@ export async function getUsefulToolsExchangeRate(fromCurrency: string, toCurrenc
     return {
       fromCurrency: String(fromCurrency),
       toCurrency: String(toCurrency),
-      exchangeRate: Number(resExchangeRate.results[0].c)
+      exchangeRate: Number(resExchangeRate?.results[0]?.c)
     }
   }
 
