@@ -1,25 +1,32 @@
-const insurancesModel = require("./insurances.model")
+import { Insurance, insurancesSummary } from "../../models/insurances/insurances.types.ts";
+
+const insurancesModel = require("./insurances.model.ts")
+
+type UserArgs = {
+  userId: string;
+  email: string;
+}
 
 module.exports = {
   Query: {
-    insurancesByUser: (parent, args) => {
+    insurancesByUser: (parent: any, args: UserArgs): Insurance[] => {
       return insurancesModel.insurancesByUser(args.userId, args.email)
     },
-    insurancesSummaryByUser: (parent, args) => {
+    insurancesSummaryByUser: (parent: any, args: UserArgs): insurancesSummary => {
       return insurancesModel.insurancesSummaryByUser(args.userId, args.email)
     }
   },
   Mutation: {
-    createUserInsurance: (parent, args) => {
+    createUserInsurance: (parent: any, args: any): boolean => {
       return insurancesModel.createUserInsurance(args.userId, args.email, args.insuranceInfo)
     },
-    deleteUserInsurance: (parent, args) => {
+    deleteUserInsurance: (parent: any, args: any): boolean => {
       return insurancesModel.deleteUserInsurance(args.userId, args.email, args.removingInsuranceFor)
     },
-    updateUserInsurances: (parent, args) => {
+    updateUserInsurances: (parent: any, args: any): boolean => {
       return insurancesModel.updateUserInsurances(args.userId, args.email, args.insurances)
     },
-    updateUserInsurancesSummary: (parent, args) => {
+    updateUserInsurancesSummary: (parent: any, args: any): boolean => {
       return insurancesModel.updateUserInsurancesSummary(args.userId, args.email, args.insurancesSummary)
     }
   }
