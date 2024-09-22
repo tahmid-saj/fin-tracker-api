@@ -48,10 +48,5 @@ const expensesSummarySchema = new mongoose.Schema({
   }
 });
 
-const expensesDatabase = mongoose.model("Expenses", expensesSchema)
-const expensesSummaryDatabase = mongoose.model("ExpensesSummary", expensesSummarySchema)
-
-module.exports = {
-  expensesDatabase,
-  expensesSummaryDatabase,
-}
+export const expensesDatabase = mongoose.model("Expenses", expensesSchema)
+export const expensesSummaryDatabase = mongoose.model("ExpensesSummary", expensesSummarySchema)

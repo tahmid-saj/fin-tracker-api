@@ -20,6 +20,4 @@ expensesRouter.delete("/expenses/:userid/:email", httpDeleteExpense)
 expensesRouter.put("/expenses/:userid/:email", httpPutExpensesData)
 expensesRouter.put("/summary/:userid/:email", httpPutExpensesSummaryData)
 
-module.exports = {
-  expensesRouter
-}
+export { expensesRouter }

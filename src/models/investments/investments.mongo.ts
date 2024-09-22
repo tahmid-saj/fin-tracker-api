@@ -121,10 +121,5 @@ const investmentsSummarySchema = new mongoose.Schema({
   }
 });
 
-const investmentsDatabase = mongoose.model("Investments", investmentsSchema);
-const investmentsSummaryDatabase = mongoose.model("InvestmentsSummary", investmentsSummarySchema);
-
-module.exports = {
-  investmentsDatabase,
-  investmentsSummaryDatabase
-};
+export const investmentsDatabase = mongoose.model("Investments", investmentsSchema);
+export const investmentsSummaryDatabase = mongoose.model("InvestmentsSummary", investmentsSummarySchema);

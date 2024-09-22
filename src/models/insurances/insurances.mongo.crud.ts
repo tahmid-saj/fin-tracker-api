@@ -1,21 +1,23 @@
-const { insurancesDatabase, insurancesSummaryDatabase } = require("./insurances.mongo")
+import { insurancesDatabase, insurancesSummaryDatabase } from "./insurances.mongo"
 
-const { validateGetInsurancesSummary } = require("../../utils/validations/insurances/insurances.validation")
+import { validateGetInsurancesSummary } from "../../utils/validations/insurances/insurances.validation"
 
-const { INSURANCE_INTERVALS, INSURANCE_INTERVALS_DAYS_MULTIPLIER } = require("../../utils/constants/insurance.constants")
+import { INSURANCE_INTERVALS, INSURANCE_INTERVALS_DAYS_MULTIPLIER } from "../../utils/constants/insurance.constants"
+import { Email, Insurance, InsuranceInfo, insurancesSummary, RemovingInsuranceFor, UserId } from "./insurances.types"
+import { Document } from "mongodb"
 
 // TODO: move validation for crud to validation directory
 
 // insurances crud for mongodb
 
 // user sign in
-async function getInsurances(userId, email) {
+export async function getInsurances(userId: UserId, email: Email): Promise<{ insurances: Insurance[] }> {
   const insurances = await insurancesDatabase.find({
     userId: userId,
     email: email
   })
-  .then(res => {
-    const insurances = res.map(insurance => {
+  .then((res: any) => {
+    const insurances = res.map((insurance: Document) => {
       return {
         insuranceFor: insurance.insuranceFor,
         insurancePayment: insurance.insurancePayment,
@@ -27,7 +29,7 @@ async function getInsurances(userId, email) {
 
     return insurances
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error)
   })
@@ -37,24 +39,24 @@ async function getInsurances(userId, email) {
   }
 }
 
-async function getInsurancesSummary(userId, email) {
+export async function getInsurancesSummary(userId: UserId, email: Email): Promise<{ insurancesSummary: insurancesSummary }> {
   const insurancesSummary = await insurancesSummaryDatabase.findOne({
     userId: userId,
     email: email
   })
-  .then(res => {
+  .then((res: any) => {
     if (validateGetInsurancesSummary(res) === true) return Object({})
 
     return res.toObject()
   })
-  .then(res => {
+  .then((res: Document) => {
     const summary = {
       currentTotalInsurancePlanned: res.currentTotalInsurancePlanned
     }
 
     return summary
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error)
   })
@@ -65,7 +67,7 @@ async function getInsurancesSummary(userId, email) {
 }
 
 // insurances operations
-async function calculateTotalInsurancePlanned(insuranceInfo) {
+export async function calculateTotalInsurancePlanned(insuranceInfo: InsuranceInfo): Promise<number> {
 
   let newCurrentTotalInsurancePlanned = 0.0
 
@@ -113,7 +115,7 @@ async function calculateTotalInsurancePlanned(insuranceInfo) {
   return newCurrentTotalInsurancePlanned
 }
 
-async function createInsuranceSummary(userId, email, insuranceInfo) {
+export async function createInsuranceSummary(userId: UserId, email: Email, insuranceInfo: InsuranceInfo): Promise<void> {
   const newCurrentTotalInsurancePlanned = await calculateTotalInsurancePlanned(insuranceInfo)
 
   const insuranceSummaryExists = await insurancesSummaryDatabase.findOne({
@@ -125,7 +127,7 @@ async function createInsuranceSummary(userId, email, insuranceInfo) {
 
     const newInsuranceSummary = new insurancesSummaryDatabase({
       userId: userId,
-      email, email,
+      email: email,
       currentTotalInsurancePlanned: Number(newCurrentTotalInsurancePlanned)
     })
 
@@ -136,7 +138,8 @@ async function createInsuranceSummary(userId, email, insuranceInfo) {
   }
 }
 
-async function updateInsuranceSummary(userId, email, insuranceSummaryExists, insuranceInfo, newCurrentTotalInsurancePlanned) {
+export async function updateInsuranceSummary(userId: UserId, email: Email, 
+  insuranceSummaryExists: any, insuranceInfo: InsuranceInfo, newCurrentTotalInsurancePlanned: number): Promise<void> {
   await insurancesSummaryDatabase.updateOne({
     userId: userId,
     email: email
@@ -147,7 +150,7 @@ async function updateInsuranceSummary(userId, email, insuranceSummaryExists, ins
   })
 }
 
-async function createInsurance(userId, email, insuranceInfo) {
+export async function createInsurance(userId: UserId, email: Email, insuranceInfo: InsuranceInfo): Promise<void> {
   const insuranceExists = await insurancesDatabase.findOne({
     userId: userId,
     email: email,
@@ -174,7 +177,7 @@ async function createInsurance(userId, email, insuranceInfo) {
   }
 }
 
-async function removeInsurance(userId, email, removingInsuranceFor) {
+export async function removeInsurance(userId: UserId, email: Email, removingInsuranceFor: RemovingInsuranceFor): Promise<void> {
 
   const insuranceExists = await insurancesDatabase.findOne({
     userId: userId,
@@ -205,7 +208,7 @@ async function removeInsurance(userId, email, removingInsuranceFor) {
 }
 
 // sign out
-async function updateInsurances(userId, email, insurances) {
+export async function updateInsurances(userId: UserId, email: Email, insurances: Insurance[]): Promise<void> {
   const insurancesExist = await insurancesDatabase.findOne({
     userId: userId,
     email: email
@@ -230,7 +233,7 @@ async function updateInsurances(userId, email, insurances) {
   }
 }
 
-async function updateInsurancesSummary(userId, email, insurancesSummary) {
+export async function updateInsurancesSummary(userId: UserId, email: Email, insurancesSummary: insurancesSummary): Promise<void> {
   const insurancesSummaryExists = await insurancesSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -246,13 +249,4 @@ async function updateInsurancesSummary(userId, email, insurancesSummary) {
   } else {
     return
   }
-}
-
-module.exports = {
-  getInsurances,
-  getInsurancesSummary,
-  createInsurance,
-  removeInsurance,
-  updateInsurances,
-  updateInsurancesSummary,
 }

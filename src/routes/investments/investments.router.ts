@@ -20,6 +20,4 @@ investmentsRouter.delete("/investments/:userid/:email", httpDeleteInvestment);
 investmentsRouter.put("/investments/:userid/:email", httpPutInvestmentsData);
 investmentsRouter.put("/summary/:userid/:email", httpPutInvestmentsSummaryData);
 
-module.exports = {
-  investmentsRouter,
-}
+export { investmentsRouter }

@@ -15,6 +15,6 @@ async function httpGetChatBotResponse(req: Request, res: Response): Promise<void
   }
 }
 
-module.exports = {
+export {
   httpGetChatBotResponse
 }

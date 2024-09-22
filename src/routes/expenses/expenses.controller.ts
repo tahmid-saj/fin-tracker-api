@@ -5,7 +5,7 @@ import { getExpensesData, getExpensesSummaryData,
 } from "../../models/expenses/expenses.model"
 
 // signed in
-async function httpGetExpensesData(req: Request, res: Response): Promise<void> {
+export async function httpGetExpensesData(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -19,7 +19,7 @@ async function httpGetExpensesData(req: Request, res: Response): Promise<void> {
   }
 }
 
-async function httpGetExpensesSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpGetExpensesSummaryData(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -34,7 +34,7 @@ async function httpGetExpensesSummaryData(req: Request, res: Response): Promise<
 }
 
 // expenses operations
-async function httpPostExpenseCreate(req: Request, res: Response): Promise<void> {
+export async function httpPostExpenseCreate(req: Request, res: Response): Promise<void> {
   try {
     const expenseInfo = req.body
     const userId = req.params.userid
@@ -49,7 +49,7 @@ async function httpPostExpenseCreate(req: Request, res: Response): Promise<void>
   }
 }
 
-async function httpDeleteExpense(req: Request, res: Response): Promise<void> {
+export async function httpDeleteExpense(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -65,7 +65,7 @@ async function httpDeleteExpense(req: Request, res: Response): Promise<void> {
 }
 
 // signed out
-async function httpPutExpensesData(req: Request, res: Response): Promise<void> {
+export async function httpPutExpensesData(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -80,7 +80,7 @@ async function httpPutExpensesData(req: Request, res: Response): Promise<void> {
   }
 }
 
-async function httpPutExpensesSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpPutExpensesSummaryData(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -93,13 +93,4 @@ async function httpPutExpensesSummaryData(req: Request, res: Response): Promise<
     console.log(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-}
-
-module.exports = {
-  httpGetExpensesData,
-  httpGetExpensesSummaryData,
-  httpPostExpenseCreate,
-  httpDeleteExpense,
-  httpPutExpensesData,
-  httpPutExpensesSummaryData,
 }

@@ -1,19 +1,21 @@
-const { investmentsDatabase, investmentsSummaryDatabase } = require("./investments.mongo");
+import { investmentsDatabase, investmentsSummaryDatabase } from "./investments.mongo"
 
-const { validateGetInvestmentsSummary } = require("../../utils/validations/investments/investments.validations");
+import { validateGetInvestmentsSummary } from "../../utils/validations/investments/investments.validations"
+import { ClosingInvestmentName, Email, Investment, InvestmentInfo, InvestmentsSummary, UserId } from "./investments.types";
+import { Document } from "mongodb";
 
 // TODO: move validation for crud to validation directory
 
 // investments crud for mongodb
 
 // user sign in
-async function getInvestments(userId, email) {
+export async function getInvestments(userId: UserId, email: Email): Promise<{ investments: Investment[] }> {
   const investments = await investmentsDatabase.find({
     userId: userId,
     email: email
   })
-  .then(res => {
-    const investments = res.map(investment => {
+  .then((res: any) => {
+    const investments = res.map((investment: Document) => {
       return {
         investmentName: investment.investmentName,
         investmentType: investment.investmentType,
@@ -37,7 +39,7 @@ async function getInvestments(userId, email) {
 
     return investments;
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error)
   });
@@ -47,17 +49,17 @@ async function getInvestments(userId, email) {
   }
 };
 
-async function getInvestmentsSummary(userId, email) {
+export async function getInvestmentsSummary(userId: UserId, email: Email): Promise<{ investmentsSummary: InvestmentsSummary }> {
   const investmentsSummary = await investmentsSummaryDatabase.findOne({
     userId: userId,
     email: email
   })
-  .then(res => {
+  .then((res: any) => {
     if (validateGetInvestmentsSummary(res) === true) return Object({})
 
     return res.toObject()
   })
-  .then(res => {
+  .then((res: Document) => {
     const summary = {
       currentAllInvestmentsBalance: res.currentAllInvestmentsBalance,
       totalAllContribution: res.totalAllContribution,
@@ -66,7 +68,7 @@ async function getInvestmentsSummary(userId, email) {
 
     return summary;
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error)
   })
@@ -77,7 +79,7 @@ async function getInvestmentsSummary(userId, email) {
 };
 
 // investments operations
-async function createInvestmentSummary(userId, email, investmentInfo) {
+export async function createInvestmentSummary(userId: UserId, email: Email, investmentInfo: Investment): Promise<void> {
   const investmentSummaryExists = await investmentsSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -99,7 +101,7 @@ async function createInvestmentSummary(userId, email, investmentInfo) {
   }
 };
 
-async function createUpdatedInvestmentSummary(userId, email, updatedInvestmentInfo) {
+export async function createUpdatedInvestmentSummary(userId: UserId, email: Email, updatedInvestmentInfo: Investment): Promise<void> {
   const investmentSummaryExists = await investmentsSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -121,7 +123,7 @@ async function createUpdatedInvestmentSummary(userId, email, updatedInvestmentIn
   }
 }
 
-async function createInvestment(userId, email, investmentInfo) {
+export async function createInvestment(userId: UserId, email: Email, investmentInfo: Investment): Promise<void> {
   const investmentExists = await investmentsDatabase.findOne({
     userId: userId,
     email: email,
@@ -160,7 +162,7 @@ async function createInvestment(userId, email, investmentInfo) {
   }
 };
 
-async function updateInvestment(userId, email, originalInvestmentInfo, updatedInvestmentInfo) {
+export async function updateInvestment(userId: UserId, email: Email, originalInvestmentInfo: Investment, updatedInvestmentInfo: Investment): Promise<void> {
   const investmentExists = await investmentsDatabase.findOne({
     userId: userId,
     email: email,
@@ -216,7 +218,7 @@ async function updateInvestment(userId, email, originalInvestmentInfo, updatedIn
   }
 };
 
-async function closeInvestment(userId, email, closingInvestmentName) {
+export async function closeInvestment(userId: UserId, email: Email, closingInvestmentName: ClosingInvestmentName): Promise<void> {
   const investmentExists = await investmentsDatabase.findOne({
     userId: userId,
     email: email,
@@ -246,7 +248,7 @@ async function closeInvestment(userId, email, closingInvestmentName) {
 };
 
 // sign out
-async function updateInvestments(userId, email, investments) {
+export async function updateInvestments(userId: UserId, email: Email, investments: Investment[]): Promise<void> {
   const investmentsExist = await investmentsDatabase.findOne({
     userId: userId,
     email: email
@@ -281,7 +283,7 @@ async function updateInvestments(userId, email, investments) {
   }
 };
 
-async function updateInvestmentsSummary(userId, email, investmentsSummary) {
+export async function updateInvestmentsSummary(userId: UserId, email: Email, investmentsSummary: InvestmentsSummary): Promise<void> {
   const investmentsSummaryExists = await investmentsSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -300,13 +302,3 @@ async function updateInvestmentsSummary(userId, email, investmentsSummary) {
     return;
   }
 };
-
-module.exports = {
-  getInvestments,
-  getInvestmentsSummary,
-  createInvestment,
-  closeInvestment,
-  updateInvestment,
-  updateInvestments,
-  updateInvestmentsSummary,
-}

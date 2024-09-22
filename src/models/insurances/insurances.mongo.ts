@@ -51,10 +51,5 @@ const insurancesSummarySchema = new mongoose.Schema({
   }
 })
 
-const insurancesDatabase = mongoose.model("Insurances", insurancesSchema)
-const insurancesSummaryDatabase = mongoose.model("InsurancesSummary", insurancesSummarySchema)
-
-module.exports = {
-  insurancesDatabase,
-  insurancesSummaryDatabase
-}
+export const insurancesDatabase = mongoose.model("Insurances", insurancesSchema)
+export const insurancesSummaryDatabase = mongoose.model("InsurancesSummary", insurancesSummarySchema)

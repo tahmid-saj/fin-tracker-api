@@ -12,7 +12,4 @@ marketDataRouter.post("/indices", httpGetMarketDataIndices)
 marketDataRouter.post("/crypto", httpGetMarketDataCrypto)
 marketDataRouter.post("/forex", httpGetMarketDataForex)
 
-
-module.exports = {
-  marketDataRouter
-}
+export { marketDataRouter }

@@ -5,7 +5,7 @@ import { getUsefulToolsMortgageCalculator, getUsefulToolsExchangeRate
 // useful tools
 
 // mortgage calculator
-async function httpGetUsefulToolsMortgageCalculator(req: Request, res: Response): Promise<void> {
+export async function httpGetUsefulToolsMortgageCalculator(req: Request, res: Response): Promise<void> {
   try {
     const downpaymentFlag = String(req.body.downpaymentFlag)
     const loanAmount = String(req.body.loanAmount)
@@ -32,7 +32,7 @@ async function httpGetUsefulToolsMortgageCalculator(req: Request, res: Response)
 
 // currency converter
 // exchange rate
-async function httpGetUsefulToolsExchangeRate(req: Request, res: Response): Promise<void> {
+export async function httpGetUsefulToolsExchangeRate(req: Request, res: Response): Promise<void> {
   try {
     const fromCurrency = String(req.body.fromCurrency)
     const toCurrency = String(req.body.toCurrency)
@@ -45,9 +45,4 @@ async function httpGetUsefulToolsExchangeRate(req: Request, res: Response): Prom
     console.log(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-}
-
-module.exports = {
-  httpGetUsefulToolsMortgageCalculator,
-  httpGetUsefulToolsExchangeRate
 }

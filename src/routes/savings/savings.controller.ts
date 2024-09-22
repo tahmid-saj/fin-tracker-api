@@ -4,7 +4,7 @@ import { getSavingsAccountsData, getSavingsAccountsSummaryData,
   putSavingsAccountsData, putSavingsAccountsSummaryData } from "../../models/savings/savings.model"
 
 // signed in
-async function httpGetSavingsAccountsData(req: Request, res: Response): Promise<void> {
+export async function httpGetSavingsAccountsData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(getInvestmentsData());
   try {
     const userId = req.params.userid;
@@ -19,7 +19,7 @@ async function httpGetSavingsAccountsData(req: Request, res: Response): Promise<
   }
 };
 
-async function httpGetSavingsAccountsSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpGetSavingsAccountsSummaryData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(getInvestmentsSummaryData());
   try {
     const userId = req.params.userId;
@@ -35,7 +35,7 @@ async function httpGetSavingsAccountsSummaryData(req: Request, res: Response): P
 };
 
 // savings operations
-async function httpPostSavingsAccountCreate(req: Request, res: Response): Promise<void> {
+export async function httpPostSavingsAccountCreate(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(postInvestmentCreate());
   try {
     const savingsAccountInfo = req.body;
@@ -51,7 +51,7 @@ async function httpPostSavingsAccountCreate(req: Request, res: Response): Promis
   }
 };
 
-async function httpPutSavingsAccountData(req: Request, res: Response): Promise<void> {
+export async function httpPutSavingsAccountData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentData());
   try {
     const userId = req.params.userid;
@@ -68,7 +68,7 @@ async function httpPutSavingsAccountData(req: Request, res: Response): Promise<v
   }
 };
 
-async function httpDeleteSavingsAccount(req: Request, res: Response): Promise<void> {
+export async function httpDeleteSavingsAccount(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(deleteInvestment());
   try {
     const userId = req.params.userid;
@@ -85,7 +85,7 @@ async function httpDeleteSavingsAccount(req: Request, res: Response): Promise<vo
 };
 
 // signed out
-async function httpPutSavingsAccountsData(req: Request, res: Response): Promise<void> {
+export async function httpPutSavingsAccountsData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentsData());
   try {
     const userId = req.params.userid;
@@ -101,7 +101,7 @@ async function httpPutSavingsAccountsData(req: Request, res: Response): Promise<
   }
 };
 
-async function httpPutSavingsAccountsSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpPutSavingsAccountsSummaryData(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putInvestmentsSummaryData());
   try {
     const userId = req.params.userid;
@@ -116,13 +116,3 @@ async function httpPutSavingsAccountsSummaryData(req: Request, res: Response): P
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
-module.exports = {
-  httpGetSavingsAccountsData,
-  httpGetSavingsAccountsSummaryData,
-  httpPostSavingsAccountCreate,
-  httpPutSavingsAccountData,
-  httpDeleteSavingsAccount,
-  httpPutSavingsAccountsData,
-  httpPutSavingsAccountsSummaryData,
-}

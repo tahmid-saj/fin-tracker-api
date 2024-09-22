@@ -80,10 +80,5 @@ const bankingSummarySchema = new mongoose.Schema({
   }
 });
 
-const bankingAccountsDatabase = mongoose.model("BankingAccounts", bankingAccountsSchema);
-const bankingSummaryDatabase = mongoose.model("BankingSummary", bankingSummarySchema);
-
-module.exports = {
-  bankingAccountsDatabase,
-  bankingSummaryDatabase,
-};
+export const bankingAccountsDatabase = mongoose.model("BankingAccounts", bankingAccountsSchema);
+export const bankingSummaryDatabase = mongoose.model("BankingSummary", bankingSummarySchema);

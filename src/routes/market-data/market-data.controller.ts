@@ -6,7 +6,7 @@ import { getMarketDataStocks, getMarketDataIndices,
 // market data
 
 // stocks
-async function httpGetMarketDataStocks(req: Request, res: Response): Promise<void> {
+export async function httpGetMarketDataStocks(req: Request, res: Response): Promise<void> {
   try {
     if (req.body) {
       const marketDataType = String(req.body.marketDataType)
@@ -27,7 +27,7 @@ async function httpGetMarketDataStocks(req: Request, res: Response): Promise<voi
 }
 
 // indices
-async function httpGetMarketDataIndices(req: Request, res: Response): Promise<void> {
+export async function httpGetMarketDataIndices(req: Request, res: Response): Promise<void> {
   try {
     const marketDataType = String(req.body.marketDataType)
     const marketDataTicker = String(req.body.marketDataTicker)
@@ -46,7 +46,7 @@ async function httpGetMarketDataIndices(req: Request, res: Response): Promise<vo
 }
 
 // crypto
-async function httpGetMarketDataCrypto(req: Request, res: Response): Promise<void> {
+export async function httpGetMarketDataCrypto(req: Request, res: Response): Promise<void> {
   try {
     const marketDataType = String(req.body.marketDataType)
     const marketDataTicker = String(req.body.marketDataTicker)
@@ -65,7 +65,7 @@ async function httpGetMarketDataCrypto(req: Request, res: Response): Promise<voi
 }
 
 // forex
-async function httpGetMarketDataForex(req: Request, res: Response): Promise<void> {
+export async function httpGetMarketDataForex(req: Request, res: Response): Promise<void> {
   try {
     const marketDataType = String(req.body.marketDataType)
     const marketDataTicker = String(req.body.marketDataTicker)
@@ -81,11 +81,4 @@ async function httpGetMarketDataForex(req: Request, res: Response): Promise<void
     console.log(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-}
-
-module.exports = {
-  httpGetMarketDataStocks,
-  httpGetMarketDataIndices,
-  httpGetMarketDataCrypto,
-  httpGetMarketDataForex
 }
