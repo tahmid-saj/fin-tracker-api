@@ -11,6 +11,7 @@ import { savingsRouter } from "./savings/savings.router.js"
 import { insurancesRouter } from "./insurances/insurances.router.js"
 import { marketDataRouter } from "./market-data/market-data.router.js"
 import { usefulToolsRouter } from "./useful-tools/useful-tools.router.js"
+import { predictionsRouter } from "./predictions/predictions.router.js";
 
 const api: Router = express.Router();
 
@@ -23,5 +24,6 @@ api.use("/savings", savingsRouter);
 api.use("/insurances", insurancesRouter);
 api.use("/market-data", marketDataRouter)
 api.use("/useful-tools", usefulToolsRouter)
+api.use("/market-predictions", predictionsRouter)
 
 export { api }
