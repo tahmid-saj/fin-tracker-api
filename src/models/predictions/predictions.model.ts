@@ -1,4 +1,4 @@
-import { getDailyPrediction, getTwoWeekPrediction } from "./predictions.mongo.crud.ts";
+import { getDailyPrediction, getTwoWeekPrediction } from "./predictions.mongo.crud.js";
 
 export async function getDailyPredictionData(predictionTicker: string): Promise<any> {
   return getDailyPrediction(predictionTicker)

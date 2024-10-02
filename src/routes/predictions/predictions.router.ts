@@ -1,6 +1,6 @@
 import express, { Router } from "express"
 
-import { httpGetDailyPrediction, httpGetTwoWeekPrediction } from "./predictions.controller.ts"
+import { httpGetDailyPrediction, httpGetTwoWeekPrediction } from "./predictions.controller.js"
 
 const predictionsRouter: Router = express.Router()
 

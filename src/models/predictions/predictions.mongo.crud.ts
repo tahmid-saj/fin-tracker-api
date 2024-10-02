@@ -1,11 +1,11 @@
-import { PREDICTION_TICKERS } from "../../utils/constants/predictions.constants.ts";
-import { getCurrentFormattedDate } from "../../utils/helpers/helpers.utils.ts";
+import { PREDICTION_TICKERS } from "../../utils/constants/predictions.constants.js";
+import { getCurrentFormattedDate } from "../../utils/helpers/helpers.utils.js";
 import { dailyPredictionDatabase, twoWeekPredictionDatabase
-} from "./predictions.btc.mongo.ts";
-import { sp500DailyPredictionDatabase, sp500TwoWeekPredictionDatabase } from "./predictions.sp500.mongo.ts";
-import { metaDailyPredictionDatabase, metaTwoWeekPredictionDatabase } from "./predictions.meta.mongo.ts";
+} from "./predictions.btc.mongo.js";
+import { sp500DailyPredictionDatabase, sp500TwoWeekPredictionDatabase } from "./predictions.sp500.mongo.js";
+import { metaDailyPredictionDatabase, metaTwoWeekPredictionDatabase } from "./predictions.meta.mongo.js";
 
-import { PredictionData, DailyPrediction, TwoWeekPrediction } from "./predictions.types.ts";
+import { PredictionData, DailyPrediction, TwoWeekPrediction } from "./predictions.types.js";
 
 // predictions crud for mongodb
 

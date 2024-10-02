@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getDailyPredictionData, getTwoWeekPredictionData } from "../../models/predictions/predictions.model.ts";
+import { getDailyPredictionData, getTwoWeekPredictionData } from "../../models/predictions/predictions.model.js";
 
 // market predictions
 
