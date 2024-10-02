@@ -10,7 +10,7 @@ const app = express() as any
 
 // middleware
 // TODO: move to env
-// app.use(cors());
+app.use(cors());
 app.use(morgan("combined"));
 app.use(helmet());
 app.use(express.json());
