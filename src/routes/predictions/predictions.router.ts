@@ -4,7 +4,7 @@ import { httpGetDailyPrediction, httpGetTwoWeekPrediction } from "./predictions.
 
 const predictionsRouter: Router = express.Router()
 
-predictionsRouter.get("/daily-prediction", httpGetDailyPrediction)
-predictionsRouter.get("/two-week-prediction", httpGetTwoWeekPrediction)
+predictionsRouter.get("/daily-prediction/:ticker", httpGetDailyPrediction)
+predictionsRouter.get("/two-week-prediction/:ticker", httpGetTwoWeekPrediction)
 
 export { predictionsRouter }
