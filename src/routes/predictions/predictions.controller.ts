@@ -5,7 +5,7 @@ import { getDailyPredictionData, getTwoWeekPredictionData } from "../../models/p
 
 export async function httpGetDailyPrediction(req: Request, res: Response): Promise<void> {
   try {
-    const predictionTicker = String(req.query.ticker)
+    const predictionTicker = String(req.params.ticker)
     const resGetDailyPrediction = await getDailyPredictionData(predictionTicker)
 
     if (resGetDailyPrediction) res.status(200).json(resGetDailyPrediction)
@@ -18,7 +18,7 @@ export async function httpGetDailyPrediction(req: Request, res: Response): Promi
 
 export async function httpGetTwoWeekPrediction(req: Request, res: Response): Promise<void> {
   try {
-    const predictionTicker = String(req.query.ticker)
+    const predictionTicker = String(req.params.ticker)
     const resGetTwoWeekPrediction = await getTwoWeekPredictionData(predictionTicker)
 
     if (resGetTwoWeekPrediction) res.status(200).json(resGetTwoWeekPrediction)
