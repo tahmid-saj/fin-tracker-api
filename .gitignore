@@ -26,3 +26,5 @@ yarn-error.log*
 
 tests
 .vercel
+
+/dist

@@ -1,6 +1,4 @@
-import { Router } from "express";
-
-import express from 'express'
+import express, { Router } from "express"
 
 import { testRouter } from "./test-route/test-route.router.js"
 import { chatbotRouter } from "./chatbot/chatbot.router.js"
