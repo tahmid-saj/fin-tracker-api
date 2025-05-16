@@ -20,13 +20,13 @@ export async function createUserBankingAccount(userId: UserId, email: Email, ban
   return true
 }
 
-export async function updateUserBankingAccountTransaction(userId: UserId, email: Email, transactionInfo: TransactionInfo): Promise<Boolean> {
+export async function updateUserBankingAccountTransaction(userId: UserId, email: Email, transactionInfo: TransactionInfo): Promise<boolean> {
   addBankingAccountTransaction(userId, email, transactionInfo)
   console.log("Posting banking account transaction");
   return true
 }
 
-export async function deleteUserBankingAccount(userId: UserId, email: Email, bankingAccountName: BankingAccountName): Promise<Boolean> {
+export async function deleteUserBankingAccount(userId: UserId, email: Email, bankingAccountName: BankingAccountName): Promise<boolean> {
   closeBankingAccount(userId, email, bankingAccountName);
   console.log("Deleting banking account");
   return true

@@ -13,7 +13,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { ApolloServer } from "apollo-server-express";
 
 const server = http.createServer(app);
-const PORT = process.env.PORT || 4000;  // Provide a default port in case PORT is undefined
+const PORT = process.env.PORT || 4000;
 
 async function startServer() {
   await mongoConnect();
