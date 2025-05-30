@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getChatBotResponse } from "../../utils/requests/chatbot/chatbot.requests.js"
+import { getChatBotResponse, getChatBotResponseStream } from "../../utils/requests/chatbot/chatbot.requests.js"
 
 // chatbot response
 async function httpGetChatBotResponse(req: Request, res: Response): Promise<void> {
@@ -15,6 +15,26 @@ async function httpGetChatBotResponse(req: Request, res: Response): Promise<void
   }
 }
 
+// chatbot response as a stream via SSE
+async function httpGetChatBotResponseStream(req: Request, res: Response) {
+  res.set({
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    "Connection": "keep-alive",
+  })
+  res.flushHeaders()
+
+  const messageInput = String(req.body)
+
+  await getChatBotResponseStream(messageInput, (chunk: string) => {
+    res.write(`data: ${chunk}\n\n`)
+  })
+
+  res.write("event: end\ndata: [DONE]\n\n")
+  res.end()
+}
+
 export {
-  httpGetChatBotResponse
+  httpGetChatBotResponse,
+  httpGetChatBotResponseStream
 }
