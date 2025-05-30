@@ -19,24 +19,27 @@ export async function getChatBotResponse(messageInput: string) {
   }
 }
 
-export async function getChatBotResponseStream(messageInput: string, 
-  onChunk: (chunk: string) => void) {
-  
+export async function getChatBotResponseStream(
+  messageInput: string,
+  onChunk: (chunk: string) => void
+) {
   try {
     const response = await openai.chat.completions.create({
       messages: [{ role: "user", content: messageInput }],
       model: process.env.REACT_APP_OPEN_API_MODEL!,
       max_tokens: DEFAULT_CHATBOT_MAX_TOKENS,
       stream: true
-    })
+    });
 
     for await (const part of response) {
-      const chunk = part?.choices?.[0]?.delta?.content
-      
-      if (chunk) onChunk(chunk)
+      const chunk = part?.choices?.[0]?.delta?.content;
+
+      if (chunk !== undefined) {
+        onChunk(chunk!);
+      }
     }
   } catch (error) {
-    console.log("Error getting chatbot stream")
-    errorOnGetChatBotResponse()
+    console.log("Error getting chatbot stream");
+    errorOnGetChatBotResponse();
   }
 }
