@@ -1,6 +1,8 @@
 import { Request, Response } from "express"
 import { getChatBotResponse, getChatBotResponseStream } from "../../utils/requests/chatbot/chatbot.requests.js"
 
+const RANDOM_SEPARATOR = "auo0os6"
+
 // chatbot response
 async function httpGetChatBotResponse(req: Request, res: Response): Promise<void> {
   try {
@@ -27,10 +29,10 @@ async function httpGetChatBotResponseStream(req: Request, res: Response) {
   const messageInput = String(req.body)
 
   await getChatBotResponseStream(messageInput, (chunk: string) => {
-    res.write(`data: ${chunk}\n\n`)
+    res.write(`data: ${chunk}${RANDOM_SEPARATOR}`)
   })
 
-  res.write("event: end\ndata: [DONE]\n\n")
+  res.write(`data: [DONE]${RANDOM_SEPARATOR}`)
   res.end()
 }
 
