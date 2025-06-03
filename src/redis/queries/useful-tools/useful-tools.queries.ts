@@ -1,7 +1,8 @@
-import { ExchangeRateRequest, ExchangeRateResult, MortgageRequest, MortgageResult } from "../../../models/useful-tools/useful-tools.types";
-import { redisClient } from "../../../services/redis/redis.service";
-import { exchangeRateRequestsKey, exchangeRateResultKey, exchangeRateUniqueRequestsKey, 
-  mortgageRequestsKey, mortgageResultKey, mortgageUniqueRequestsKey } from "./useful-tools.keys";
+import { ExchangeRateRequest, ExchangeRateResult, 
+  MortgageRequest, MortgageResult } from "../../../models/useful-tools/useful-tools.types.js";
+import { redisClient } from "../../../services/redis/redis.service.js";
+import { exchangeRateRequestsKey, exchangeRateResultKey, 
+  mortgageRequestsKey, mortgageResultKey } from "./useful-tools.keys.js";
 
 // helper functions
 export const serializeMortgageResult = (mortgageResult: MortgageResult) => {
@@ -63,30 +64,20 @@ export const deserializeExchangeRateResult = (exchangeRateResult: { [key: string
 }
 
 export const hasMortgageRequestBeenAsked = async (mortgageRequest: MortgageRequest) => {
-  const inserted = await redisClient.pfAdd(mortgageUniqueRequestsKey(), mortgageRequestsKey(mortgageRequest))
-  if (!inserted) {
-    return true
-  }
-
-  return false
+  return await redisClient.exists(mortgageRequestsKey(mortgageRequest))
 }
 
 export const hasExchangeRateRequestBeenAsked = async (exchangeRateRequest: ExchangeRateRequest) => {
-  const inserted = await redisClient.pfAdd(exchangeRateUniqueRequestsKey(), exchangeRateRequestsKey(exchangeRateRequest))
-  if (!inserted) {
-    return true
-  }
-
-  return false
+  return await redisClient.exists(exchangeRateRequestsKey(exchangeRateRequest))
 }
 
 export const getMortgageResult = async (mortgageRequest: MortgageRequest) => {
-  const mortgageResult = await redisClient.hGetAll(mortgageRequestsKey(mortgageRequest))
+  const mortgageResult = await redisClient.hGetAll(mortgageResultKey(mortgageRequest))
   return deserializeMortgageResult(mortgageResult)
 }
 
 export const getExchangeRateResult = async (exchangeRateRequest: ExchangeRateRequest) => {
-  const exchangeRateResult = await redisClient.hGetAll(exchangeRateRequestsKey(exchangeRateRequest))
+  const exchangeRateResult = await redisClient.hGetAll(exchangeRateResultKey(exchangeRateRequest))
   return deserializeExchangeRateResult(exchangeRateResult)
 }
 
@@ -123,4 +114,3 @@ export const saveExchangeRateRequest = async (exchangeRateRequest: ExchangeRateR
     })  
   ])
 }
-
