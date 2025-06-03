@@ -1,10 +1,11 @@
-import { MarketDataRequest, MarketDataRequestResult } from "../../../models/market-data/market-data.types";
-import { User } from "../../../models/users/users.types";
-import { redisClient } from "../../../services/redis/redis.service";
-import { MARKET_DATA_TYPES } from "../../../utils/constants/market-data.constants";
-import { getMarketDataCrypto, getMarketDataForex, getMarketDataIndices, getMarketDataStocks } from "../../../utils/requests/market-data/market-data.requests";
-import { usersKey } from "../users/users.keys";
-import { livePricesRecentRequestsKey, livePricesRequestsKey, livePricesRequestsResultKey, livePricesUniqueRequestsKey } from "./live-prices.keys";
+import { MarketDataRequest, MarketDataRequestResult } from "../../../models/market-data/market-data.types.js";
+import { User } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.service.js";
+import { MARKET_DATA_TYPES } from "../../../utils/constants/market-data.constants.js";
+import { getMarketDataCrypto, getMarketDataForex, 
+  getMarketDataIndices, getMarketDataStocks } from "../../../utils/requests/market-data/market-data.requests.js";
+import { usersKey } from "../users/users.keys.js";
+import { livePricesRecentRequestsKey, livePricesRequestsKey, livePricesRequestsResultKey, livePricesUniqueRequestsKey } from "./live-prices.keys.js";
 
 // stores most recent initial live prices requests using lists
 
@@ -30,9 +31,30 @@ export const deserializeLivePricesRequestResult = async (initialLivePricesResult
   }
 }
 
+export const deserializeRecentLivePricesRequests = async (recentLivePricesRequests: string[]) => {
+  return recentLivePricesRequests.map((recentRequest) => {
+    const requestData = recentRequest.split("#")[1]
+    const requestInputs = requestData?.split(":")
+
+    return {
+      marketDataType: requestInputs![0],
+      marketDataTicker: requestInputs![1],
+      marketDataInterval: requestInputs![2],
+      marketDataStartDate: requestInputs![3],
+      marketDataEndDate: requestInputs![4]
+    }
+  })
+}
+
+export const hasRequestBeenAsked = async (initialLivePricesRequest: MarketDataRequest) => {
+  // check if the request has been asked
+  return await redisClient.exists(livePricesRequestsKey(initialLivePricesRequest))
+}
+
 // returns the recent live prices requests:
 export const getRecentLivePricesRequests = async () => {
-  return redisClient.lRange(livePricesRecentRequestsKey(), 0, -1)
+  const recentLivePricesRequests = await redisClient.lRange(livePricesRecentRequestsKey(), 0, -1)
+  return deserializeRecentLivePricesRequests(recentLivePricesRequests)
 }
 
 // returns the initial live prices of a request:

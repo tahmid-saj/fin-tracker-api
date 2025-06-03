@@ -1,4 +1,4 @@
-import { MarketDataRequest } from "../../../models/market-data/market-data.types";
+import { MarketDataRequest } from "../../../models/market-data/market-data.types.js";
 
 export const livePricesRequestsKey = (initialLivePricesRequest: MarketDataRequest) => {
   return `live-prices-req#${initialLivePricesRequest.marketDataType}:${initialLivePricesRequest.marketDataTicker}:${initialLivePricesRequest.marketDataInterval}:${initialLivePricesRequest.marketDataStartDate}:${initialLivePricesRequest.marketDataEndDate}`
