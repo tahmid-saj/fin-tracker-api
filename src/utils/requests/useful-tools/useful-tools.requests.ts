@@ -2,29 +2,8 @@ import { errorOnMortgageResult, errorOnCurrencyResult } from "../../errors/usefu
 import { DOWNPAYMENT_FLAG_OPTIONS } from "../../constants/useful-tools.constants.js"
 import { MARKET_DATA_FOREX_PREFIX } from "../../constants/market-data.constants.js"
 import { polygonRestClient } from "../../../services/polygon/polygon.service.js"
-import { IAggsPreviousClose } from "@polygon.io/client-js"
-
-type ProcessedMortgageResult = {
-  monthlyPayment: MonthlyPayment;
-  annualPayment: AnnualPayment;
-  totalInterestPaid: number | string;
-}
-
-type MonthlyPayment = {
-  total: number | string;
-  mortgage: number | string;
-  propertyTax: number | string;
-  hoa: number | string;
-  annualHomeInsurance: number | string;
-}
-
-type AnnualPayment = {
-  total: number | string;
-  mortgage: number | string;
-  propertyTax: number | string;
-  hoa: number | string;
-  homeInsurance: number | string;
-}
+import { ExchangeRateResult, MortgageResult, 
+  ProcessedMortgageResult } from "../../../models/useful-tools/useful-tools.types.js"
 
 // helper functions
 function processMortgageResult(resJSON: any): ProcessedMortgageResult {
@@ -50,7 +29,7 @@ function processMortgageResult(resJSON: any): ProcessedMortgageResult {
 // mortgage calculator
 export async function getUsefulToolsMortgageCalculator(downpaymentFlag: string, loanAmount: string, homeValue: string, 
   downpayment: string, interestRate: string, durationYears: string, 
-  monthlyHoa: string, annualPropertyTax: string, annualHomeInsurance: string): Promise<any> {
+  monthlyHoa: string, annualPropertyTax: string, annualHomeInsurance: string): Promise<MortgageResult | void> {
   try {
     let url;
     if (downpaymentFlag === DOWNPAYMENT_FLAG_OPTIONS.no) {
@@ -89,7 +68,8 @@ export async function getUsefulToolsMortgageCalculator(downpaymentFlag: string, 
 
 // currency converter
 // exchange rate
-export async function getUsefulToolsExchangeRate(fromCurrency: string, toCurrency: string): Promise<{ fromCurrency: string, toCurrency: string, exchangeRate: number } | undefined> {
+export async function getUsefulToolsExchangeRate(fromCurrency: string, 
+  toCurrency: string): Promise<ExchangeRateResult | undefined> {
   const resExchangeRate = await polygonRestClient.forex.previousClose(MARKET_DATA_FOREX_PREFIX + fromCurrency + toCurrency)
     .catch((error) => {
       errorOnCurrencyResult()
