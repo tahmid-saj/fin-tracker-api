@@ -11,6 +11,7 @@ import { marketDataRouter } from "./market-data/market-data.router.js"
 import { usefulToolsRouter } from "./useful-tools/useful-tools.router.js"
 import { predictionsRouter } from "./predictions/predictions.router.js";
 
+
 const api: Router = express.Router();
 
 api.use("/testroute", testRouter)
