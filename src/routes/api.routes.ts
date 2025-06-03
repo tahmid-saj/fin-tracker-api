@@ -10,6 +10,7 @@ import { insurancesRouter } from "./insurances/insurances.router.js"
 import { marketDataRouter } from "./market-data/market-data.router.js"
 import { usefulToolsRouter } from "./useful-tools/useful-tools.router.js"
 import { predictionsRouter } from "./predictions/predictions.router.js";
+import { livePricesRouter } from "./live-prices/live-prices.router.js"
 
 
 const api: Router = express.Router();
@@ -22,6 +23,7 @@ api.use("/investments", investmentsRouter);
 api.use("/savings", savingsRouter);
 api.use("/insurances", insurancesRouter);
 api.use("/market-data", marketDataRouter)
+api.use("/live-prices", livePricesRouter)
 api.use("/useful-tools", usefulToolsRouter)
 api.use("/market-predictions", predictionsRouter)
 
