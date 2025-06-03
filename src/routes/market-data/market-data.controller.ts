@@ -29,6 +29,7 @@ export async function httpGetMarketDataStocks(req: Request, res: Response): Prom
       // first check in redis if the marketDataRequest has been asked before:
       const requestBeenAsked = await hasRequestBeenAsked(marketDataRequest)
       
+      // if the request was asked before, then return it from the cache:
       if (requestBeenAsked) {
         const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
         res.status(200).json(cachedMarketDataRequest)
@@ -59,10 +60,30 @@ export async function httpGetMarketDataIndices(req: Request, res: Response): Pro
     const marketDataInterval = String(req.body.marketDataInterval)
     const marketDataStartDate = String(req.body.marketDataStartDate)
     const marketDataEndDate = String(req.body.marketDataEndDate)
+
+    const marketDataRequest: MarketDataRequest = {
+      marketDataType, 
+      marketDataTicker, 
+      marketDataInterval, 
+      marketDataStartDate, 
+      marketDataEndDate
+    }
+
+    const requestBeenAsked = await hasRequestBeenAsked(marketDataRequest)
+
+    if (requestBeenAsked) {
+      const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
+      res.status(200).json(cachedMarketDataRequest)
+      return
+    } else {
     const resGetMarketDataIndices = await getMarketDataIndices(marketDataType, marketDataTicker, marketDataInterval,
       marketDataStartDate, marketDataEndDate)
 
-    if (resGetMarketDataIndices) res.status(200).json(resGetMarketDataIndices)
+      if (resGetMarketDataIndices) {
+        await saveMarketDataRequest(marketDataRequest, resGetMarketDataIndices)
+        res.status(200).json(resGetMarketDataIndices)
+      }
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
@@ -78,10 +99,30 @@ export async function httpGetMarketDataCrypto(req: Request, res: Response): Prom
     const marketDataInterval = String(req.body.marketDataInterval)
     const marketDataStartDate = String(req.body.marketDataStartDate)
     const marketDataEndDate = String(req.body.marketDataEndDate)
+
+    const marketDataRequest: MarketDataRequest = {
+      marketDataType, 
+      marketDataTicker, 
+      marketDataInterval, 
+      marketDataStartDate, 
+      marketDataEndDate
+    }
+
+    const requestBeenAsked = await hasRequestBeenAsked(marketDataRequest)
+
+    if (requestBeenAsked) {
+      const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
+      res.status(200).json(cachedMarketDataRequest)
+      return
+    } else {
     const resGetMarketDataCrypto = await getMarketDataCrypto(marketDataType, marketDataTicker, marketDataInterval,
       marketDataStartDate, marketDataEndDate)
 
-    if (resGetMarketDataCrypto) res.status(200).json(resGetMarketDataCrypto)
+      if (resGetMarketDataCrypto) {
+        await saveMarketDataRequest(marketDataRequest, resGetMarketDataCrypto)
+        res.status(200).json(resGetMarketDataCrypto)
+      }
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
@@ -97,10 +138,30 @@ export async function httpGetMarketDataForex(req: Request, res: Response): Promi
     const marketDataInterval = String(req.body.marketDataInterval)
     const marketDataStartDate = String(req.body.marketDataStartDate)
     const marketDataEndDate = String(req.body.marketDataEndDate)
+
+    const marketDataRequest: MarketDataRequest = {
+      marketDataType, 
+      marketDataTicker, 
+      marketDataInterval, 
+      marketDataStartDate, 
+      marketDataEndDate
+    }
+
+    const requestBeenAsked = await hasRequestBeenAsked(marketDataRequest)
+
+    if (requestBeenAsked) {
+      const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
+      res.status(200).json(cachedMarketDataRequest)
+      return
+    } else {
     const resGetMarketDataForex = await getMarketDataForex(marketDataType, marketDataTicker, marketDataInterval,
       marketDataStartDate, marketDataEndDate)
 
-    if (resGetMarketDataForex) res.status(200).json(resGetMarketDataForex)
+      if (resGetMarketDataForex) {
+        await saveMarketDataRequest(marketDataRequest, resGetMarketDataForex)
+        res.status(200).json(resGetMarketDataForex)
+      }
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
