@@ -6,3 +6,10 @@ export const MARKET_DATA_SEARCH_QUERY_MULTIPLIER = 1
 
 export const MARKET_DATA_CRYPTO_PREFIX = "X:"
 export const MARKET_DATA_FOREX_PREFIX = "C:"
+
+export const MARKET_DATA_TYPES = {
+  stocks: "stocks",
+  indices: "indices",
+  crypto: "crypto",
+  currencies: "currencies"
+}
