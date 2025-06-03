@@ -37,6 +37,8 @@ export const createUser = async (user: User) => {
   
   // otherwise, continue - we'll store the user in both a hash (containing user's info, such as 
   // their email) and a set (containing only unique users)
-  await redisClient.hSet(userkey, serialize(user))
-  await redisClient.sAdd(usersUniqueKey(), userkey)
+  await Promise.all([
+    redisClient.hSet(userkey, serialize(user)),
+    redisClient.sAdd(usersUniqueKey(), userkey)
+  ])
 }

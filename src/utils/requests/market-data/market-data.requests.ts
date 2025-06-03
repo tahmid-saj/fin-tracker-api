@@ -6,7 +6,7 @@ import { MARKET_DATA_CRYPTO_PREFIX, MARKET_DATA_FOREX_PREFIX,
 } from "../../constants/market-data.constants.js"
 import { IAggs } from "@polygon.io/client-js"
 
-type MarketDataRecord = {
+export type MarketDataRecord = {
   closing: number;
   time: Date | string;
 }
