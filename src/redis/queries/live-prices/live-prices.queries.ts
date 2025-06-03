@@ -5,7 +5,7 @@ import { MARKET_DATA_TYPES } from "../../../utils/constants/market-data.constant
 import { getMarketDataCrypto, getMarketDataForex, 
   getMarketDataIndices, getMarketDataStocks } from "../../../utils/requests/market-data/market-data.requests.js";
 import { usersKey } from "../users/users.keys.js";
-import { livePricesRecentRequestsKey, livePricesRequestsKey, livePricesRequestsResultKey, livePricesUniqueRequestsKey } from "./live-prices.keys.js";
+import { livePricesPopularTickersKey, livePricesRecentRequestsKey, livePricesRequestsKey, livePricesRequestsResultKey, livePricesUniquePopularTickersKey, livePricesUniqueRequestsKey } from "./live-prices.keys.js";
 
 // stores most recent initial live prices requests using lists
 
@@ -57,6 +57,12 @@ export const getRecentLivePricesRequests = async () => {
   return deserializeRecentLivePricesRequests(recentLivePricesRequests)
 }
 
+// returns the popular requested tickers
+export const getPopularTickers = async () => {
+  const popularRequestedTickers = await redisClient.zRange(livePricesPopularTickersKey(), 0, -1)
+  return popularRequestedTickers
+}
+
 // returns the initial live prices of a request:
 export const getInitialLivePrices = async (initialLivePricesRequest: MarketDataRequest) => {
   // we'll first update the live prices list
@@ -94,6 +100,35 @@ export const saveInitialLivePrices = async (initialLivePricesRequest: MarketData
   if (user) {
     // lastly, if the user is authenticated, we'll add their request to the hyperloglog:
     redisClient.pfAdd(livePricesUniqueRequestsKey(), usersKey(user))
+  }
+}
+
+// when live prices requests come in, update the ticker popularity sorted set
+export const updateLivePricesPopularTickers = async (initialLivePricesRequest: MarketDataRequest,
+  user?: User) => {
+  // increment the ticker's score if it's a member, otherwise add it
+  const tickerIsMember = await redisClient.zScore(livePricesPopularTickersKey(), initialLivePricesRequest.marketDataTicker)
+  if (!tickerIsMember) {
+    await redisClient.zAdd(livePricesPopularTickersKey(), {
+      value: initialLivePricesRequest.marketDataTicker,
+      score: 1
+    })
+  } else {
+    // if the user is authenticated, then verify if they've requested the ticker before:
+    if (user) {
+      const inserted = await redisClient.pfAdd(livePricesUniquePopularTickersKey(), usersKey(user))
+      if (inserted) {
+        await redisClient.zIncrBy(livePricesPopularTickersKey(), 1, initialLivePricesRequest.marketDataTicker)
+      }
+    } else {
+        await redisClient.zIncrBy(livePricesPopularTickersKey(), 1, initialLivePricesRequest.marketDataTicker)
+    }
+  }
+
+  // if the cardinality exceeds 10, then remove the least popular ticker
+  const livePricesPopularTickersCount = await redisClient.zCard(livePricesPopularTickersKey())
+  if (livePricesPopularTickersCount > 10) {
+    await redisClient.zPopMin(livePricesPopularTickersKey())
   }
 }
 
