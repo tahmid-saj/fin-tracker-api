@@ -1,9 +1,9 @@
-import { MarketDataRequest, MarketDataRequestResult } from "../../../models/market-data/market-data.types";
-import { User } from "../../../models/users/users.types";
-import { redisClient } from "../../../services/redis/redis.service";
-import { usersKey } from "../users/users.keys";
+import { MarketDataRequest, MarketDataRequestResult } from "../../../models/market-data/market-data.types.js";
+import { User } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.service.js";
+import { usersKey } from "../users/users.keys.js";
 import { marketDataRequestsByPopularityKey, marketDataRequestsKey, 
-  marketDataRequestsResultKey, marketDataUniqueRequestsKey } from "./market-data.keys";
+  marketDataRequestsResultKey, marketDataUniqueRequestsKey } from "./market-data.keys.js";
 
 // helper functions
 export const serializeMarketDataRequestResult = (marketDataRequestResult: MarketDataRequestResult) => {
@@ -24,6 +24,11 @@ export const deserializeMarketDataRequestResult = (marketDataRequestResult: stri
   return {
     queryResults
   }
+}
+
+export const hasRequestBeenAsked = async (marketDataRequest: MarketDataRequest) => {
+  // check if the request has been added to the sorted set
+  return redisClient.zScore(marketDataRequestsByPopularityKey(), marketDataRequestsKey(marketDataRequest))
 }
 
 export const getMarketDataResult = async (marketDataRequest: MarketDataRequest, user?: User) => {
@@ -54,7 +59,8 @@ export const saveMarketDataRequest = async (marketDataRequest: MarketDataRequest
     }),
 
     // we'll also store the actual market data result in memory:
-    redisClient.lPush(marketDataRequestsResultKey(marketDataRequest), serializeMarketDataRequestResult(marketDataRequestResult)),
+    redisClient.lPush(marketDataRequestsResultKey(marketDataRequest), 
+      serializeMarketDataRequestResult(marketDataRequestResult)),
     
     // we'll also store the marketDataRequest in a sorted set for fast lookups on 
     // marketDataRequest by popularity
