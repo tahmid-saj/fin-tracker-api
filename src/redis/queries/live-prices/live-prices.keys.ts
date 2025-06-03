@@ -11,3 +11,7 @@ export const livePricesRequestsResultKey = (initialLivePricesRequest: MarketData
 export const livePricesRecentRequestsKey = () => `live-prices-req:recent`
 
 export const livePricesUniqueRequestsKey = () => `live-prices-req:unique`
+
+export const livePricesPopularTickersKey = () => `live-prices-req:popular`
+
+export const livePricesUniquePopularTickersKey = () => `live-prices-req:popular:unique`

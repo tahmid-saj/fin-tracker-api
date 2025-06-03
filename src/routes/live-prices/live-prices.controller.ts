@@ -3,10 +3,21 @@ import { getMarketDataStocks, getMarketDataIndices,
   getMarketDataCrypto, getMarketDataForex
 } from "../../utils/requests/market-data/market-data.requests.js"
 import { MarketDataRequest } from "../../models/market-data/market-data.types.js"
-import { getInitialLivePrices, getRecentLivePricesRequests, hasRequestBeenAsked, 
+import { getInitialLivePrices, getPopularTickers, getRecentLivePricesRequests, hasRequestBeenAsked, 
   saveInitialLivePrices } from "../../redis/queries/live-prices/live-prices.queries.js"
 
 // market data
+
+// returning popular tickers
+export async function httpGetPopularTickers(req: Request, res: Response): Promise<void> {
+  try {
+    const resPopularTickers = await getPopularTickers()
+    res.status(200).json(resPopularTickers)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
 
 // returning the recent live price requests
 export async function httpGetRecentRequests(req: Request, res: Response): Promise<void> {
