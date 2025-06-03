@@ -2,6 +2,9 @@ import { Request, Response } from "express"
 import { getMarketDataStocks, getMarketDataIndices,
   getMarketDataCrypto, getMarketDataForex
 } from "../../utils/requests/market-data/market-data.requests.js"
+import { getMarketDataResult, hasRequestBeenAsked, 
+  saveMarketDataRequest } from "../../redis/queries/market-data/market-data.queries.js"
+import { MarketDataRequest } from "../../models/market-data/market-data.types.js"
 
 // market data
 
@@ -14,10 +17,32 @@ export async function httpGetMarketDataStocks(req: Request, res: Response): Prom
       const marketDataInterval = String(req.body.marketDataInterval)
       const marketDataStartDate = String(req.body.marketDataStartDate)
       const marketDataEndDate = String(req.body.marketDataEndDate)
-      const resGetMarketDataStocks = await getMarketDataStocks(marketDataType, marketDataTicker, marketDataInterval,
-        marketDataStartDate, marketDataEndDate)
-  
-      if (resGetMarketDataStocks) res.status(200).json(resGetMarketDataStocks)
+
+      const marketDataRequest: MarketDataRequest = {
+        marketDataType, 
+        marketDataTicker, 
+        marketDataInterval, 
+        marketDataStartDate, 
+        marketDataEndDate
+      }
+
+      // first check in redis if the marketDataRequest has been asked before:
+      const requestBeenAsked = await hasRequestBeenAsked(marketDataRequest)
+      
+      if (requestBeenAsked) {
+        const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
+        res.status(200).json(cachedMarketDataRequest)
+        return
+      } else {
+        // if request was not asked before, then store it's result and return the result:
+        const resGetMarketDataStocks = await getMarketDataStocks(marketDataType, marketDataTicker, marketDataInterval,
+          marketDataStartDate, marketDataEndDate)
+        
+        if (resGetMarketDataStocks) {
+          await saveMarketDataRequest(marketDataRequest, resGetMarketDataStocks)
+          res.status(200).json(resGetMarketDataStocks)
+        }
+      }
     }
   } catch (error) {
     // TODO: handle error
