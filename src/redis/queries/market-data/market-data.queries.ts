@@ -5,6 +5,8 @@ import { usersKey } from "../users/users.keys.js";
 import { marketDataRequestsByPopularityKey, marketDataRequestsKey, 
   marketDataRequestsResultKey, marketDataUniqueRequestsKey } from "./market-data.keys.js";
 
+// stores popular market data / initial live prices requests using sorted sets
+
 // helper functions
 export const serializeMarketDataRequestResult = (marketDataRequestResult: MarketDataRequestResult) => {
   return marketDataRequestResult.queryResults.map((result) => {
@@ -38,7 +40,6 @@ export const getMarketDataResult = async (marketDataRequest: MarketDataRequest, 
   }
 
   let marketDataResult = await redisClient.lRange(marketDataRequestsResultKey(marketDataRequest), 0, -1)
-  marketDataResult = marketDataResult.reverse()
 
   return deserializeMarketDataRequestResult(marketDataResult)
 }
@@ -58,8 +59,8 @@ export const saveMarketDataRequest = async (marketDataRequest: MarketDataRequest
       requests: 1
     }),
 
-    // we'll also store the actual market data result in memory:
-    redisClient.lPush(marketDataRequestsResultKey(marketDataRequest), 
+    // we'll also store the actual market data result in memory in a list
+    redisClient.rPush(marketDataRequestsResultKey(marketDataRequest), 
       serializeMarketDataRequestResult(marketDataRequestResult)),
     
     // we'll also store the marketDataRequest in a sorted set for fast lookups on 
