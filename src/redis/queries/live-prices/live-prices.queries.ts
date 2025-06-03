@@ -94,7 +94,10 @@ export const saveInitialLivePrices = async (initialLivePricesRequest: MarketData
       serializeLivePricesRequestResult(initialLivePricesResult)),
 
     // we'll also store the request in a list so that we can display recent requests
-    redisClient.rPush(livePricesRecentRequestsKey(), livePricesRequestsKey(initialLivePricesRequest))
+    redisClient.rPush(livePricesRecentRequestsKey(), livePricesRequestsKey(initialLivePricesRequest)),
+
+    // add the ticker to the popularity sorted set
+    await updateLivePricesPopularTickers(initialLivePricesRequest)
   ])
 
   if (user) {
@@ -107,7 +110,9 @@ export const saveInitialLivePrices = async (initialLivePricesRequest: MarketData
 export const updateLivePricesPopularTickers = async (initialLivePricesRequest: MarketDataRequest,
   user?: User) => {
   // increment the ticker's score if it's a member, otherwise add it
-  const tickerIsMember = await redisClient.zScore(livePricesPopularTickersKey(), initialLivePricesRequest.marketDataTicker)
+  const tickerIsMember = await redisClient.zScore(livePricesPopularTickersKey(), 
+  initialLivePricesRequest.marketDataTicker)
+  
   if (!tickerIsMember) {
     await redisClient.zAdd(livePricesPopularTickersKey(), {
       value: initialLivePricesRequest.marketDataTicker,
@@ -116,12 +121,16 @@ export const updateLivePricesPopularTickers = async (initialLivePricesRequest: M
   } else {
     // if the user is authenticated, then verify if they've requested the ticker before:
     if (user) {
-      const inserted = await redisClient.pfAdd(livePricesUniquePopularTickersKey(), usersKey(user))
+      const inserted = await redisClient.pfAdd(livePricesUniquePopularTickersKey(), 
+        usersKey(user))
+      
       if (inserted) {
-        await redisClient.zIncrBy(livePricesPopularTickersKey(), 1, initialLivePricesRequest.marketDataTicker)
+        await redisClient.zIncrBy(livePricesPopularTickersKey(), 
+          1, initialLivePricesRequest.marketDataTicker)
       }
     } else {
-        await redisClient.zIncrBy(livePricesPopularTickersKey(), 1, initialLivePricesRequest.marketDataTicker)
+        await redisClient.zIncrBy(livePricesPopularTickersKey(), 
+          1, initialLivePricesRequest.marketDataTicker)
     }
   }
 
