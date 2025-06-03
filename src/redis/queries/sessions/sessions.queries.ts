@@ -1,6 +1,6 @@
-import { Session } from "../../../models/users/users.types";
-import { redisClient } from "../../../services/redis/redis.service";
-import { sessionsKey } from "./sessions.keys";
+import { Session } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.service.js";
+import { sessionsKey } from "./sessions.keys.js";
 
 // helper functions
 const serialize = (session: Session) => {
@@ -25,7 +25,7 @@ export const getSession = async (sessionId: string) => {
     return null
   }
 
-  return deserialize(session.sessionId!, session)
+  return deserialize(sessionId, session)
 }
 
 export const saveSession = async (session: Session) => {
