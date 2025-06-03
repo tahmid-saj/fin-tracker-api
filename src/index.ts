@@ -11,12 +11,14 @@ import { buildSchema } from "graphql";
 import { loadFilesSync } from "@graphql-tools/load-files";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { ApolloServer } from "apollo-server-express";
+import { redisConnect } from "./services/redis/redis.service.js";
 
 const server = http.createServer(app);
 const PORT = process.env.PORT || 4000;
 
 async function startServer() {
   await mongoConnect();
+  await redisConnect()
 
   const typesArray = loadFilesSync("**/*", {
     extensions: ["graphql"],

@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import { getChatBotResponse, getChatBotResponseStream } from "../../utils/requests/chatbot/chatbot.requests.js"
-
-const RANDOM_SEPARATOR = "auo0os6"
+import { RANDOM_SEPARATOR } from "../../utils/constants/chatbot.constants.js"
 
 // chatbot response
 async function httpGetChatBotResponse(req: Request, res: Response): Promise<void> {
