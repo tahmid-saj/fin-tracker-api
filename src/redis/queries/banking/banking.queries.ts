@@ -1,7 +1,7 @@
-import { BankingAccount, BankingSummary, Transaction } from "../../../models/banking/banking.types";
-import { User } from "../../../models/users/users.types";
-import { redisClient } from "../../../services/redis/redis.service";
-import { bankingAccountsKey, bankingAccountTransactionsKey, bankingSummaryKey } from "./banking.keys";
+import { BankingAccount, BankingSummary, Transaction } from "../../../models/banking/banking.types.js";
+import { User } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.service.js";
+import { bankingAccountsKey, bankingAccountTransactionsKey, bankingSummaryKey } from "./banking.keys.js";
 
 // helper functions
 export const serializeBankingAccountWithoutTransaction = (bankingAccount: BankingAccount) => {
@@ -20,7 +20,7 @@ export const serializeBankingAccountTransaction = (transactions: Transaction[]) 
 }
 
 export const serializeBankingSummary = (bankingSummary: BankingSummary) => {
-  return bankingSummary
+  return bankingSummary.bankingSummary
 }
 
 export const deserializeBankingAccount = (bankingAccount: { [key: string]: string }, transactions: string[]) => {
