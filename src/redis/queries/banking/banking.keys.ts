@@ -1,4 +1,4 @@
-import { User } from "../../../models/users/users.types";
+import { User } from "../../../models/users/users.types.js";
 
 export const bankingAccountsKey = (user: User, bankingAccountName: string) => `banking-account#${user.userId}:${user.email}:${bankingAccountName}`
 
