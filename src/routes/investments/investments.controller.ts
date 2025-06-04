@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 import { getInvestmentsData, getInvestmentsSummaryData, 
   postInvestmentCreate, putInvestmentData, deleteInvestment,
   putInvestmentsData, putInvestmentsSummaryData } from "../../models/investments/investments.model.js"
+import { User } from "../../models/users/users.types.js";
+import { areInvestmentsCached, getInvestments, getInvestmentsSummary, 
+  isInvestmentsSummaryCached, saveInvestments, 
+  saveInvestmentsSummary } from "../../redis/queries/investments/investments.queries.js";
 
 // signed in
 export async function httpGetInvestmentsData(req: Request, res: Response): Promise<void> {
@@ -9,9 +13,24 @@ export async function httpGetInvestmentsData(req: Request, res: Response): Promi
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetInvestmentsData = await getInvestmentsData(userId!, email!);
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
 
-    if (resGetInvestmentsData) res.status(200).json(resGetInvestmentsData);
+    const investmentsCached = await areInvestmentsCached(user)
+    if (investmentsCached) {
+      const resInvestments = await getInvestments(user)
+
+      res.status(200).json(resInvestments)
+    } else {
+      const resGetInvestmentsData = await getInvestmentsData(userId!, email!);
+  
+      if (resGetInvestmentsData) {
+        await saveInvestments(user, resGetInvestmentsData.investments)
+        res.status(200).json(resGetInvestmentsData);
+      }
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
@@ -24,9 +43,23 @@ export async function httpGetInvestmentsSummaryData(req: Request, res: Response)
   try {
     const userId = req.params.userId;
     const email = req.params.email;
-    const resGetInvestmentsSummaryData = await getInvestmentsSummaryData(userId!, email!);
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
 
-    if (resGetInvestmentsSummaryData) res.status(200).json(resGetInvestmentsSummaryData);
+    const investmentsSummaryCached = await isInvestmentsSummaryCached(user)
+    if (investmentsSummaryCached) {
+      const resInvestmentsSummary = await getInvestmentsSummary(user)
+      res.status(200).json(resInvestmentsSummary)
+    } else {
+      const resGetInvestmentsSummaryData = await getInvestmentsSummaryData(userId!, email!);
+
+      if (resGetInvestmentsSummaryData) {
+        await saveInvestmentsSummary(user, resGetInvestmentsSummaryData.investmentsSummary)
+        res.status(200).json(resGetInvestmentsSummaryData)
+      }
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
@@ -90,7 +123,13 @@ export async function httpPutInvestmentsData(req: Request, res: Response): Promi
   try {
     const userId = req.params.userid;
     const email = req.params.email;
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
+
     const { investments } = req.body;
+    await saveInvestments(user, investments)
     const resPutInvestmentsData = await putInvestmentsData(userId!, email!, investments);
 
     if (resPutInvestmentsData) res.status(200);
@@ -106,7 +145,12 @@ export async function httpPutInvestmentsSummaryData(req: Request, res: Response)
   try {
     const userId = req.params.userid;
     const email = req.params.email;
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
     const { investmentsSummary } = req.body;
+    await saveInvestmentsSummary(user, investmentsSummary)
     const resPutInvestmentsSummaryData = await putInvestmentsSummaryData(userId!, email!, investmentsSummary);
 
     if (resPutInvestmentsSummaryData) res.status(200);
