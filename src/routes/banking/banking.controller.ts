@@ -8,17 +8,31 @@ import {
   putBankingAccountsData,
   putBankingSummaryData
 } from '../../models/banking/banking.model.js';
-import { getBankingSummary, isBankingSummaryCached, 
+import { areBankingAccountsCached, getBankingAccounts, getBankingSummary, isBankingSummaryCached, 
+  saveBankingAccounts, 
   saveBankingSummary } from '../../redis/queries/banking/banking.queries.js';
+import { User } from '../../models/users/users.types.js';
 
 // signed in
 export async function httpGetBankingAccountsData(req: Request, res: Response): Promise<void> {
   try {
     const { userid, email } = req.params;
-    const resGetBankingAccountsData = await getBankingAccountsData(userid!, email!);
+    const user: User = {
+      userId: userid!,
+      email: email!
+    }
 
-    if (resGetBankingAccountsData) {
-      res.status(200).json(resGetBankingAccountsData);
+    const bankingAccountsCached = await areBankingAccountsCached(user)
+    if (bankingAccountsCached) {
+      const resBankingAccounts = await getBankingAccounts(user)
+      res.status(200).json(resBankingAccounts)
+    } else {
+      const resGetBankingAccountsData = await getBankingAccountsData(userid!, email!);
+  
+      if (resGetBankingAccountsData) {
+        await saveBankingAccounts(user, resGetBankingAccountsData.bankingAccounts)
+        res.status(200).json(resGetBankingAccountsData);
+      }
     }
   } catch (error) {
     console.log(error);
@@ -29,8 +43,7 @@ export async function httpGetBankingAccountsData(req: Request, res: Response): P
 export async function httpGetBankingSummaryData(req: Request, res: Response): Promise<void> {
   try {
     const { userid, email } = req.params;
-
-    const user = {
+    const user: User = {
       userId: userid!,
       email: email!
     }
@@ -39,7 +52,6 @@ export async function httpGetBankingSummaryData(req: Request, res: Response): Pr
     if (bankingSummaryCached) {
       const resBankingSummary = await getBankingSummary(user)
       res.status(200).json(resBankingSummary)
-      return
     } else {
       const resGetBankingSummaryData = await getBankingSummaryData(userid!, email!);
       if (resGetBankingSummaryData) {
@@ -104,9 +116,15 @@ export async function httpPutBankingAccountsData(req: Request, res: Response): P
   try {
     const { bankingAccounts } = req.body;
     const { userid, email } = req.params;
+    const user: User = {
+      userId: userid!,
+      email: email!
+    }
+
     const resPutBankingAccountsData = await putBankingAccountsData(userid!, email!, bankingAccounts);
 
     if (resPutBankingAccountsData) {
+      await saveBankingAccounts(user, bankingAccounts)
       res.status(200).json({ message: 'Accounts data updated' });
     }
   } catch (error) {
@@ -119,9 +137,15 @@ export async function httpPutBankingSummaryData(req: Request, res: Response): Pr
   try {
     const { bankingSummary } = req.body;
     const { userid, email } = req.params;
+    const user: User = {
+      userId: userid!,
+      email: email!
+    }
+
     const resPutBankingSummaryData = await putBankingSummaryData(userid!, email!, bankingSummary);
 
     if (resPutBankingSummaryData) {
+      await saveBankingSummary(user, bankingSummary)
       res.status(200).json({ message: 'Summary data updated' });
     }
   } catch (error) {
