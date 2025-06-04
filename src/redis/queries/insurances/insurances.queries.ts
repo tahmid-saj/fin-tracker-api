@@ -1,7 +1,7 @@
-import { Insurance, insurancesSummary } from "../../../models/insurances/insurances.types";
-import { User } from "../../../models/users/users.types";
-import { redisClient } from "../../../services/redis/redis.service";
-import { insurancesKey, insurancesSummaryKey } from "./insurances.keys";
+import { Insurance, insurancesSummary } from "../../../models/insurances/insurances.types.js";
+import { User } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.service.js";
+import { insurancesKey, insurancesSummaryKey } from "./insurances.keys.js";
 
 // helper functions
 export const serializeInsurances = (insurances: Insurance[]) => {
@@ -15,7 +15,7 @@ export const deserializeInsurances = (insurances: string[]) => {
     insurances: insurances.map((insurance) => {
     const data = insurance.split("!")
     const insuranceFor = data[0]?.split("=")[1]
-    const insurancePayment = data[1]?.split("=")[1]
+    const insurancePayment = Number(data[1]?.split("=")[1])
     const insuranceInterval = data[2]?.split("=")[1]
     const insuranceFirstPaymentDate = data[3]?.split("=")[1]
     const insuranceEndDate = data[4]?.split("=")[1]
