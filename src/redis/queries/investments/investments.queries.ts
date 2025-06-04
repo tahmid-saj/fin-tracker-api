@@ -124,22 +124,24 @@ export const getInvestmentsSummary = async (user: User) => {
 }
 
 export const saveInvestments = async (user: User, investments: Investment[]) => {
-  investments.map(async (investment) => {
-    const serializedInvestment = serializeInvestment(investment)
-    const serializedInvestmentCalculationRecords = serializeInvestmentCalculationRecords(investment.investments)
-
-    await Promise.all([
-      // add the investment to the investments set
-      redisClient.sAdd(userInvestmentsKey(user), investment.investmentName),
-
-      // add the investment fields to the hash
-      redisClient.hSet(investmentKey(user, investment.investmentName),serializedInvestment),
-
-      // add the investment calculation records to the list
-      redisClient.rPush(investmentCalculationRecordsKey(user, investment.investmentName),
-        serializedInvestmentCalculationRecords)
-    ])
-  })
+  await Promise.all(
+    investments.map(async (investment) => {
+      const serializedInvestment = serializeInvestment(investment)
+      const serializedInvestmentCalculationRecords = serializeInvestmentCalculationRecords(investment.investments)
+  
+      await Promise.all([
+        // add the investment to the investments set
+        redisClient.sAdd(userInvestmentsKey(user), investment.investmentName),
+  
+        // add the investment fields to the hash
+        redisClient.hSet(investmentKey(user, investment.investmentName) ,serializedInvestment),
+  
+        // add the investment calculation records to the list
+        redisClient.rPush(investmentCalculationRecordsKey(user, investment.investmentName),
+          serializedInvestmentCalculationRecords)
+      ])
+    })
+  )
 }
 
 export const saveInvestmentsSummary = async (user: User, 
