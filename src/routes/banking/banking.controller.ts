@@ -43,7 +43,7 @@ export async function httpGetBankingSummaryData(req: Request, res: Response): Pr
     } else {
       const resGetBankingSummaryData = await getBankingSummaryData(userid!, email!);
       if (resGetBankingSummaryData) {
-        saveBankingSummary(user, resGetBankingSummaryData)
+        await saveBankingSummary(user, resGetBankingSummaryData)
         res.status(200).json(resGetBankingSummaryData);
       }
     }
