@@ -25,7 +25,7 @@ export async function httpGetInsurancesData(req: Request, res: Response): Promis
       const resGetInsurancesData = await getInsurancesData(userId!, email!)
   
       if (resGetInsurancesData) {
-        await saveInsurances(user, resGetInsurancesData)
+        await saveInsurances(user, resGetInsurancesData.insurances)
         res.status(200).json(resGetInsurancesData)
       }
     }
@@ -48,7 +48,7 @@ export async function httpGetInsurancesSummaryData(req: Request, res: Response):
     const insurancesSummaryCached = await isInsurancesSummaryCached(user)
     if (insurancesSummaryCached) {
       const resInsurancesSummary = await getInsurancesSummary(user)
-      res.status(200).json(resInsurancesSummary)
+      res.status(200).json(resInsurancesSummary.insurancesSummary)
     } else {
       const resGetInsurancesSummaryData = await getInsurancesSummaryData(userId!, email!)
   
