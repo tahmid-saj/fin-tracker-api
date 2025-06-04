@@ -45,6 +45,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2",
     "unix-timestamp": "^1.0.4",
+    "uuid": "^11.1.0",
     "vercel": "^37.5.3"
   }
 }
