@@ -8,6 +8,7 @@ import {
   putBankingAccountsData,
   putBankingSummaryData
 } from '../../models/banking/banking.model.js';
+import { getBankingSummary, isBankingSummaryCached, saveBankingSummary } from '../../redis/queries/banking/banking.queries.js';
 
 // signed in
 export async function httpGetBankingAccountsData(req: Request, res: Response): Promise<void> {
@@ -27,11 +28,24 @@ export async function httpGetBankingAccountsData(req: Request, res: Response): P
 export async function httpGetBankingSummaryData(req: Request, res: Response): Promise<void> {
   try {
     const { userid, email } = req.params;
-    const resGetBankingSummaryData = await getBankingSummaryData(userid!, email!);
 
-    if (resGetBankingSummaryData) {
-      res.status(200).json(resGetBankingSummaryData);
+    const user = {
+      userId: userid!,
+      email: email!
     }
+
+    const bankingSummaryCached = await isBankingSummaryCached(user)
+    if (bankingSummaryCached) {
+      const resBankingSummary = await getBankingSummary(user)
+      res.status(200).json(resBankingSummary)
+    } else {
+      const resGetBankingSummaryData = await getBankingSummaryData(userid!, email!);
+      if (resGetBankingSummaryData) {
+        saveBankingSummary(user, resGetBankingSummaryData)
+        res.status(200).json(resGetBankingSummaryData);
+      }
+    }
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Internal Server Error' });
