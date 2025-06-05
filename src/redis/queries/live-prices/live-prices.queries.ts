@@ -2,6 +2,7 @@ import { MarketDataRequest, MarketDataRequestResult } from "../../../models/mark
 import { User } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
 import { MARKET_DATA_TYPES } from "../../../utils/constants/market-data.constants.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { getMarketDataCrypto, getMarketDataForex, 
   getMarketDataIndices, getMarketDataStocks } from "../../../utils/requests/market-data/market-data.requests.js";
 import { usersKey } from "../users/users.keys.js";
@@ -82,19 +83,28 @@ export const saveInitialLivePrices = async (initialLivePricesRequest: MarketData
 
   await Promise.all([
     // we'll store the initialLivePricesRequest in a hash - the key will be the request itself
-    redisClient.hSet(livePricesRequestsKey(initialLivePricesRequest), {
+    redisClient.multi()
+    .hSet(livePricesRequestsKey(initialLivePricesRequest), {
       ...initialLivePricesRequest,
 
       // we'll store the request time (in milliseconds) as well
       requestTime: Date.now()
-    }),
+    })
+    .expire(livePricesRequestsKey(initialLivePricesRequest), CACHING_TTL.high)
+    .exec(),
 
     // we'll also store the actual result in memory in a list
-    redisClient.rPush(livePricesRequestsResultKey(initialLivePricesRequest),
-      serializeLivePricesRequestResult(initialLivePricesResult)),
+    redisClient.multi()
+    .rPush(livePricesRequestsResultKey(initialLivePricesRequest),
+      serializeLivePricesRequestResult(initialLivePricesResult))
+    .expire(livePricesRequestsResultKey(initialLivePricesRequest), CACHING_TTL.high)
+    .exec(),
 
     // we'll also store the request in a list so that we can display recent requests
-    redisClient.rPush(livePricesRecentRequestsKey(), livePricesRequestsKey(initialLivePricesRequest)),
+    redisClient.multi()
+      .rPush(livePricesRecentRequestsKey(), livePricesRequestsKey(initialLivePricesRequest))
+      .expire(livePricesRecentRequestsKey(), CACHING_TTL.high)
+      .exec(),
 
     // add the ticker to the popularity sorted set
     await updateLivePricesPopularTickers(initialLivePricesRequest)
@@ -102,7 +112,7 @@ export const saveInitialLivePrices = async (initialLivePricesRequest: MarketData
 
   if (user) {
     // lastly, if the user is authenticated, we'll add their request to the hyperloglog:
-    redisClient.pfAdd(livePricesUniqueRequestsKey(), usersKey(user))
+    await redisClient.pfAdd(livePricesUniqueRequestsKey(), usersKey(user))
   }
 }
 
@@ -173,10 +183,10 @@ export const updateLivePricesResult = async (initialLivePricesRequest: MarketDat
   }
 
   // empty the results list
-  redisClient.lTrim(livePricesRequestsResultKey(initialLivePricesRequest), 1, 0)
+  await redisClient.lTrim(livePricesRequestsResultKey(initialLivePricesRequest), 1, 0)
 
   // save the updated results
-  redisClient.rPush(livePricesRequestsResultKey(initialLivePricesRequest), 
+  await redisClient.rPush(livePricesRequestsResultKey(initialLivePricesRequest), 
     serializeLivePricesRequestResult(resMarketData!))
 
   return resMarketData
@@ -188,8 +198,8 @@ export const updateLivePricesRequestTime = async (initialLivePricesRequest: Mark
   if (user) {
     const inserted = await redisClient.pfAdd(livePricesUniqueRequestsKey(), usersKey(user))
     if (inserted) {
-      redisClient.hSet(livePricesRequestsKey(initialLivePricesRequest), "requestTime", Date.now())
-      redisClient.rPush(livePricesRecentRequestsKey(), livePricesRequestsKey(initialLivePricesRequest))
+      await redisClient.hSet(livePricesRequestsKey(initialLivePricesRequest), "requestTime", Date.now())
+      await redisClient.rPush(livePricesRecentRequestsKey(), livePricesRequestsKey(initialLivePricesRequest))
     }
   }
 

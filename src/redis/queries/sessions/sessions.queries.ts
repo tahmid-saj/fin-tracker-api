@@ -1,5 +1,6 @@
 import { Session } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { sessionsKey } from "./sessions.keys.js";
 
 // helper functions
@@ -29,5 +30,8 @@ export const getSession = async (sessionId: string) => {
 }
 
 export const saveSession = async (session: Session) => {
-  return redisClient.hSet(sessionsKey(session.sessionId), serialize(session))
+  return redisClient.multi()
+    .hSet(sessionsKey(session.sessionId), serialize(session))
+    .expire(sessionsKey(session.sessionId), CACHING_TTL.high)
+    .exec()
 }

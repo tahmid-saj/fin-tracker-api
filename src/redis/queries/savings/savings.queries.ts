@@ -1,6 +1,7 @@
 import { SavingsAccount, SavingsAccountsSummary, SavingsCalculationRecord } from "../../../models/savings/savings.types.js";
 import { User } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { savingsAccountCalculationRecordsKey, savingsAccountKey, savingsAccountsSummaryKey, 
   userSavingsAccountsKey } from "./savings.keys.js";
 
@@ -123,15 +124,23 @@ export const saveSavingsAccounts = async (user: User, savingsAccounts: SavingsAc
 
       await Promise.all([
         // add the savingsAccount to the set
-        redisClient.sAdd(userSavingsAccountsKey(user), savingsAccount.savingsAccountName),
+        redisClient.multi()
+          .sAdd(userSavingsAccountsKey(user), savingsAccount.savingsAccountName)
+          .expire(userSavingsAccountsKey(user), CACHING_TTL.low)
+          .exec(),
 
         // add the savingsAccount fields to the hash
-        redisClient.hSet(savingsAccountKey(user, savingsAccount.savingsAccountName), 
-          serializedSavingsAccount),
+        redisClient.multi()
+          .hSet(savingsAccountKey(user, savingsAccount.savingsAccountName), serializedSavingsAccount)
+          .expire(savingsAccountKey(user, savingsAccount.savingsAccountName), CACHING_TTL.low)
+          .exec(),
 
         // add the savings calculation records to the list
-        redisClient.rPush(savingsAccountCalculationRecordsKey(user, savingsAccount.savingsAccountName),
-          serializedSavingsAccountCalculationRecords)
+        redisClient.multi()
+          .rPush(savingsAccountCalculationRecordsKey(user, savingsAccount.savingsAccountName),
+            serializedSavingsAccountCalculationRecords)
+          .expire(savingsAccountCalculationRecordsKey(user, savingsAccount.savingsAccountName), CACHING_TTL.low)
+          .exec()
       ])
     })
   )
@@ -139,6 +148,8 @@ export const saveSavingsAccounts = async (user: User, savingsAccounts: SavingsAc
 
 export const saveSavingsAccountsSummary = async (user: User, 
   savingsAccountsSummary: SavingsAccountsSummary) => {
-  await redisClient.hSet(savingsAccountsSummaryKey(user),
-    serializeSavingsAccountsSummary(savingsAccountsSummary))
+  await redisClient.multi()
+    .hSet(savingsAccountsSummaryKey(user), serializeSavingsAccountsSummary(savingsAccountsSummary))
+    .expire(savingsAccountsSummaryKey(user), CACHING_TTL.low)
+    .exec()
 }

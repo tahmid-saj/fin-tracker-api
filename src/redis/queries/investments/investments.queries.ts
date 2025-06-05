@@ -2,6 +2,7 @@ import { Investment, InvestmentCalculationRecord,
   InvestmentsSummary } from "../../../models/investments/investments.types.js";
 import { User } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { investmentCalculationRecordsKey, investmentKey, 
   investmentsSummaryKey, userInvestmentsKey } from "./investments.keys.js";
 
@@ -82,7 +83,7 @@ export const deserializeInvestmentCalculationRecords = (investmentCalculationRec
 
 export const deserializeInvestmentsSummary = (investmentsSummary: { [key: string]: string }) => {
   let summary: InvestmentsSummary = {}
-  
+
   if (investmentsSummary.currentAllInvestmentsBalance) summary.currentAllInvestmentsBalance = Number(investmentsSummary.currentAllInvestmentsBalance)
   if (investmentsSummary.totalAllContribution) summary.totalAllContribution = Number(investmentsSummary.totalAllContribution)
   if (investmentsSummary.totalAllInterest) summary.totalAllInterest = Number(investmentsSummary.totalAllInterest)
@@ -132,15 +133,22 @@ export const saveInvestments = async (user: User, investments: Investment[]) => 
   
       await Promise.all([
         // add the investment to the investments set
-        redisClient.sAdd(userInvestmentsKey(user), investment.investmentName),
+        redisClient.multi()
+          .sAdd(userInvestmentsKey(user), investment.investmentName)
+          .expire(userInvestmentsKey(user), CACHING_TTL.low)
+          .exec(),
   
         // add the investment fields to the hash
-        redisClient.hSet(investmentKey(user, investment.investmentName), 
-          serializedInvestment),
+        redisClient.multi()
+          .hSet(investmentKey(user, investment.investmentName), serializedInvestment)
+          .expire(investmentKey(user, investment.investmentName), CACHING_TTL.low)
+          .exec(),
   
         // add the investment calculation records to the list
-        redisClient.rPush(investmentCalculationRecordsKey(user, investment.investmentName),
-          serializedInvestmentCalculationRecords)
+        redisClient.multi()
+          .rPush(investmentCalculationRecordsKey(user, investment.investmentName), serializedInvestmentCalculationRecords)
+          .expire(investmentCalculationRecordsKey(user, investment.investmentName), CACHING_TTL.low)
+          .exec()
       ])
     })
   )
@@ -148,6 +156,8 @@ export const saveInvestments = async (user: User, investments: Investment[]) => 
 
 export const saveInvestmentsSummary = async (user: User, 
   investmentsSummary: InvestmentsSummary) => {
-  await redisClient.hSet(investmentsSummaryKey(user),
-    serializeInvestmentsSummary(investmentsSummary))
+  await redisClient.multi()
+    .hSet(investmentsSummaryKey(user), serializeInvestmentsSummary(investmentsSummary))
+    .expire(investmentsSummaryKey(user), CACHING_TTL.low)
+    .exec()
 }
