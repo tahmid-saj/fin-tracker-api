@@ -1,6 +1,7 @@
 import { Expense, ExpensesSummary } from "../../../models/expenses/expenses.types.js";
 import { User } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { expensesKey, expensesSummaryCategoriesKey, 
   expensesSummaryKey, expensesSummaryPastMonthExpensesKey } from "./expenses.keys.js";
 
@@ -78,26 +79,37 @@ export const getExpensesSummary = async (user: User) => {
 
 export const saveExpenses = async (user: User, expenses: Expense[]) => {
   // save the expenses
-  await redisClient.rPush(expensesKey(user), serializeExpenses(expenses))
+  await redisClient.multi()
+  .rPush(expensesKey(user), serializeExpenses(expenses))
+  .expire(expensesKey(user), CACHING_TTL.low)
+  .exec()
 }
 
 export const saveExpensesSummary = async (user: User, expensesSummary: ExpensesSummary) => {
   const serializedExpensesSummary = serializeExpensesSummary(expensesSummary)
 
   // save the expenses in a hash
-  await redisClient.hSet(expensesSummaryKey(user), {
-    currentAllExpensesCost: serializedExpensesSummary.currentAllExpensesCost!,
-    pastMonthAllExpensesCost: serializedExpensesSummary.pastMonthAllExpensesCost!
-  })
+  await redisClient.multi()
+    .hSet(expensesSummaryKey(user), {
+      currentAllExpensesCost: serializedExpensesSummary.currentAllExpensesCost!,
+      pastMonthAllExpensesCost: serializedExpensesSummary.pastMonthAllExpensesCost!})
+    .expire(expensesSummaryKey(user), CACHING_TTL.low)
+    .exec()
 
   // save the expenses categories and past month expenses in a list
   if (serializedExpensesSummary.currentAllExpensesCategories?.length !== 0) {
-    await redisClient.rPush(expensesSummaryCategoriesKey(user), 
-      serializedExpensesSummary.currentAllExpensesCategories)
+    await redisClient.multi()
+      .rPush(expensesSummaryCategoriesKey(user), 
+        serializedExpensesSummary.currentAllExpensesCategories)
+      .expire(expensesSummaryCategoriesKey(user), CACHING_TTL.low)
+      .exec()
   }
   
   if (serializedExpensesSummary.pastMonthExpenses?.length !== 0) {
-    await redisClient.rPush(expensesSummaryPastMonthExpensesKey(user),
-      serializedExpensesSummary.pastMonthExpenses)
+    await redisClient.multi()
+      .rPush(expensesSummaryPastMonthExpensesKey(user),
+        serializedExpensesSummary.pastMonthExpenses)
+      .expire(expensesSummaryPastMonthExpensesKey(user), CACHING_TTL.low)
+      .exec()
   }
 }

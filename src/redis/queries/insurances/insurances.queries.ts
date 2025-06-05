@@ -1,6 +1,7 @@
 import { Insurance, insurancesSummary } from "../../../models/insurances/insurances.types.js";
 import { User } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { insurancesKey, insurancesSummaryKey } from "./insurances.keys.js";
 
 // helper functions
@@ -60,10 +61,16 @@ export const getInsurancesSummary = async (user: User) => {
 
 export const saveInsurances = async (user: User, insurances: Insurance[]) => {
   // save insurances
-  await redisClient.rPush(insurancesKey(user), serializeInsurances(insurances))
+  await redisClient.multi()
+    .rPush(insurancesKey(user), serializeInsurances(insurances))
+    .expire(insurancesKey(user), CACHING_TTL.low)
+    .exec()
 }
 
 export const saveInsurancesSummary = async (user: User, insurancesSummary: insurancesSummary) => {
   // save insurancesSummary
-  await redisClient.hSet(insurancesSummaryKey(user), serializeInsurancesSummary(insurancesSummary))
+  await redisClient.multi()
+    .hSet(insurancesSummaryKey(user), serializeInsurancesSummary(insurancesSummary))
+    .expire(insurancesSummaryKey(user), CACHING_TTL.low)
+    .exec()
 }

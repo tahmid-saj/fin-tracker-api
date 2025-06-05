@@ -1,4 +1,5 @@
 import { redisClient } from "../../../services/redis/redis.service.js"
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js"
 import { chatbotSessionRequestKey, chatbotSessionResponseKey } from "./chatbot.keys.js"
 import { v4 as uuidv4 } from "uuid"
 
@@ -57,14 +58,16 @@ export const saveChatbotSessionRequest = async (request: string, response: strin
 
   await Promise.all([
     // first insert the request
-    redisClient.rPush(requestKey, serializeChatbotSessionRequest(request)),
+    redisClient.multi()
+    .rPush(requestKey, serializeChatbotSessionRequest(request))
+    .expire(requestKey, CACHING_TTL.medium)
+    .exec(),
 
     // then insert the response
-    redisClient.rPush(responseKey, serializeChatbotSessionResponse(response)),
-
-    // assign a TTL on the lists
-    redisClient.expire(requestKey, 300),
-    redisClient.expire(responseKey, 300)
+    redisClient.multi()
+    .rPush(responseKey, serializeChatbotSessionResponse(response))
+    .expire(responseKey, CACHING_TTL.medium)
+    .exec(),
   ])
 
   return sessionId

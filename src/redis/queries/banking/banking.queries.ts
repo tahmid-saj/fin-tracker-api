@@ -1,6 +1,7 @@
 import { BankingAccount, BankingSummary, Transaction } from "../../../models/banking/banking.types.js";
 import { User } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { bankingAccountKey, userBankingAccountsKey, bankingAccountTransactionsKey, bankingSummaryKey } from "./banking.keys.js";
 
 // helper functions
@@ -109,10 +110,16 @@ export const saveBankingAccounts = async (user: User, bankingAccounts: BankingAc
 
       await Promise.all([
         // add the account to the accounts set
-        redisClient.sAdd(userBankingAccountsKey(user), bankingAccount.name),
+        redisClient.multi()
+        .sAdd(userBankingAccountsKey(user), bankingAccount.name)
+        .expire(userBankingAccountsKey(user), CACHING_TTL.low)
+        .exec(),
 
         // add the account fields to the hash
-        redisClient.hSet(bankingAccountKey(user, bankingAccount.name), serializedBankingAccount)
+        redisClient.multi()
+        .hSet(bankingAccountKey(user, bankingAccount.name), serializedBankingAccount)
+        .expire(bankingAccountKey(user, bankingAccount.name), CACHING_TTL.low)
+        .exec()
       ])
 
       if (bankingAccount.transactions) {
@@ -128,5 +135,8 @@ export const saveBankingAccounts = async (user: User, bankingAccounts: BankingAc
 
 export const saveBankingSummary = async (user: User, bankingSummary: BankingSummary) => {
   // save banking summary
-  await redisClient.hSet(bankingSummaryKey(user), serializeBankingSummary(bankingSummary))
+  await redisClient.multi()
+  .hSet(bankingSummaryKey(user), serializeBankingSummary(bankingSummary))
+  .expire(bankingSummaryKey(user), CACHING_TTL.low)
+  .exec()
 }

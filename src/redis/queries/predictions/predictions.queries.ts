@@ -1,5 +1,6 @@
 import { DailyPrediction, TwoWeekPrediction } from "../../../models/predictions/predictions.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { dailyPredictionsKey, twoWeekPredictionsKey } from "./predictions.keys.js";
 
 // helper functions
@@ -62,9 +63,15 @@ export const getTwoWeekPrediction = async (predictionTicker: string) => {
 }
 
 export const saveDailyPrediction = async (predictionTicker: string, predictionData: DailyPrediction) => {
-  await redisClient.hSet(dailyPredictionsKey(predictionTicker), serializeDailyPrediction(predictionData))
+  await redisClient.multi()
+    .hSet(dailyPredictionsKey(predictionTicker), serializeDailyPrediction(predictionData))
+    .expire(dailyPredictionsKey(predictionTicker), CACHING_TTL.high)
+    .exec()
 }
 
 export const saveTwoWeekPrediction = async (predictionTicker: string, predictionData: TwoWeekPrediction) => {
-  await redisClient.rPush(twoWeekPredictionsKey(predictionTicker), serializeTwoWeekPrediction(predictionData))
+  await redisClient.multi()
+    .rPush(twoWeekPredictionsKey(predictionTicker), serializeTwoWeekPrediction(predictionData))
+    .expire(twoWeekPredictionsKey(predictionTicker), CACHING_TTL.high)
+    .exec()
 }

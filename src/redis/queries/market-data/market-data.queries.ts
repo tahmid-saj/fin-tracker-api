@@ -1,6 +1,7 @@
 import { MarketDataRequest, MarketDataRequestResult } from "../../../models/market-data/market-data.types.js";
 import { User } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { usersKey } from "../users/users.keys.js";
 import { marketDataRequestsByPopularityKey, marketDataRequestsKey, 
   marketDataRequestsResultKey, marketDataUniqueRequestsKey } from "./market-data.keys.js";
@@ -52,30 +53,39 @@ export const saveMarketDataRequest = async (marketDataRequest: MarketDataRequest
   await Promise.all([
     // we'll store the marketDataRequest in a hash
     // the key will be the marketDataRequest itself
-    redisClient.hSet(marketDataRequestsKey(marketDataRequest), {
-      ...marketDataRequest,
+    redisClient.multi()
+      .hSet(marketDataRequestsKey(marketDataRequest), {
+        ...marketDataRequest,
 
-      // we'll save the number of requests as once (since a user has requested the market data)
-      requests: 1
-    }),
+        // we'll save the number of requests as once (since a user has requested the market data)
+        requests: 1
+      })
+      .expire(marketDataRequestsKey(marketDataRequest), CACHING_TTL.high)
+      .exec(),
 
     // we'll also store the actual market data result in memory in a list
-    redisClient.rPush(marketDataRequestsResultKey(marketDataRequest), 
-      serializeMarketDataRequestResult(marketDataRequestResult)),
+    redisClient.multi()
+      .rPush(marketDataRequestsResultKey(marketDataRequest), 
+        serializeMarketDataRequestResult(marketDataRequestResult))
+      .expire(marketDataRequestsResultKey(marketDataRequest), CACHING_TTL.high)
+      .exec(),
     
     // we'll also store the marketDataRequest in a sorted set for fast lookups on 
     // marketDataRequest by popularity
-    redisClient.zAdd(marketDataRequestsByPopularityKey(), {
-      value: marketDataRequestsKey(marketDataRequest),
+    redisClient.multi()
+      .zAdd(marketDataRequestsByPopularityKey(), {
+        value: marketDataRequestsKey(marketDataRequest),
 
-      // popularity or requests will initially be 1:
-      score: 1
-    })
+        // popularity or requests will initially be 1:
+        score: 1
+      })
+      .expire(marketDataRequestsByPopularityKey(), CACHING_TTL.high)
+      .exec()
   ])
 
   if (user) {
     // lastly, if the user is authenticated, we'll add their request to the hyperloglog:
-    redisClient.pfAdd(marketDataUniqueRequestsKey(), usersKey(user))
+    await redisClient.pfAdd(marketDataUniqueRequestsKey(), usersKey(user))
   }
 }
 
@@ -88,9 +98,15 @@ export const incrementMarketDataRequest = async (marketDataRequest: MarketDataRe
     // field and sorted set by 1:
     const inserted = await redisClient.pfAdd(marketDataUniqueRequestsKey(), usersKey(user))
     if (inserted) {
-      redisClient.hIncrBy(marketDataRequestsKey(marketDataRequest), "requests", 1)
-      redisClient.zIncrBy(marketDataRequestsByPopularityKey(), 
-        1, marketDataRequestsKey(marketDataRequest))
+      await redisClient.multi()
+        .hIncrBy(marketDataRequestsKey(marketDataRequest), "requests", 1)
+        .expire(marketDataRequestsKey(marketDataRequest), CACHING_TTL.high)
+        .exec()
+
+      await redisClient.multi()
+        .zIncrBy(marketDataRequestsByPopularityKey(), 1, marketDataRequestsKey(marketDataRequest))
+        .expire(marketDataRequestsByPopularityKey(), CACHING_TTL.high)
+        .exec()
     }
   }
 }

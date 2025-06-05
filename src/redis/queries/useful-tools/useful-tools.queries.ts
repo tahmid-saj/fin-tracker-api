@@ -1,6 +1,7 @@
 import { ExchangeRateRequest, ExchangeRateResult, 
   MortgageRequest, MortgageResult } from "../../../models/useful-tools/useful-tools.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { exchangeRateRequestsKey, exchangeRateResultKey, 
   mortgageRequestsKey, mortgageResultKey } from "./useful-tools.keys.js";
 
@@ -88,12 +89,18 @@ export const saveMortgageRequest = async (mortgageRequest: MortgageRequest, mort
 
   await Promise.all([
     // we'll store the request in a hash
-    redisClient.hSet(mortgageRequestsKey(mortgageRequest), {
-      ...mortgageRequest
-    }),
+    redisClient.multi()
+      .hSet(mortgageRequestsKey(mortgageRequest), {
+        ...mortgageRequest
+      })
+      .expire(mortgageRequestsKey(mortgageRequest), CACHING_TTL.high)
+      .exec(),
 
     // we'll also store the request's result in a list
-    redisClient.hSet(mortgageResultKey(mortgageRequest), serializedMortgageResult)
+    redisClient.multi()
+      .hSet(mortgageResultKey(mortgageRequest), serializedMortgageResult)
+      .expire(mortgageRequestsKey(mortgageRequest), CACHING_TTL.high)
+      .exec()
   ])
 }
 
@@ -104,13 +111,19 @@ export const saveExchangeRateRequest = async (exchangeRateRequest: ExchangeRateR
   
   await Promise.all([
     // we'll store the request in a hash
-    redisClient.hSet(exchangeRateRequestsKey(exchangeRateRequest), {
-      ...exchangeRateRequest
-    }),
+    redisClient.multi()
+      .hSet(exchangeRateRequestsKey(exchangeRateRequest), {
+        ...exchangeRateRequest
+      })
+      .expire(exchangeRateRequestsKey(exchangeRateRequest), CACHING_TTL.high)
+      .exec(),
 
     // we'll also store the request's result in a hash
-    redisClient.hSet(exchangeRateResultKey(exchangeRateRequest), {
-      ...serializedExchangeRateResult
-    })  
+    redisClient.multi()
+      .hSet(exchangeRateResultKey(exchangeRateRequest), {
+        ...serializedExchangeRateResult
+      })
+      .expire(exchangeRateResultKey(exchangeRateRequest), CACHING_TTL.high)
+      .exec()
   ])
 }

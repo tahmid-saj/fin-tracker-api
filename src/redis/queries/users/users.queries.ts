@@ -1,5 +1,6 @@
 import { User } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { usersKey, usersUniqueKey } from "./users.keys.js";
 
 // helper functions
@@ -38,7 +39,11 @@ export const createUser = async (user: User) => {
   // otherwise, continue - we'll store the user in both a hash (containing user's info, such as 
   // their email) and a set (containing only unique users)
   await Promise.all([
-    redisClient.hSet(userkey, serialize(user)),
+    redisClient.multi()
+      .hSet(userkey, serialize(user))
+      .expire(userkey, CACHING_TTL.high)
+      .exec(),
+      
     redisClient.sAdd(usersUniqueKey(), userkey)
   ])
 }
