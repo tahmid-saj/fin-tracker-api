@@ -48,8 +48,8 @@ export const deserializeBankingAccountTransactions = (transactions: string[]) =>
       amount: Number(amount), 
       type: type!
     }
-    if (reason !== "null") tran.reason = reason
-    if (addToExpenses !== "null") tran.addToExpenses = Boolean(addToExpenses)
+    if (reason !== "undefined") tran.reason = reason
+    if (addToExpenses !== "undefined") tran.addToExpenses = Boolean(addToExpenses)
   
     return tran
   })
@@ -118,6 +118,7 @@ export const saveBankingAccounts = async (user: User, bankingAccounts: BankingAc
       if (bankingAccount.transactions) {
         // add the account transactions
         const serializedBankingAccountCalculationRecords = serializeBankingAccountTransactions(bankingAccount.transactions)
+        console.log(serializedBankingAccountCalculationRecords)
         redisClient.rPush(bankingAccountTransactionsKey(user, bankingAccount.name),
           serializedBankingAccountCalculationRecords)
       }

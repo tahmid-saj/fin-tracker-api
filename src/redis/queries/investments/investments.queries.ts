@@ -82,6 +82,7 @@ export const deserializeInvestmentCalculationRecords = (investmentCalculationRec
 
 export const deserializeInvestmentsSummary = (investmentsSummary: { [key: string]: string }) => {
   let summary: InvestmentsSummary = {}
+  
   if (investmentsSummary.currentAllInvestmentsBalance) summary.currentAllInvestmentsBalance = Number(investmentsSummary.currentAllInvestmentsBalance)
   if (investmentsSummary.totalAllContribution) summary.totalAllContribution = Number(investmentsSummary.totalAllContribution)
   if (investmentsSummary.totalAllInterest) summary.totalAllInterest = Number(investmentsSummary.totalAllInterest)
@@ -134,7 +135,8 @@ export const saveInvestments = async (user: User, investments: Investment[]) => 
         redisClient.sAdd(userInvestmentsKey(user), investment.investmentName),
   
         // add the investment fields to the hash
-        redisClient.hSet(investmentKey(user, investment.investmentName) ,serializedInvestment),
+        redisClient.hSet(investmentKey(user, investment.investmentName), 
+          serializedInvestment),
   
         // add the investment calculation records to the list
         redisClient.rPush(investmentCalculationRecordsKey(user, investment.investmentName),
