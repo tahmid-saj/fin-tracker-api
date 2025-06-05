@@ -1,22 +1,23 @@
-import { SavingsAccount, SavingsAccountsSummary, SavingsCalculationRecord } from "../../../models/savings/savings.types";
-import { User } from "../../../models/users/users.types";
-import { redisClient } from "../../../services/redis/redis.service";
-import { savingsAccountCalculationRecordsKey, savingsAccountKey, savingsAccountsSummaryKey, userSavingsAccountsKey } from "./savings.keys";
+import { SavingsAccount, SavingsAccountsSummary, SavingsCalculationRecord } from "../../../models/savings/savings.types.js";
+import { User } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.service.js";
+import { savingsAccountCalculationRecordsKey, savingsAccountKey, savingsAccountsSummaryKey, 
+  userSavingsAccountsKey } from "./savings.keys.js";
 
 // helper functions
 export const serializeSavingsAccount = (savingsAccount: SavingsAccount) => {
   return {
     savingsAccountName: savingsAccount.savingsAccountName,
-    initialDeposit: savingsAccount.savingsAccountName,
-    startDate: String(savingsAccount.savingsAccountName),
-    monthlyContribution: savingsAccount.savingsAccountName,
-    contributionPeriod: savingsAccount.savingsAccountName,
-    contributionInterval: savingsAccount.savingsAccountName,
-    apy: savingsAccount.savingsAccountName,
+    initialDeposit: savingsAccount.initialDeposit,
+    startDate: String(savingsAccount.startDate),
+    monthlyContribution: savingsAccount.monthlyContribution,
+    contributionPeriod: savingsAccount.contributionPeriod,
+    contributionInterval: savingsAccount.contributionInterval,
+    apy: savingsAccount.apy,
 
-    totalSavings: savingsAccount.savingsAccountName,
-    totalContribution: savingsAccount.savingsAccountName,
-    totalInterest: savingsAccount.savingsAccountName
+    totalSavings: savingsAccount.totalSavings,
+    totalContribution: savingsAccount.totalContribution,
+    totalInterest: savingsAccount.totalInterest
   }
 }
 
