@@ -154,8 +154,8 @@ export async function httpGetMarketDataForex(req: Request, res: Response): Promi
       res.status(200).json(cachedMarketDataRequest)
       return
     } else {
-    const resGetMarketDataForex = await getMarketDataForex(marketDataType, marketDataTicker, marketDataInterval,
-      marketDataStartDate, marketDataEndDate)
+      const resGetMarketDataForex = await getMarketDataForex(marketDataType, marketDataTicker, marketDataInterval,
+        marketDataStartDate, marketDataEndDate)
 
       if (resGetMarketDataForex) {
         await saveMarketDataRequest(marketDataRequest, resGetMarketDataForex)
@@ -166,5 +166,40 @@ export async function httpGetMarketDataForex(req: Request, res: Response): Promi
     // TODO: handle error
     console.log(error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+// getting market data - async
+export async function httpGetMarketDataAsync(req: Request, res: Response): Promise<void> {
+  try {
+    const marketDataType = String(req.body.marketDataType)
+    const marketDataTicker = String(req.body.marketDataTicker)
+    const marketDataInterval = String(req.body.marketDataInterval)
+    const marketDataStartDate = String(req.body.marketDataStartDate)
+    const marketDataEndDate = String(req.body.marketDataEndDate)
+
+    const marketDataRequest: MarketDataRequest = {
+      marketDataType, 
+      marketDataTicker, 
+      marketDataInterval, 
+      marketDataStartDate, 
+      marketDataEndDate
+    }
+
+    const requestBeenAsked = await hasRequestBeenAsked(marketDataRequest)
+
+    if (requestBeenAsked) {
+      const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
+      res.status(200).json(cachedMarketDataRequest)
+      return
+    } else {
+      res.status(200).json({
+        queryResults: null
+      })
+      return
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' }); 
   }
 }

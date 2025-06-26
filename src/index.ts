@@ -17,33 +17,48 @@ const server = http.createServer(app);
 const PORT = process.env.PORT || 4000;
 
 async function startServer() {
-  await mongoConnect();
-  await redisConnect()
+  console.log("App is starting...");
 
-  const typesArray = loadFilesSync("**/*", {
-    extensions: ["graphql"],
+  process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
   });
 
-  const resolversArray = loadFilesSync(path.resolve("**/*.resolvers.js"));
-
-  const schema = makeExecutableSchema({
-    typeDefs: typesArray,
-    resolvers: resolversArray,
+  process.on('unhandledRejection', (reason) => {
+    console.error('Unhandled Rejection:', reason);
   });
 
-  const apolloServer = new ApolloServer({
-    schema: schema,
-  });
-
-  await apolloServer.start();
-  apolloServer.applyMiddleware({
-    app,
-    path: "/graphql",
-  });
-
-  server.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-  });
+  try {
+    await mongoConnect();
+    await redisConnect()
+  
+    const typesArray = loadFilesSync("**/*", {
+      extensions: ["graphql"],
+    });
+  
+    const resolversArray = loadFilesSync(path.resolve("**/*.resolvers.js"));
+  
+    const schema = makeExecutableSchema({
+      typeDefs: typesArray,
+      resolvers: resolversArray,
+    });
+  
+    const apolloServer = new ApolloServer({
+      schema: schema,
+    });
+  
+    await apolloServer.start();
+    apolloServer.applyMiddleware({
+      app,
+      path: "/graphql",
+    });
+  
+    server.listen(PORT, () => {
+      console.log(`Listening on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Fatal startup error: ", err);
+    process.exit(1); // Optionally fail fast
+  }
 }
 
 startServer();
