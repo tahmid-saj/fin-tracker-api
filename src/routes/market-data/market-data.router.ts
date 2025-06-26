@@ -1,7 +1,8 @@
 import express, { Router } from "express"
 
 import { httpGetMarketDataStocks, httpGetMarketDataIndices,
-  httpGetMarketDataCrypto, httpGetMarketDataForex
+  httpGetMarketDataCrypto, httpGetMarketDataForex,
+  httpGetMarketDataAsync
 } from "./market-data.controller.js"
 
 const marketDataRouter: Router = express.Router()
@@ -11,5 +12,7 @@ marketDataRouter.post("/stocks", httpGetMarketDataStocks)
 marketDataRouter.post("/indices", httpGetMarketDataIndices)
 marketDataRouter.post("/crypto", httpGetMarketDataCrypto)
 marketDataRouter.post("/forex", httpGetMarketDataForex)
+
+marketDataRouter.post("/poll", httpGetMarketDataAsync)
 
 export { marketDataRouter }

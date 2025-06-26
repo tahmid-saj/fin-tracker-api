@@ -40,7 +40,7 @@ redisClient.on("connect", async () => {
   console.log("Connected to redis instance")
 })
 
-redisClient.on("error", (err) => {
+redisClient.on("error", (err: any) => {
   console.log(err)
 })
 
