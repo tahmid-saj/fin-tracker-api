@@ -14,7 +14,7 @@ import { ApolloServer } from "apollo-server-express";
 import { redisConnect } from "./services/redis/redis.service.js";
 
 const server = http.createServer(app);
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT;
 
 async function startServer() {
   console.log("App is starting...");
@@ -31,26 +31,26 @@ async function startServer() {
     await mongoConnect();
     await redisConnect()
   
-    const typesArray = loadFilesSync("**/*", {
-      extensions: ["graphql"],
-    });
+    // const typesArray = loadFilesSync("**/*", {
+    //   extensions: ["graphql"],
+    // });
   
-    const resolversArray = loadFilesSync(path.resolve("**/*.resolvers.js"));
+    // const resolversArray = loadFilesSync(path.resolve("**/*.resolvers.js"));
   
-    const schema = makeExecutableSchema({
-      typeDefs: typesArray,
-      resolvers: resolversArray,
-    });
+    // const schema = makeExecutableSchema({
+    //   typeDefs: typesArray,
+    //   resolvers: resolversArray,
+    // });
   
-    const apolloServer = new ApolloServer({
-      schema: schema,
-    });
+    // const apolloServer = new ApolloServer({
+    //   schema: schema,
+    // });
   
-    await apolloServer.start();
-    apolloServer.applyMiddleware({
-      app,
-      path: "/graphql",
-    });
+    // await apolloServer.start();
+    // apolloServer.applyMiddleware({
+    //   app,
+    //   path: "/graphql",
+    // });
   
     server.listen(PORT, () => {
       console.log(`Listening on port ${PORT}`);

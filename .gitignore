@@ -30,3 +30,5 @@ tests
 /dist
 
 /out
+
+deploy*.sh

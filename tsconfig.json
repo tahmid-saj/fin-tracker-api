@@ -2,15 +2,15 @@
   "compilerOptions": {
     "target": "ESNext", // or "ES6"
     "module": "ESNext", // or "ES6"
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "outDir": "dist",
+    "outDir": "./dist",
     "rootDir": "./src",
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
+    "resolveJsonModule": true,
+    "noEmit": false,
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },
