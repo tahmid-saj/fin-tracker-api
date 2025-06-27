@@ -43,6 +43,7 @@
     "redis-cli": "^2.1.2",
     "request": "^2.88.2",
     "rimraf": "^6.0.1",
+    "serverless-http": "^3.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2",
     "unix-timestamp": "^1.0.4",
