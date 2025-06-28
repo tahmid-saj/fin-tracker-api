@@ -13,7 +13,7 @@ savingsRouter.get("/summary/:userid/:email", httpGetSavingsAccountsSummaryData);
 
 // investments operations
 savingsRouter.post("/accounts/:userid/:email", httpPostSavingsAccountCreate);
-savingsRouter.put("/accounts/:userid/:email", httpPutSavingsAccountData);
+savingsRouter.put("/account/:userid/:email", httpPutSavingsAccountData);
 savingsRouter.delete("/accounts/:userid/:email", httpDeleteSavingsAccount);
 
 // user is signing out

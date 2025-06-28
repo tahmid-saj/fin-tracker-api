@@ -9,7 +9,7 @@ import { MarketDataRequest } from "../../models/market-data/market-data.types.js
 // market data
 
 // stocks
-export async function httpGetMarketDataStocks(req: Request, res: Response): Promise<void> {
+export async function httpGetMarketDataStocks(req: Request, res: Response): Promise<any> {
   try {
     if (req.body) {
       const marketDataType = String(req.body.marketDataType)
@@ -32,8 +32,7 @@ export async function httpGetMarketDataStocks(req: Request, res: Response): Prom
       // if the request was asked before, then return it from the cache:
       if (requestBeenAsked) {
         const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
-        res.status(200).json(cachedMarketDataRequest)
-        return
+        return res.status(200).json(cachedMarketDataRequest)
       } else {
         // if request was not asked before, then store it's result and return the result:
         const resGetMarketDataStocks = await getMarketDataStocks(marketDataType, marketDataTicker, marketDataInterval,
@@ -41,19 +40,19 @@ export async function httpGetMarketDataStocks(req: Request, res: Response): Prom
         
         if (resGetMarketDataStocks) {
           await saveMarketDataRequest(marketDataRequest, resGetMarketDataStocks)
-          res.status(200).json(resGetMarketDataStocks)
+          return res.status(200).json(resGetMarketDataStocks)
         }
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // indices
-export async function httpGetMarketDataIndices(req: Request, res: Response): Promise<void> {
+export async function httpGetMarketDataIndices(req: Request, res: Response): Promise<any> {
   try {
     const marketDataType = String(req.body.marketDataType)
     const marketDataTicker = String(req.body.marketDataTicker)
@@ -73,26 +72,25 @@ export async function httpGetMarketDataIndices(req: Request, res: Response): Pro
 
     if (requestBeenAsked) {
       const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
-      res.status(200).json(cachedMarketDataRequest)
-      return
+      return res.status(200).json(cachedMarketDataRequest)
     } else {
     const resGetMarketDataIndices = await getMarketDataIndices(marketDataType, marketDataTicker, marketDataInterval,
       marketDataStartDate, marketDataEndDate)
 
       if (resGetMarketDataIndices) {
         await saveMarketDataRequest(marketDataRequest, resGetMarketDataIndices)
-        res.status(200).json(resGetMarketDataIndices)
+        return res.status(200).json(resGetMarketDataIndices)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // crypto
-export async function httpGetMarketDataCrypto(req: Request, res: Response): Promise<void> {
+export async function httpGetMarketDataCrypto(req: Request, res: Response): Promise<any> {
   try {
     const marketDataType = String(req.body.marketDataType)
     const marketDataTicker = String(req.body.marketDataTicker)
@@ -112,26 +110,25 @@ export async function httpGetMarketDataCrypto(req: Request, res: Response): Prom
 
     if (requestBeenAsked) {
       const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
-      res.status(200).json(cachedMarketDataRequest)
-      return
+      return res.status(200).json(cachedMarketDataRequest)
     } else {
     const resGetMarketDataCrypto = await getMarketDataCrypto(marketDataType, marketDataTicker, marketDataInterval,
       marketDataStartDate, marketDataEndDate)
 
       if (resGetMarketDataCrypto) {
         await saveMarketDataRequest(marketDataRequest, resGetMarketDataCrypto)
-        res.status(200).json(resGetMarketDataCrypto)
+        return res.status(200).json(resGetMarketDataCrypto)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // forex
-export async function httpGetMarketDataForex(req: Request, res: Response): Promise<void> {
+export async function httpGetMarketDataForex(req: Request, res: Response): Promise<any> {
   try {
     const marketDataType = String(req.body.marketDataType)
     const marketDataTicker = String(req.body.marketDataTicker)
@@ -151,26 +148,25 @@ export async function httpGetMarketDataForex(req: Request, res: Response): Promi
 
     if (requestBeenAsked) {
       const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
-      res.status(200).json(cachedMarketDataRequest)
-      return
+      return res.status(200).json(cachedMarketDataRequest)
     } else {
       const resGetMarketDataForex = await getMarketDataForex(marketDataType, marketDataTicker, marketDataInterval,
         marketDataStartDate, marketDataEndDate)
 
       if (resGetMarketDataForex) {
         await saveMarketDataRequest(marketDataRequest, resGetMarketDataForex)
-        res.status(200).json(resGetMarketDataForex)
+        return res.status(200).json(resGetMarketDataForex)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // getting market data - async
-export async function httpGetMarketDataAsync(req: Request, res: Response): Promise<void> {
+export async function httpGetMarketDataAsync(req: Request, res: Response): Promise<any> {
   try {
     const marketDataType = String(req.body.marketDataType)
     const marketDataTicker = String(req.body.marketDataTicker)
@@ -190,16 +186,14 @@ export async function httpGetMarketDataAsync(req: Request, res: Response): Promi
 
     if (requestBeenAsked) {
       const cachedMarketDataRequest = await getMarketDataResult(marketDataRequest)
-      res.status(200).json(cachedMarketDataRequest)
-      return
+      return res.status(200).json(cachedMarketDataRequest)
     } else {
-      res.status(200).json({
+      return res.status(200).json({
         queryResults: null
       })
-      return
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' }); 
+    return res.status(500).json({ error: 'Internal Server Error' }); 
   }
 }

@@ -14,7 +14,7 @@ import { areBankingAccountsCached, getBankingAccounts, getBankingSummary, isBank
 import { User } from '../../models/users/users.types.js';
 
 // signed in
-export async function httpGetBankingAccountsData(req: Request, res: Response): Promise<void> {
+export async function httpGetBankingAccountsData(req: Request, res: Response): Promise<any> {
   try {
     const { userid, email } = req.params;
     const user: User = {
@@ -25,22 +25,22 @@ export async function httpGetBankingAccountsData(req: Request, res: Response): P
     const bankingAccountsCached = await areBankingAccountsCached(user)
     if (bankingAccountsCached) {
       const resBankingAccounts = await getBankingAccounts(user)
-      res.status(200).json(resBankingAccounts)
+      return res.status(200).json(resBankingAccounts)
     } else {
       const resGetBankingAccountsData = await getBankingAccountsData(userid!, email!);
   
       if (resGetBankingAccountsData) {
         await saveBankingAccounts(user, resGetBankingAccountsData.bankingAccounts)
-        res.status(200).json(resGetBankingAccountsData);
+        return res.status(200).json(resGetBankingAccountsData);
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpGetBankingSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpGetBankingSummaryData(req: Request, res: Response): Promise<any> {
   try {
     const { userid, email } = req.params;
     const user: User = {
@@ -51,68 +51,68 @@ export async function httpGetBankingSummaryData(req: Request, res: Response): Pr
     const bankingSummaryCached = await isBankingSummaryCached(user)
     if (bankingSummaryCached) {
       const resBankingSummary = await getBankingSummary(user)
-      res.status(200).json(resBankingSummary)
+      return res.status(200).json(resBankingSummary)
     } else {
       const resGetBankingSummaryData = await getBankingSummaryData(userid!, email!);
       if (resGetBankingSummaryData) {
         await saveBankingSummary(user, resGetBankingSummaryData.bankingSummary)
-        res.status(200).json(resGetBankingSummaryData);
+        return res.status(200).json(resGetBankingSummaryData);
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // banking operations
-export async function httpPostBankingAccountCreate(req: Request, res: Response): Promise<void> {
+export async function httpPostBankingAccountCreate(req: Request, res: Response): Promise<any> {
   try {
     const bankingAccountName = String(req.body);
     const { userid, email } = req.params;
     const resPostBankingAccountCreate = await postBankingAccountCreate(userid!, email!, bankingAccountName);
 
     if (resPostBankingAccountCreate) {
-      res.status(200).json({ message: 'Account created' });
+      return res.status(200).json({ message: 'Account created' });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpPostBankingAccountTransaction(req: Request, res: Response): Promise<void> {
+export async function httpPostBankingAccountTransaction(req: Request, res: Response): Promise<any> {
   try {
     const transactionInfo = req.body;
     const { userid, email } = req.params;
     const resPostBankingAccountTransaction = await postBankingAccountTransaction(userid!, email!, transactionInfo);
 
     if (resPostBankingAccountTransaction) {
-      res.status(200).json({ message: 'Transaction successful' });
+      return res.status(200).json({ message: 'Transaction successful' });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpDeleteBankingAccount(req: Request, res: Response): Promise<void> {
+export async function httpDeleteBankingAccount(req: Request, res: Response): Promise<any> {
   try {
     const bankingAccountName = String(req.body);
     const { userid, email } = req.params;
     const resDeleteBankingAccount = await deleteBankingAccount(userid!, email!, bankingAccountName);
 
     if (resDeleteBankingAccount) {
-      res.status(200).json({ message: 'Account deleted' });
+      return res.status(200).json({ message: 'Account deleted' });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // signing out
-export async function httpPutBankingAccountsData(req: Request, res: Response): Promise<void> {
+export async function httpPutBankingAccountsData(req: Request, res: Response): Promise<any> {
   try {
     const { bankingAccounts } = req.body;
     const { userid, email } = req.params;
@@ -125,15 +125,15 @@ export async function httpPutBankingAccountsData(req: Request, res: Response): P
 
     if (resPutBankingAccountsData) {
       await saveBankingAccounts(user, bankingAccounts)
-      res.status(200).json({ message: 'Accounts data updated' });
+      return res.status(200).json({ message: 'Accounts data updated' });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpPutBankingSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpPutBankingSummaryData(req: Request, res: Response): Promise<any> {
   try {
     const { bankingSummary } = req.body;
     const { userid, email } = req.params;
@@ -146,10 +146,10 @@ export async function httpPutBankingSummaryData(req: Request, res: Response): Pr
 
     if (resPutBankingSummaryData) {
       await saveBankingSummary(user, bankingSummary)
-      res.status(200).json({ message: 'Summary data updated' });
+      return res.status(200).json({ message: 'Summary data updated' });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }

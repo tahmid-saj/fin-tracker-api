@@ -8,7 +8,7 @@ import { areExpensesCached, getExpenses, getExpensesSummary,
   isExpensesSummaryCached, saveExpenses, saveExpensesSummary } from "../../redis/queries/expenses/expenses.queries.js"
 
 // signed in
-export async function httpGetExpensesData(req: Request, res: Response): Promise<void> {
+export async function httpGetExpensesData(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -20,24 +20,23 @@ export async function httpGetExpensesData(req: Request, res: Response): Promise<
     const expensesCached = await areExpensesCached(user)
     if (expensesCached) {
       const resExpenses = await getExpenses(user)
-      res.status(200).json(resExpenses)
-      return
+      return res.status(200).json(resExpenses)
     } else {
       const resGetExpensesData = await getExpensesData(userId!, email!)
 
       if (resGetExpensesData) {
         await saveExpenses(user, resGetExpensesData.expenses)
-        res.status(200).json(resGetExpensesData) 
+        return res.status(200).json(resGetExpensesData) 
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpGetExpensesSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpGetExpensesSummaryData(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -49,56 +48,55 @@ export async function httpGetExpensesSummaryData(req: Request, res: Response): P
     const expensesSummaryCached = await isExpensesSummaryCached(user)
     if (expensesSummaryCached) {
       const resExpensesSummary = await getExpensesSummary(user)
-      res.status(200).json(resExpensesSummary)
-      return
+      return res.status(200).json(resExpensesSummary)
     } else {
       const resGetExpensesSummaryData = await getExpensesSummaryData(userId!, email!)
   
       if (resGetExpensesSummaryData) {
         await saveExpensesSummary(user, resGetExpensesSummaryData.expensesSummary)
-        res.status(200).json(resGetExpensesSummaryData)
+        return res.status(200).json(resGetExpensesSummaryData)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // expenses operations
-export async function httpPostExpenseCreate(req: Request, res: Response): Promise<void> {
+export async function httpPostExpenseCreate(req: Request, res: Response): Promise<any> {
   try {
     const expenseInfo = req.body
     const userId = req.params.userid
     const email = req.params.email
     const resPostExpenseCreate = await postExpenseCreate(userId!, email!, expenseInfo)
 
-    if (resPostExpenseCreate) res.status(200)
+    if (resPostExpenseCreate) return res.status(200)
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpDeleteExpense(req: Request, res: Response): Promise<void> {
+export async function httpDeleteExpense(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
     const removingExpenseId = Number(String(req.body))
     const resDeleteExpense = await deleteExpense(userId!, email!, removingExpenseId)
 
-    if (resDeleteExpense) res.status(200)
+    if (resDeleteExpense) return res.status(200)
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // signed out
-export async function httpPutExpensesData(req: Request, res: Response): Promise<void> {
+export async function httpPutExpensesData(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -111,15 +109,15 @@ export async function httpPutExpensesData(req: Request, res: Response): Promise<
     await saveExpenses(user, expenses)
     const resPutExpensesData = await putExpensesData(userId!, email!, expenses)
 
-    if (resPutExpensesData) res.status(200)
+    if (resPutExpensesData) return res.status(200)
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpPutExpensesSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpPutExpensesSummaryData(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -132,10 +130,10 @@ export async function httpPutExpensesSummaryData(req: Request, res: Response): P
     await saveExpensesSummary(user, expensesSummary)
     const resPutExpensesSummaryData = await putExpensesSummaryData(userId!, email!, expensesSummary)
     
-    if (resPutExpensesSummaryData) res.status(200)
+    if (resPutExpensesSummaryData) return res.status(200)
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
