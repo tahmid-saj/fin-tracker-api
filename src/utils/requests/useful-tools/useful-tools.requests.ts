@@ -54,7 +54,7 @@ export async function getUsefulToolsMortgageCalculator(downpaymentFlag: string, 
         "X-Api-Key": `${process.env.REACT_APP_API_NINJAS_KEY}`
       }
     })
-
+    
     const resJSON = await resMortgageResult.json()
     const res = await processMortgageResult(resJSON)
     return {
