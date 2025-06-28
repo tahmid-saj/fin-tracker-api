@@ -4,7 +4,7 @@ import { getSession, saveSession } from "../../redis/queries/sessions/sessions.q
 
 const testRouter: Router = express.Router()
 
-const httpGetTestRoute = async (req: Request, res: Response): Promise<void> => {
+const httpGetTestRoute = async (req: Request, res: Response): Promise<any> => {
   // user test:
   createUser({
     userId: "bob",
@@ -25,7 +25,7 @@ const httpGetTestRoute = async (req: Request, res: Response): Promise<void> => {
   const session = await getSession("123")
   console.log(session)
 
-  res.send("test route for fin-tracker-api")
+  return res.send("test route for fin-tracker-api")
 }
 
 testRouter.get("/testroute", httpGetTestRoute)

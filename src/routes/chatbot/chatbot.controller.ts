@@ -5,7 +5,7 @@ import { getChatbotSessionRequests, saveChatbotSessionRequest,
   sessionIdExists } from "../../redis/queries/chatbot/chatbot.queries.js"
 
 // chatbot response
-async function httpGetChatBotResponse(req: Request, res: Response): Promise<void> {
+async function httpGetChatBotResponse(req: Request, res: Response): Promise<any> {
   try {
     const messageInput = String(req.body)
     const resGetChatBotResponse = await getChatBotResponse(messageInput)
@@ -14,7 +14,7 @@ async function httpGetChatBotResponse(req: Request, res: Response): Promise<void
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
@@ -50,7 +50,7 @@ async function httpGetChatBotSession(req: Request, res: Response) {
   if (sessionExists) {
     const sessionData = await getChatbotSessionRequests(sessionId)
     if (sessionData) {
-      res.status(200).json(sessionData)
+      return res.status(200).json(sessionData)
     }
   }
 }

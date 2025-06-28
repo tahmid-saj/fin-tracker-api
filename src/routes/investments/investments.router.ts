@@ -13,7 +13,7 @@ investmentsRouter.get("/summary/:userid/:email", httpGetInvestmentsSummaryData);
 
 // investments operations
 investmentsRouter.post("/investments/:userid/:email", httpPostInvestmentCreate);
-investmentsRouter.put("/investments/:userid/:email", httpPutInvestmentData);
+investmentsRouter.put("/investment/:userid/:email", httpPutInvestmentData);
 investmentsRouter.delete("/investments/:userid/:email", httpDeleteInvestment);
 
 // user is signing out

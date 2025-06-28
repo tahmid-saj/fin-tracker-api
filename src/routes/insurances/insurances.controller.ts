@@ -8,7 +8,7 @@ import { areInsurancesCached, getInsurances, getInsurancesSummary, isInsurancesS
 
 
 // signed in
-export async function httpGetInsurancesData(req: Request, res: Response): Promise<void> {
+export async function httpGetInsurancesData(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -20,23 +20,23 @@ export async function httpGetInsurancesData(req: Request, res: Response): Promis
     const insurancesCached = await areInsurancesCached(user)
     if (insurancesCached) {
       const resInsurances = await getInsurances(user)
-      res.status(200).json(resInsurances)
+      return res.status(200).json(resInsurances)
     } else {
       const resGetInsurancesData = await getInsurancesData(userId!, email!)
   
       if (resGetInsurancesData) {
         await saveInsurances(user, resGetInsurancesData.insurances)
-        res.status(200).json(resGetInsurancesData)
+        return res.status(200).json(resGetInsurancesData)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpGetInsurancesSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpGetInsurancesSummaryData(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -48,55 +48,55 @@ export async function httpGetInsurancesSummaryData(req: Request, res: Response):
     const insurancesSummaryCached = await isInsurancesSummaryCached(user)
     if (insurancesSummaryCached) {
       const resInsurancesSummary = await getInsurancesSummary(user)
-      res.status(200).json(resInsurancesSummary.insurancesSummary)
+      return res.status(200).json(resInsurancesSummary.insurancesSummary)
     } else {
       const resGetInsurancesSummaryData = await getInsurancesSummaryData(userId!, email!)
   
       if (resGetInsurancesSummaryData) {
         await saveInsurancesSummary(user, resGetInsurancesSummaryData)
-        res.status(200).json(resGetInsurancesSummaryData)
+        return res.status(200).json(resGetInsurancesSummaryData)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // insurances operations
-export async function httpPostInsurancesCreate(req: Request, res: Response): Promise<void> {
+export async function httpPostInsurancesCreate(req: Request, res: Response): Promise<any> {
   try {
     const insuranceInfo = req.body
     const userId = req.params.userid
     const email = req.params.email
     const resPostInsuranceCreate = await postInsuranceCreate(userId!, email!, insuranceInfo)
 
-    if (resPostInsuranceCreate) res.status(200)
+    if (resPostInsuranceCreate) return res.status(200)
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpDeleteInsurance(req: Request, res: Response): Promise<void> {
+export async function httpDeleteInsurance(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
     const removingInsuranceFor = String(req.body)
     const resDeleteInsurance = await deleteInsurance(userId!, email!, removingInsuranceFor)
 
-    if (resDeleteInsurance) res.status(200)
+    if (resDeleteInsurance) return res.status(200)
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // signed out
-export async function httpPutInsurancesData(req: Request, res: Response): Promise<void> {
+export async function httpPutInsurancesData(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -109,15 +109,15 @@ export async function httpPutInsurancesData(req: Request, res: Response): Promis
     await saveInsurances(user, insurances)
     const resPutInsurancesData = await putInsurancesData(userId!, email!, insurances)
 
-    if (resPutInsurancesData) res.status(200)
+    if (resPutInsurancesData) return res.status(200)
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpPutInsurancesSummaryData(req: Request, res: Response): Promise<void> {
+export async function httpPutInsurancesSummaryData(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid
     const email = req.params.email
@@ -130,10 +130,10 @@ export async function httpPutInsurancesSummaryData(req: Request, res: Response):
     await saveInsurancesSummary(user, insurancesSummary)
     const resPutInsurancesSummaryData = await putInsurancesSummaryData(userId!, email!, insurancesSummary)
     
-    if (resPutInsurancesSummaryData) res.status(200)
+    if (resPutInsurancesSummaryData) return res.status(200)
   } catch (error) {
     // TODO: handle error
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
