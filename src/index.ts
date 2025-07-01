@@ -12,6 +12,7 @@ import { loadFilesSync } from "@graphql-tools/load-files";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { ApolloServer } from "apollo-server-express";
 import { redisConnect } from "./services/redis/redis.service.js";
+import { postgresConnect } from "./services/postgres/postgres.service.js";
 
 const server = http.createServer(app);
 const PORT = process.env.PORT;
@@ -30,6 +31,7 @@ async function startServer() {
   try {
     await mongoConnect();
     await redisConnect()
+    await postgresConnect()
   
     // const typesArray = loadFilesSync("**/*", {
     //   extensions: ["graphql"],

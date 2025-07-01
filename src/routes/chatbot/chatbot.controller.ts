@@ -10,7 +10,7 @@ async function httpGetChatBotResponse(req: Request, res: Response): Promise<any>
     const messageInput = String(req.body)
     const resGetChatBotResponse = await getChatBotResponse(messageInput)
 
-    if (resGetChatBotResponse) res.status(200).json(resGetChatBotResponse)
+    if (resGetChatBotResponse) return res.status(200).json(resGetChatBotResponse)
   } catch (error) {
     // TODO: handle error
     console.log(error);

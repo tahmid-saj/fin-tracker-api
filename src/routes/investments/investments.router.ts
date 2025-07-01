@@ -3,8 +3,11 @@ import express, { Router } from 'express';
 import { httpGetInvestmentsData, httpGetInvestmentsSummaryData,
   httpPostInvestmentCreate, httpPutInvestmentData, httpDeleteInvestment,
   httpPutInvestmentsData, httpPutInvestmentsSummaryData } from "./investments.controller.js"
+import { logMiddleware } from '../middlewares/log.middleware.js';
 
 const investmentsRouter: Router = express.Router();
+
+investmentsRouter.use(logMiddleware)
 
 // TODO: move to env variables
 // when user is signed in

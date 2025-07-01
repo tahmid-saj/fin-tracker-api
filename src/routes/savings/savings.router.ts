@@ -3,8 +3,11 @@ import express, { Router } from 'express'
 import { httpGetSavingsAccountsData, httpGetSavingsAccountsSummaryData,
   httpPostSavingsAccountCreate, httpPutSavingsAccountData, httpDeleteSavingsAccount,
   httpPutSavingsAccountsData, httpPutSavingsAccountsSummaryData } from "./savings.controller.js"
+import { logMiddleware } from '../middlewares/log.middleware.js';
 
 const savingsRouter: Router = express.Router();
+
+savingsRouter.use(logMiddleware)
 
 // TODO: move to env variables
 // when user is signed in

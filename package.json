@@ -11,7 +11,8 @@
     "ts.check": "tsc --project tsconfig.json --noEmit",
     "add-build": "git add dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "ts-compile-check": "npx tsc --noEmit"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +42,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
     "openai": "^4.45.0",
+    "pg": "^8.16.3",
     "redis": "^5.1.1",
     "redis-cli": "^2.1.2",
     "request": "^2.88.2",
@@ -51,5 +53,8 @@
     "unix-timestamp": "^1.0.4",
     "uuid": "^11.1.0",
     "vercel": "^37.5.3"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.4"
   }
 }
