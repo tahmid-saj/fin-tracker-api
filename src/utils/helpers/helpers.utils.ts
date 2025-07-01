@@ -26,3 +26,21 @@ export const getCurrentFormattedDate = (): string => {
 
   return `${year}-${month}-${day}`;
 };
+
+export const toCamelCase = (rows: any) => {
+  return rows.map((row: any) => {
+    const replaced: Record<string, any> = {}
+
+    // we'll then iterate over every key (column name) of a single row
+    for (let key in row) {
+      const camelCase = key.replace(/([-_][a-z])/gi, ($1) => 
+        $1.toUpperCase().replace("_", "")
+      )
+
+      // the row will now have the column name in camel case:
+      replaced[camelCase] = row[key]
+    }
+
+    return replaced;
+  })
+}

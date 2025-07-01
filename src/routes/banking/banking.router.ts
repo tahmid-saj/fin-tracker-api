@@ -8,8 +8,11 @@ import {
   httpPutBankingAccountsData,
   httpPutBankingSummaryData
 } from './banking.controller.js';
+import { logMiddleware } from '../middlewares/log.middleware.js';
 
 const bankingRouter: Router = express.Router();
+
+bankingRouter.use(logMiddleware)
 
 // TODO: move to env variables
 // when user is signed in, frontend will send this and populate the banking accounts data from mongodb

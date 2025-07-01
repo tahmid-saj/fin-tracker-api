@@ -1,8 +1,11 @@
 import express, { Request, Response, Router } from "express"
 import { createUser, getUser } from "../../redis/queries/users/users.queries.js"
 import { getSession, saveSession } from "../../redis/queries/sessions/sessions.queries.js"
+import { logMiddleware } from "../middlewares/log.middleware.js"
 
 const testRouter: Router = express.Router()
+
+testRouter.use(logMiddleware)
 
 const httpGetTestRoute = async (req: Request, res: Response): Promise<any> => {
   // user test:

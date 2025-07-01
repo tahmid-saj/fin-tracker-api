@@ -4,8 +4,11 @@ import { httpGetExpensesData, httpGetExpensesSummaryData,
   httpPostExpenseCreate, httpDeleteExpense,
   httpPutExpensesData, httpPutExpensesSummaryData
 } from "./expenses.controller.js"
+import { logMiddleware } from "../middlewares/log.middleware.js"
 
 const expensesRouter: Router = express.Router()
+
+expensesRouter.use(logMiddleware)
 
 // TODO: move to env variables
 // when user is signed in

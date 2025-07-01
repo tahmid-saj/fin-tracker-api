@@ -4,8 +4,11 @@ import { httpGetInsurancesData, httpGetInsurancesSummaryData,
   httpPostInsurancesCreate, httpDeleteInsurance,
   httpPutInsurancesData, httpPutInsurancesSummaryData
 } from "./insurances.controller.js"
+import { logMiddleware } from "../middlewares/log.middleware.js"
 
 const insurancesRouter: Router = express.Router()
+
+insurancesRouter.use(logMiddleware)
 
 // TODO: move to env variables
 // when user is signed in
